@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.site-layout-content {
+  min-height: 280px;
+  padding: 24px;
+  width: 100%;
+  height: 100%;
+  /* margin: auto;
+  width: 50%;
+  border: 3px solid green; */
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
