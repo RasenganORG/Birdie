@@ -4,7 +4,8 @@ import 'antd/dist/antd.min.css';
 import { FileExcelOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+
+export default function Navbar( {tab} ) {
     const items = [
         { 
             icon: <Link to="/"><TwitterOutlined/></Link>, 
@@ -19,8 +20,11 @@ export default function Navbar() {
     ]
 
     return ( 
-        <div>
-            <Menu mode="horizontal" items={items} />
-        </div>
-    );
+        <Menu
+            theme="light"
+            mode="horizontal"
+            defaultSelectedKeys={[`${tab==='home' ? 'logo' : 'profile'}`]}
+            items={items}
+        />
+);
 }

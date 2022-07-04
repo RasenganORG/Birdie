@@ -3,6 +3,8 @@ import { Routes, Route} from "react-router-dom";
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import { BrowserRouter } from 'react-router-dom';
 
 function App() {
@@ -13,8 +15,8 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path="auth" element={<Login />}/>
           <Route path="signUp" element={<SignUp />}/>
-          <Route path="one"/>
-          <Route exact path="one/two" />
+          <Route path="profile" element={<Profile />}/>
+          <Route exact path="profile/edit" element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </div>

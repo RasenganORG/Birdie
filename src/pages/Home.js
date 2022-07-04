@@ -1,10 +1,14 @@
+import { Layout, Avatar } from "antd";
 import Navbar from "../components/Navbar";
-import Tweet from "../components/Tweet";
+import AddTweet from "../components/AddTweet";
+import TweetPost from "../components/TweetPost";
+
 export default function Home() {
     return ( 
-      <div>
-        {/* <Navbar /> */}
-        <Tweet />
-      </div>
+      <>
+          <Navbar tab="home"/>
+          <AddTweet />
+          <TweetPost />
+      </>
     );
 }
