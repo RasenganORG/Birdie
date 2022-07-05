@@ -1,9 +1,21 @@
 import { Form, Input, Button } from "antd";
 import { Anchor } from 'antd';
 import { Link, useNavigate, Navigate } from "react-router-dom";
+import { useState } from 'react';
 
-export default function LoginForm() {
+export default function LoginForm({ setUser }) {
     const navigate = useNavigate()
+
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+
+    function handleFinish(values){
+        console.log(username)
+        console.log(password)
+        setUser({username: username, password: password})
+        navigate("../")
+    }
+    
     return ( 
         <Form
             name="basic"
@@ -13,17 +25,15 @@ export default function LoginForm() {
             wrapperCol={{
                 span: 8
             }}
-
-            // onFinish={onFinish}
+            onFinish={handleFinish}
             // onFinishFailed={onFinishFailed}
             autoComplete="off"
-            onFinish={()=>{
-                navigate("../", { replace: true });
-            }}
         >
             <Form.Item
                 label= "Username"
                 name= "username"
+                value={username}
+                onChange={e => setUserName(e.target.value)}
                 rules={[
                 {
                     required: true,
@@ -37,6 +47,8 @@ export default function LoginForm() {
             <Form.Item
                 label="Password"
                 name="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 rules={[
                 {
                     required: true,

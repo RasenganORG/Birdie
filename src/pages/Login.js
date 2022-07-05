@@ -3,11 +3,11 @@ import LoginForm from '../components/LoginForm';
 import { Layout } from 'antd';
 const { Header, Content, Footer } = Layout;
 
-export default function Login() {
+export default function Login( {setUser} ) {
     return ( 
         <div>
             <NavbarLogin />
-            <LoginForm />
+            <LoginForm setUser={setUser}/>
         </div>
     );
 }
