@@ -1,6 +1,6 @@
 import { Button, PageHeader, Row, Statistic, Image, Avatar, Col } from 'antd';
 import { Link } from "react-router-dom";
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import '../index.css';
 
 function ProfileHeader() {

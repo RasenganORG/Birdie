@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import TweetComment from './TweetComment';
-import { Avatar, Comment, Space, Modal } from 'antd';
-import { Button, Form, Input } from 'antd';
+import CommentModal from './CommentModal';
+import { Avatar, Comment, Space } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Button, Input, Form } from 'antd';
 import { CommentOutlined, HeartOutlined, RetweetOutlined } from '@ant-design/icons';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import '../index.css';
 const { TextArea } = Input;
 
-function TweetPost() {
+function TweetPost({ viewComment }) {
+    const navigate = useNavigate()
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showModal = () => {
@@ -22,6 +25,25 @@ function TweetPost() {
         setIsModalVisible(false);
     };
 
+    const comments = [
+        {
+            author: 'Han Solo', 
+            avatar: "https://joeschmoe.io/api/v1/random"
+        },
+        {
+            author: 'Han Solo', 
+            avatar: "https://joeschmoe.io/api/v1/random",
+            children: [
+                {author: 'Eu', 
+                avatar: "https://joeschmoe.io/api/v1/random"}
+            ]
+        }
+    ]
+
+    const showComments = comments.map(comment => {
+            return <TweetComment />
+    })
+
     return (  
         <>
         <Comment
@@ -30,7 +52,9 @@ function TweetPost() {
             avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
             content={
             <div>
-                <p  onClick={showModal}>
+                <p onClick={()=> {
+                    navigate("../comment", {replace: false})
+                }}>
                     We supply a series of design principles, practical patterns and high quality design
                     resources (Sketch and Axure).
                 </p>
@@ -45,46 +69,30 @@ function TweetPost() {
             </div>
             }
         >
-            <TweetComment />
-            <TweetComment>
-                <TweetComment />
-                <TweetComment />
-            </TweetComment>
-        </Comment>
-
-        {/* MODAL */}
-        <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={[]}>
-        <Comment
-            author={<a>Han Solo</a>}
-            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
-            content={
-            <div>
-                <p>
-                    We supply a series of design principles, practical patterns and high quality design
-                    resources (Sketch and Axure).
-                </p>
-                <hr/>
-            </div>
-            }
-        >
-        </Comment>
-        <Comment
+            
+        {viewComment === true && <Comment
                 author={<a>Han Solo</a>}
                 avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
                 content={
             <Form>
-              <Form.Item>
-                <TextArea rows={2} placeholder="What's happening?"/>
+            <Form.Item>
+                <TextArea rows={2} placeholder="Tweet your reply"/>
                 </Form.Item>
 
-              <Form.Item>
+            <Form.Item>
                 <Button htmlType="submit" type="primary">
-                    Tweet
+                    Reply
                 </Button>
-              </Form.Item>
-            </Form>
-                } />
-        </Modal>
+            </Form.Item>
+            </Form>} />}
+            
+        {showComments}
+            
+        </Comment>
+
+        {/* MODAL */}
+
+        {isModalVisible && <CommentModal isModalVsible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}/>}
         </>
     );
 }

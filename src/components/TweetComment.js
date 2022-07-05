@@ -11,10 +11,10 @@ function TweetComment({ children }) {
                         We supply a series of design principles, practical patterns and high quality design
                         resources (Sketch and Axure).
                     </p>
-                    <Space style={{paddingTop: '10px'}}>
-                    <CommentOutlined style={{ fontSize: '20px', paddingRight: '15vw'}}/>
-                    <RetweetOutlined style={{ fontSize: '20px', paddingRight: '15vw'}} rotate='90'/>
-                    <HeartOutlined style={{ fontSize: '20px'}}/>
+                    <Space style={{ paddingTop: '10px' }}>
+                    <CommentOutlined style={{ fontSize: '20px', paddingRight: '15vw' }}/>
+                    <RetweetOutlined style={{ fontSize: '20px', paddingRight: '15vw' }} rotate='90'/>
+                    <HeartOutlined style={{ fontSize: '20px' }}/>
                 </Space>
         </div>
             }

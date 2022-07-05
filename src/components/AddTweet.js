@@ -1,4 +1,4 @@
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import '../index.css';
 import { Button, Comment, Form, Input, Avatar } from 'antd';
 import { Col, Row } from 'antd';
