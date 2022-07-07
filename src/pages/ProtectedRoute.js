@@ -1,10 +1,10 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom"
 
 function ProtectedRoute({ children, user }) {
-    if (!user){
-        return <Navigate to='/auth'/>
-    }
-    return children;
+  if (!user) {
+    return <Navigate to='/auth' />
+  }
+  return children
 }
 
-export default ProtectedRoute;
+export default ProtectedRoute
