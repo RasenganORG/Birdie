@@ -27,6 +27,7 @@ code {
   text-align: left;
 }
 
-.align-centre {
+.align-middle {
   margin: 0 25%;
+  padding: 0;
 }

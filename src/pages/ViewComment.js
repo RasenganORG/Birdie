@@ -11,6 +11,7 @@ function ViewComment() {
             <Navbar tab="logo"/>
                 <PageHeader
                 style={{margin: '0 25%' ,padding: '0'}}
+                // className='align-middle'
                 onBack={() => window.history.back()}
                 title="Tweet"
                 />

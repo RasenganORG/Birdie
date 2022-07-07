@@ -22,22 +22,28 @@ function App() {
             <ProtectedRoute user={user}>
               <Home user={user}/>
             </ProtectedRoute>} />
+
           <Route path="comment" element={
             <ProtectedRoute user={user}>
               <ViewComment />
             </ProtectedRoute>
           }/>
-          <Route path="auth" element={<Login setUser={setUser}/>}/>
+
+          <Route exact path="auth" element={<Login setUser={setUser}/>}/>
+
           <Route path="signUp" element={<SignUp />}/>
+
           <Route path="profile" element={
             <ProtectedRoute user={user}>
               <Profile />
             </ProtectedRoute>
           }/>
+
           <Route exact path="profile/edit" element={
             <ProtectedRoute user={user}>
               <EditProfile />
             </ProtectedRoute>} />
+
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
