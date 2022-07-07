@@ -3,7 +3,6 @@ import '../index.css';
 import { PageHeader } from 'antd';
 import Navbar from '../components/Navbar';
 import TweetPost from '../components/TweetPost';
-import TweetComment from '../components/TweetComment';
 
 function ViewComment() {
     return ( 

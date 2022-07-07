@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import EditProfileForm from "../components/EditProfileForm";
-import { Button, Descriptions, PageHeader, Row, Statistic, Tag } from 'antd';
+import { Button, PageHeader } from 'antd';
 
 function EditProfile() {
     return (

@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import TweetComment from './TweetComment';
 import CommentModal from './CommentModal';
-import { Avatar, Comment, Space } from 'antd';
+import { Avatar, Comment, Space, Button, Input, Form } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { Button, Input, Form } from 'antd';
 import { CommentOutlined, HeartOutlined, RetweetOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.min.css';
 import '../index.css';

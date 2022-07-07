@@ -9,7 +9,6 @@ function Profile() {
             <ProfileHeader />
             <ProfileTweets />
         </>
-        
     );
 }
 

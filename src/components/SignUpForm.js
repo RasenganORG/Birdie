@@ -1,6 +1,6 @@
 import "antd/dist/antd.min.css";
 import "../index.css";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import { Anchor } from 'antd';
 import { Link } from "react-router-dom";
 

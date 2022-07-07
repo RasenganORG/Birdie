@@ -1,6 +1,6 @@
 import './App.css';
 import { useState } from 'react';
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route, BrowserRouter} from "react-router-dom";
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
@@ -9,7 +9,6 @@ import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Error from './pages/Error.js';
 import ProtectedRoute from './pages/ProtectedRoute';
-import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState(null)
