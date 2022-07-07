@@ -23,7 +23,7 @@ export default function Navbar( {tab} ) {
         <Menu
             theme="light"
             mode="horizontal"
-            defaultSelectedKeys={[`${tab==='home' ? 'logo' : 'profile'}`]}
+            defaultSelectedKeys={[`${tab==='logo' ? 'logo' : 'profile'}`]}
             items={items}
         />
 );

@@ -6,7 +6,7 @@ import TweetPost from "../components/TweetPost";
 export default function Home(props) {
     return ( 
       <>
-          <Navbar tab="home"/>
+          <Navbar tab="logo"/>
           <AddTweet />
           <TweetPost />
       </>
