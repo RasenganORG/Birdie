@@ -1,28 +1,15 @@
 import Navbar from "../components/Navbar"
-import EditProfileForm from "../components/EditProfileForm"
-import { Button, PageHeader } from "antd"
-import { Layout } from "antd"
+import LoginForm from "../components/LoginForm"
+import SignUpForm from "../components/SignUpForm"
+import { Layout, PageHeader, Tabs } from "antd"
 const { Header, Content, Footer } = Layout
+const { TabPane } = Tabs
 
-function EditProfile() {
+export default function Auth({ setUser }) {
   return (
-    // <>
-    //   <Navbar tab='profile' />
-    //   <PageHeader
-    //     onBack={() => window.history.back()}
-    //     title='Edit Profile'
-    //     extra={[
-    //       <Button key='1' type='primary'>
-    //         Save
-    //       </Button>,
-    //     ]}
-    //   ></PageHeader>
-    //   <EditProfileForm />
-    // </>
-
     <Layout style={{ height: "100vh" }}>
       <Header className='header'>
-        <Navbar tab='profile' />
+        <Navbar auth={true} />
       </Header>
       <Layout>
         <Layout
@@ -39,13 +26,20 @@ function EditProfile() {
             }}
           >
             <PageHeader
-              onBack={() => window.history.back()}
-              title='Edit Profile'
+              style={{}}
+              className='site-page-header-responsive'
+              title='Authenticate'
+              footer={
+                <Tabs defaultActiveKey='1'>
+                  <TabPane tab='Login' key='1'>
+                    <LoginForm setUser={setUser} />
+                  </TabPane>
+                  <TabPane tab='Sign Up' key='2'>
+                    <SignUpForm />
+                  </TabPane>
+                </Tabs>
+              }
             ></PageHeader>
-            <EditProfileForm />
-            <Button key='1' type='primary'>
-              Save
-            </Button>
           </Content>
           <Footer
             style={{
@@ -59,5 +53,3 @@ function EditProfile() {
     </Layout>
   )
 }
-
-export default EditProfile

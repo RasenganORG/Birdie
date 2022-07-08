@@ -69,20 +69,6 @@ export default function LoginForm({ setUser }) {
           Submit
         </Button>
       </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 8,
-        }}
-      >
-        <Anchor>
-          <Link to='/signUp'>
-            {" "}
-            <Anchor.Link href='' title="Don't have an account? Sign up!" />{" "}
-          </Link>
-        </Anchor>
-      </Form.Item>
     </Form>
   )
 }

@@ -67,12 +67,6 @@ export default function SignUpForm({ type }) {
           Submit
         </Button>
       </Form.Item>
-      <Anchor>
-        <Link to='/auth'>
-          {" "}
-          <Anchor.Link href='' title='Login!' />{" "}
-        </Link>
-      </Anchor>
     </Form>
   )
 }

@@ -2,6 +2,7 @@ import "./App.css"
 import { useState } from "react"
 import { Routes, Route, BrowserRouter } from "react-router-dom"
 import Home from "./pages/Home"
+import Auth from "./pages/Auth"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import ViewComment from "./pages/ViewComment"
@@ -35,12 +36,10 @@ function App() {
             }
           />
 
-          <Route exact path='auth' element={<Login setUser={setUser} />} />
-
-          <Route path='signUp' element={<SignUp />} />
+          <Route exact path='auth' element={<Auth setUser={setUser} />} />
 
           <Route
-            path='profile'
+            path='/profile'
             element={
               <ProtectedRoute user={user}>
                 <Profile />

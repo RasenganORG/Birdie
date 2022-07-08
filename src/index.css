@@ -12,10 +12,14 @@ code {
     monospace;
 }
 
-.site-layout-content {
+/* .site-layout-content {
   padding: 24px;
   width: 100%;
   height: 100%;
+} */
+
+.site-layout-background {
+  background: white;
 }
 
 .site-layout .site-layout-background {
@@ -23,11 +27,19 @@ code {
 }
 
 .align-tweets {
-  margin: 0 25%;
+  margin: 0 6%;
   text-align: left;
 }
 
 .align-middle {
   margin: 0 25%;
   padding: 0;
+}
+
+.ant-comment-content-author-name a:hover {
+  text-decoration: underline;
+}
+
+.navbar--search {
+  padding-top: 12px;
 }

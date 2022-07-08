@@ -7,7 +7,7 @@ function ProfileHeader() {
   return (
     <>
       <PageHeader
-        style={{ margin: "0 25%", padding: "0" }}
+        // style={{ margin: "0 25%", padding: "0" }}
         onBack={() => window.history.back()}
         title='Han Solo'
         subTitle='1 tweet'

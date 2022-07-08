@@ -1,21 +1,35 @@
 import "antd/dist/antd.min.css"
 import "../index.css"
-import { PageHeader } from "antd"
+import { PageHeader, Layout } from "antd"
 import Navbar from "../components/Navbar"
 import TweetPost from "../components/TweetPost"
-
+const { Header, Content } = Layout
 function ViewComment() {
   return (
-    <>
-      <Navbar tab='logo' />
-      <PageHeader
-        style={{ margin: "0 25%", padding: "0" }}
-        // className='align-middle'
-        onBack={() => window.history.back()}
-        title='Tweet'
-      />
-      <TweetPost viewComment={true} />
-    </>
+    <Layout style={{ height: "100vh" }}>
+      <Header className='header'>
+        <Navbar tab='logo' />
+      </Header>
+      <Layout>
+        <Layout
+          style={{
+            padding: "3% 8%",
+          }}
+        >
+          <Content
+            className='site-layout-background'
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+            }}
+          >
+            <PageHeader onBack={() => window.history.back()} title='Tweet' />
+            <TweetPost viewComment={true} />
+          </Content>
+        </Layout>
+      </Layout>
+    </Layout>
   )
 }
 

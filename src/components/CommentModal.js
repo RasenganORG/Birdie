@@ -1,7 +1,9 @@
 import { Avatar, Comment, Button, Input, Form, Modal } from "antd"
+import { useState } from "react"
 const { TextArea } = Input
 
 function CommentModal({ isModalVsible, handleOk, handleCancel }) {
+  const [value, setValue] = useState("")
   return (
     <Modal
       visible={isModalVsible}
@@ -32,7 +34,19 @@ function CommentModal({ isModalVsible, handleOk, handleCancel }) {
         content={
           <Form>
             <Form.Item>
-              <TextArea rows={2} placeholder='Tweet your reply' />
+              {/* <TextArea rows={2} placeholder='Tweet your reply' /> */}
+              <TextArea
+                value={value}
+                placeholder="What's happening?"
+                // style={{
+                //   backgroundColor: "#021e39",
+                // }}
+                onChange={(e) => setValue(e.target.value)}
+                autoSize={{
+                  minRows: 3,
+                  maxRows: 5,
+                }}
+              />
             </Form.Item>
 
             <Form.Item>

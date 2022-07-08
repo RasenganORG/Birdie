@@ -1,16 +1,14 @@
 import "antd/dist/antd.min.css"
 import "../index.css"
-import { Button, Comment, Form, Input, Avatar } from "antd"
-import { Col, Row } from "antd"
+import { Button, Comment, Form, Input, Avatar, Row, Col } from "antd"
+import { useState } from "react"
 const { TextArea } = Input
 
 function AddTweet() {
+  const [value, setValue] = useState("")
   return (
     <div
-      className='site-layout-background'
-      style={{
-        padding: "24px 0",
-      }}
+    // className='site-layout-background'
     >
       <Comment
         className='align-tweets'
@@ -24,15 +22,30 @@ function AddTweet() {
           //     width: '50%'
           //     }}/>
           <Form>
-            <Form.Item>
-              <TextArea rows={2} placeholder="What's happening?" />
-            </Form.Item>
+            <Row gutter={16}>
+              <Col span={22}>
+                <Form.Item>
+                  <TextArea
+                    value={value}
+                    placeholder="What's happening?"
+                    onChange={(e) => setValue(e.target.value)}
+                    autoSize={{
+                      minRows: 3,
+                      maxRows: 5,
+                    }}
+                  />
+                </Form.Item>
+              </Col>
 
-            <Form.Item>
-              <Button htmlType='submit' type='primary'>
-                Tweet
-              </Button>
-            </Form.Item>
+              <Col span={2}>
+                <Form.Item>
+                  <Button htmlType='submit' type='primary'>
+                    Tweet
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+
             <hr />
           </Form>
         }
