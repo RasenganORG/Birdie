@@ -18,6 +18,7 @@ export default function LoginForm({ setUser }) {
 
   return (
     <Form
+      className='loginForm--form'
       name='basic'
       labelCol={{
         span: 8,
@@ -29,34 +30,32 @@ export default function LoginForm({ setUser }) {
       // onFinishFailed={onFinishFailed}
       autoComplete='off'
     >
-      <Form.Item
-        label='Username'
-        name='username'
-        value={username}
-        onChange={(e) => setUserName(e.target.value)}
-        rules={[
-          {
-            required: true,
-            message: "Please enter your username!",
-          },
-        ]}
-      >
-        <Input />
+      <Form.Item label='Username' name='username'>
+        <Input
+          className='loginForm--formUsername'
+          value={username}
+          onChange={(e) => setUserName(e.target.value)}
+          rules={[
+            {
+              required: true,
+              message: "Please enter your username!",
+            },
+          ]}
+        />
       </Form.Item>
 
-      <Form.Item
-        label='Password'
-        name='password'
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        rules={[
-          {
-            required: true,
-            message: "Please input your password!",
-          },
-        ]}
-      >
-        <Input.Password />
+      <Form.Item label='Password' name='password'>
+        <Input.Password
+          className='loginForm--formPassword'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+        />
       </Form.Item>
 
       <Form.Item
