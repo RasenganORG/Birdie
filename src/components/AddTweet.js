@@ -1,3 +1,5 @@
+import React from "react"
+import ReactDOM from "react-dom/client"
 import "antd/dist/antd.min.css"
 import "../index.css"
 import { Button, Comment, Form, Input, Avatar, Row, Col } from "antd"
@@ -27,6 +29,7 @@ function AddTweet() {
                 <Form.Item>
                   <TextArea
                     value={value}
+                    data-cy='addtweet--textarea'
                     placeholder="What's happening?"
                     onChange={(e) => setValue(e.target.value)}
                     autoSize={{

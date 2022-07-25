@@ -1,3 +1,4 @@
+import React from "react"
 import Navbar from "../components/Navbar"
 import EditProfileForm from "../components/EditProfileForm"
 import { Button, PageHeader } from "antd"

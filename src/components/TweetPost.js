@@ -1,3 +1,4 @@
+import React from "react"
 import { useState } from "react"
 import TweetComment from "./TweetComment"
 import CommentModal from "./CommentModal"
@@ -57,6 +58,7 @@ function TweetPost({ viewComment }) {
         content={
           <div>
             <p
+              data-cy='tweetpost--p'
               onClick={() => {
                 navigate("../comment", { replace: false })
               }}
@@ -67,6 +69,7 @@ function TweetPost({ viewComment }) {
             <Space style={{ paddingTop: "10px" }}>
               <span>2</span>
               <CommentOutlined
+                data-cy='tweetpost--comment'
                 style={{ fontSize: "20px", paddingRight: "15vw" }}
                 onClick={showModal}
               />
@@ -90,7 +93,11 @@ function TweetPost({ viewComment }) {
             content={
               <Form>
                 <Form.Item>
-                  <TextArea rows={2} placeholder='Tweet your reply' />
+                  <TextArea
+                    data-cy='tweetpost--textarea'
+                    rows={2}
+                    placeholder='Tweet your reply'
+                  />
                 </Form.Item>
 
                 <Form.Item>

@@ -1,3 +1,4 @@
+import React from "react"
 import { Avatar, Comment, Button, Input, Form, Modal } from "antd"
 import { useState } from "react"
 const { TextArea } = Input
@@ -38,6 +39,7 @@ function CommentModal({ isModalVsible, handleOk, handleCancel }) {
               <TextArea
                 value={value}
                 placeholder="What's happening?"
+                data-cy='commentmodal--textarea'
                 // style={{
                 //   backgroundColor: "#021e39",
                 // }}

@@ -1,3 +1,4 @@
+import React from "react"
 import { Layout } from "antd"
 import Navbar from "../components/Navbar"
 import AddTweet from "../components/AddTweet"

@@ -1,3 +1,4 @@
+import React from "react"
 import AddTweet from "./AddTweet"
 import { Avatar, Comment } from "antd"
 

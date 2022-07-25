@@ -1,3 +1,4 @@
+import React from "react"
 import { Menu, Input, Col, Row, Avatar } from "antd"
 import "../index.css"
 import "antd/dist/antd.min.css"

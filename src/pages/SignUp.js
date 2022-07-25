@@ -1,3 +1,4 @@
+import React from "react"
 import NavbarLogin from "../components/NavbarLogin"
 import SignUpForm from "../components/SignUpForm"
 

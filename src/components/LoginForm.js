@@ -1,3 +1,4 @@
+import React from "react"
 import { Form, Input, Button } from "antd"
 import { Anchor } from "antd"
 import { Link, useNavigate, Navigate } from "react-router-dom"
@@ -64,7 +65,11 @@ export default function LoginForm({ setUser }) {
           span: 8,
         }}
       >
-        <Button type='primary' htmlType='submit'>
+        <Button
+          type='primary'
+          htmlType='submit'
+          className='loginForm--formButton'
+        >
           Submit
         </Button>
       </Form.Item>

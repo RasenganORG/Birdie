@@ -1,3 +1,5 @@
+import React from "react"
+import ReactDOM from "react-dom/client"
 import { Menu } from "antd"
 import "../index.css"
 import "antd/dist/antd.min.css"

@@ -1,3 +1,4 @@
+import React from "react"
 import "antd/dist/antd.min.css"
 import "../index.css"
 import { PageHeader, Layout } from "antd"
@@ -24,7 +25,11 @@ function ViewComment() {
               minHeight: 280,
             }}
           >
-            <PageHeader onBack={() => window.history.back()} title='Tweet' />
+            <PageHeader
+              onBack={() => window.history.back()}
+              title='Tweet'
+              data-cy='viewcomment--backbtn'
+            />
             <TweetPost viewComment={true} />
           </Content>
         </Layout>
