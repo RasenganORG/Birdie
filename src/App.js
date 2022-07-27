@@ -6,17 +6,26 @@ import Profile from "./pages/Profile"
 import TweetItem from "./components/tweets/TweetItem"
 import "./App.css"
 import Tweets from "./components/tweets/Tweets"
-
+import Login from "./components/auth/Login"
+import PrivateRoute from "./components/auth/PrivateRoute"
 function App() {
   return (
     <div className='App'>
       <Routes>
-        <Route path='/' element={<LayoutPage />}>
+        <Route
+          path='/'
+          element={
+            <PrivateRoute>
+              <LayoutPage />
+            </PrivateRoute>
+          }
+        >
           <Route index element={<Tweets />} />
           <Route path='tweets' element={<Tweets />} />
           <Route path='profile' element={<Profile />} />
           <Route path='tweets/:id' element={<TweetItem />} />
         </Route>
+        <Route path='login' element={<Login />} />
         <Route path='*' element={<Error />} />
       </Routes>
     </div>
