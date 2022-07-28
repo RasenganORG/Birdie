@@ -1,9 +1,11 @@
 import React from "react"
 import "antd/dist/antd.css"
 import "./layout.css"
-import { Layout, Menu, Button } from "antd"
+import { Layout, Menu, Button, Input, Row, Col } from "antd"
 import { Outlet, NavLink } from "react-router-dom"
+
 let activeClassName = "underline"
+const { Search } = Input
 const { Header, Content, Footer } = Layout
 const menuItems = [
   {
@@ -13,7 +15,8 @@ const menuItems = [
         to='/'
         className={({ isActive }) => (isActive ? activeClassName : undefined)}
       >
-        <Button>Tweets</Button>
+        {/* <Button>Tweets</Button> */}
+        Tweets
       </NavLink>
     ),
   },
@@ -24,7 +27,8 @@ const menuItems = [
         to='/profile'
         className={({ isActive }) => (isActive ? activeClassName : undefined)}
       >
-        <Button>Profile</Button>
+        {/* <Button>Profile</Button> */}
+        Profile
       </NavLink>
     ),
   },
@@ -35,7 +39,8 @@ const menuItems = [
         to='/tweets/1'
         className={({ isActive }) => (isActive ? activeClassName : undefined)}
       >
-        <Button>tweet1</Button>
+        {/* <Button>tweet1</Button> */}
+        Messages
       </NavLink>
     ),
   },
@@ -44,18 +49,38 @@ const menuItems = [
 const LayoutPage = () => (
   <Layout className='layout'>
     <Header>
-      <div className='logo' />
-      {/* <Menu
-        theme='dark'
-        mode='horizontal'
-        defaultSelectedKeys={["2"]}
-        items={menuItems}
-      /> */}
-      {menuItems.map((item) => item.label)}
+      <Row>
+        <Col span={2}>
+          <div className='logo' />
+        </Col>
+        <Col span={8}>
+          <Menu
+            theme='dark'
+            mode='horizontal'
+            defaultSelectedKeys={["2"]}
+            items={menuItems}
+          />
+        </Col>
+        <Col span={4}>
+          <Search
+            className='navbar--search'
+            placeholder='Search Twitter'
+            allowClear
+            enterButton='Search'
+            size='large'
+            style={{ paddingTop: "12px" }}
+            // onSearch={onSearch}
+          />
+        </Col>
+        <Col span={7}></Col>
+      </Row>
+
+      {/* {menuItems.map((item) => item.label)} */}
     </Header>
     <Content
       style={{
         padding: "0 50px",
+        // height: "100vh",
       }}
     >
       <div className='site-layout-content'>
