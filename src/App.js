@@ -8,6 +8,7 @@ import "./App.css"
 import Tweets from "./components/tweets/Tweets"
 import Login from "./components/auth/Login"
 import PrivateRoute from "./components/auth/PrivateRoute"
+
 function App() {
   return (
     <div className='App'>
@@ -23,7 +24,7 @@ function App() {
           <Route index element={<Tweets />} />
           <Route path='tweets' element={<Tweets />} />
           <Route path='profile' element={<Profile />} />
-          <Route path='tweets/:id' element={<TweetItem />} />
+          <Route path='tweets/:tweetId' element={<TweetItem />} />
         </Route>
         <Route path='login' element={<Login />} />
         <Route path='*' element={<Error />} />
