@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 const { TextArea } = Input
 
 function TweetAddPost({ tweetId }) {
+  const [form] = Form.useForm()
   const [tweetText, setTweetText] = useState("")
   const dispatch = useDispatch()
 
@@ -31,6 +32,7 @@ function TweetAddPost({ tweetId }) {
         })
       )
     }
+    form.resetFields()
   }
 
   return (
@@ -41,10 +43,15 @@ function TweetAddPost({ tweetId }) {
         <Avatar src='https://joeschmoe.io/api/v1/random' alt='Han Solo' />
       }
       content={
-        <Form>
+        <Form
+          form={form}
+          name='addTweet'
+          initialValues={{ tweetText: "" }}
+          // onFinish={() => form.resetFields()}
+        >
           <Row gutter={16}>
             <Col span={22}>
-              <Form.Item>
+              <Form.Item name='tweetText'>
                 <TextArea
                   value={tweetText}
                   data-cy='addtweet--textarea'
