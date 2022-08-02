@@ -25,8 +25,11 @@ const tweetsSlice = createSlice({
       state.tweets.push(action.payload)
     },
     addReply: (state, action) => {
+      console.log(action.payload)
       state.tweets
-        .find((tweet) => tweet.id.toString() === action.payload.tweetId)
+        .find(
+          (tweet) => tweet.id.toString() === action.payload.tweetId.toString()
+        )
         .replies.push(action.payload.replyId)
     },
     retweet: (state, action) => {

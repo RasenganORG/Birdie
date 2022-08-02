@@ -12,6 +12,7 @@ function TweetAddPost({ tweetId }) {
 
   const handleSubmit = () => {
     const newTweetId = new Date().getTime()
+    console.log({ newTweetId, tweetId })
 
     dispatch(
       addTweet({
