@@ -34,7 +34,6 @@ export default function Register() {
       ...values.user,
     }
     dispatch(register(userData))
-    console.log(userData)
   }
 
   return (
