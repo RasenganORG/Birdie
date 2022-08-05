@@ -13,7 +13,8 @@ const menuItems = [
         to='/'
         className={({ isActive }) => (isActive ? activeClassName : undefined)}
       >
-        <Button>Tweets</Button>
+        {/* <Button>Tweets</Button> */}
+        Tweets
       </NavLink>
     ),
   },
@@ -24,7 +25,8 @@ const menuItems = [
         to='/profile'
         className={({ isActive }) => (isActive ? activeClassName : undefined)}
       >
-        <Button>Profile</Button>
+        {/* <Button>Profile</Button> */}
+        Profile
       </NavLink>
     ),
   },
@@ -35,7 +37,8 @@ const menuItems = [
         to='/tweets/1'
         className={({ isActive }) => (isActive ? activeClassName : undefined)}
       >
-        <Button>tweet1</Button>
+        {/* <Button>tweet1</Button> */}
+        Messages
       </NavLink>
     ),
   },
@@ -45,13 +48,13 @@ const LayoutPage = () => (
   <Layout className='layout'>
     <Header>
       <div className='logo' />
-      {/* <Menu
+      <Menu
         theme='dark'
         mode='horizontal'
         defaultSelectedKeys={["2"]}
         items={menuItems}
-      /> */}
-      {menuItems.map((item) => item.label)}
+      />
+      {/* {menuItems.map((item) => item.label)} */}
     </Header>
     <Content
       style={{

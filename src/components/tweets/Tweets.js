@@ -1,23 +1,30 @@
-import React from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import AddTweet from "./AddTweet"
 import TweetsList from "./TweetsList"
+import { getTweets } from "./tweetsSlice"
+import { getUsers } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
 
 function Tweets() {
-  const tweets = useSelector((state) => state.tweets.tweets)
+  const dispatch = useDispatch()
+  const { tweets } = useSelector((state) => state.tweets)
 
-  const replies = useSelector((state) => state.tweets.tweets).reduce(
-    (accumulator, currentTweet) => {
-      return [...accumulator, ...currentTweet.replies]
-    },
-    []
-  )
+  const homeTweets = tweets.filter((tweet) => tweet.parentId === null)
 
-  const homeTweets = tweets.filter((tweet) => !replies.includes(tweet.id))
+  useEffect(() => {
+    dispatch(getTweets())
+  }, [])
+
+  useEffect(() => {
+    dispatch(getUsers())
+  }, [])
+
+  const { users } = useSelector((state) => state.users)
+  console.log({ users })
 
   return (
     <>
-      <AddTweet />
+      <AddTweet parentId={null} />
       <h1>List of tweets</h1>
       <TweetsList tweets={homeTweets} />
     </>

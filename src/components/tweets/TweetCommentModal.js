@@ -1,9 +1,6 @@
 import React from "react"
-import { Avatar, Comment, Button, Input, Form, Modal } from "antd"
-import { useState } from "react"
+import { Avatar, Comment, Modal } from "antd"
 import AddTweet from "./AddTweet"
-
-const { TextArea } = Input
 
 function TweetCommentModal({ isModalVsible, handleCancel, modalTweet }) {
   return (
@@ -19,7 +16,7 @@ function TweetCommentModal({ isModalVsible, handleCancel, modalTweet }) {
         }
       ></Comment>
 
-      <AddTweet tweetId={modalTweet.id} />
+      <AddTweet parentId={modalTweet.id} />
     </Modal>
   )
 }

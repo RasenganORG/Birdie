@@ -1,30 +1,29 @@
 import { useParams } from "react-router-dom"
-import React from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import TweetsList from "./TweetsList"
 import AddTweet from "./AddTweet"
+import { getTweetById, getReplies } from "./tweetsSlice"
 
 function TweetItem() {
   const params = useParams()
   const tweetId = params.tweetId
-  const parentTweet = useSelector((state) => state.tweets.tweets).filter(
-    (tweet) => {
-      console.log({ tweetId, tweet })
-      return tweet.id.toString() === tweetId.toString()
-    }
-  )
-  console.log({ parentTweet })
 
-  const tweetReplies = useSelector(
-    (state) => state.tweets.tweets
-  ).filter((tweet) => parentTweet[0].replies.includes(tweet.id))
+  const dispatch = useDispatch()
+
+  const { currentTweet, tweets } = useSelector((state) => state.tweets)
+
+  useEffect(() => {
+    dispatch(getTweetById(tweetId))
+    dispatch(getReplies(tweetId))
+  }, [tweetId])
 
   return (
-    <>
-      <TweetsList tweets={parentTweet} />
-      <AddTweet tweetId={tweetId} />
-      <TweetsList tweets={tweetReplies} />
-    </>
+    <div>
+      {currentTweet && <TweetsList tweets={[currentTweet]} />}
+      {currentTweet && <AddTweet parentId={tweetId} />}
+      {tweets && <TweetsList tweets={tweets} />}
+    </div>
   )
 }
 

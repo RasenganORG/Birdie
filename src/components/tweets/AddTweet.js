@@ -1,38 +1,27 @@
 import React, { useState } from "react"
 import { Avatar, Button, Comment, Row, Col, Input, Form } from "antd"
-import { like, retweet, reply, addTweet, addReply } from "./tweetsSlice"
-import { useDispatch } from "react-redux"
+import { addTweet } from "./tweetsSlice"
+import { useDispatch, useSelector } from "react-redux"
 
 const { TextArea } = Input
 
-function TweetAddPost({ tweetId }) {
+function AddTweet({ parentId }) {
   const [form] = Form.useForm()
   const [tweetText, setTweetText] = useState("")
   const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
 
   const handleSubmit = () => {
-    const newTweetId = new Date().getTime()
-    console.log({ newTweetId, tweetId })
-
     dispatch(
       addTweet({
-        id: newTweetId,
-        user: "@ana",
+        parentId: parentId === null ? null : parentId,
+        userId: user.id,
         text: tweetText,
         likes: "0",
         retweets: "0",
-        replies: [],
-        thumbnail: "https://randomuser.me/api/portraits/thumb/women/21.jpg",
       })
     )
-    if (tweetId) {
-      dispatch(
-        addReply({
-          tweetId,
-          replyId: newTweetId,
-        })
-      )
-    }
+
     form.resetFields()
   }
 
@@ -44,12 +33,7 @@ function TweetAddPost({ tweetId }) {
         <Avatar src='https://joeschmoe.io/api/v1/random' alt='Han Solo' />
       }
       content={
-        <Form
-          form={form}
-          name='addTweet'
-          initialValues={{ tweetText: "" }}
-          // onFinish={() => form.resetFields()}
-        >
+        <Form form={form} name='addTweet' initialValues={{ tweetText: "" }}>
           <Row gutter={16}>
             <Col span={22}>
               <Form.Item name='tweetText'>
@@ -82,4 +66,4 @@ function TweetAddPost({ tweetId }) {
   )
 }
 
-export default TweetAddPost
+export default AddTweet

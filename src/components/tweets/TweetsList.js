@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { like, retweet, addTweet, addReply } from "./tweetsSlice"
-import { useDispatch } from "react-redux"
+import { like, retweet } from "./tweetsSlice"
+import { useDispatch, useSelector } from "react-redux"
 import { Avatar, List, Skeleton } from "antd"
 import {
   CommentOutlined,
@@ -15,14 +15,15 @@ function TweetsList({ tweets }) {
   const dispatch = useDispatch()
   const handleGoToTweet = (tweet) => navigate(`/tweets/${tweet.id}`)
   const handleLikeTweet = (tweetId) => dispatch(like(tweetId))
-  const handleRetweetTweet = (tweetId) => dispatch(retweet(tweetId))
+  // const handleRetweetTweet = (tweetId) => dispatch(retweet(tweetId))
+  const { isLoading } = useSelector((state) => state.tweets)
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [modalTweet, setModalTweet] = useState({
     id: "",
+    parentId: "",
     user: "",
     text: "",
-    replies: [],
   })
 
   const handleCancel = () => {
@@ -32,6 +33,7 @@ function TweetsList({ tweets }) {
   return (
     <>
       <List
+        loading={isLoading}
         itemLayout='vertical'
         dataSource={tweets}
         style={{ textAlign: "start" }}
@@ -49,7 +51,7 @@ function TweetsList({ tweets }) {
                 <RetweetOutlined
                   style={{ fontSize: "20px" }}
                   rotate='90'
-                  onClick={() => handleRetweetTweet(tweet.id)}
+                  // onClick={() => handleRetweetTweet(tweet.id)}
                 />{" "}
                 {tweet.retweets}
               </a>,
@@ -66,7 +68,6 @@ function TweetsList({ tweets }) {
                 }}
               >
                 <CommentOutlined style={{ fontSize: "20px" }} />{" "}
-                {tweet.replies.length}
               </a>,
             ]}
           >
@@ -89,7 +90,6 @@ function TweetsList({ tweets }) {
         <TweetCommentModal
           isModalVsible={isModalVisible}
           modalTweet={modalTweet}
-          // handleOk={handleOk}
           handleCancel={handleCancel}
         />
       )}
