@@ -26,7 +26,7 @@ export default function Login() {
 
   const onFinish = (values) => {
     const userData = { ...values.user }
-    console.log("Logged in userData", userData)
+
     dispatch(login(userData))
   }
 

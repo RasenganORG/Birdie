@@ -10,8 +10,6 @@ function Tweets() {
   const tweets = useSelector((state) => state.tweets.tweets)
   const dispatch = useDispatch()
 
-  console.log(tweets)
-
   return (
     <>
       <h1>List of tweets</h1>
