@@ -42,8 +42,8 @@ const deleteTweet = async (tweetId) => {
   return response.data
 }
 
-const updateTweet = async (tweetId) => {
-  const response = await axios.put(`${API_TWEETS_URL}${tweetId}`)
+const likeTweet = async (tweetId) => {
+  const response = await axios.put(`${API_TWEET_URL}${tweetId}`)
 
   return response.data
 }
@@ -54,7 +54,7 @@ const tweetsService = {
   getReplies,
   addTweet,
   deleteTweet,
-  updateTweet,
+  likeTweet,
 }
 
 export default tweetsService

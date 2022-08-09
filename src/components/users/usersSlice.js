@@ -3,6 +3,7 @@ import usersService from "./usersService"
 
 const initialState = {
   users: [],
+  searchedUsers: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -14,6 +15,22 @@ export const getUsers = createAsyncThunk(
   async (thunkAPI) => {
     try {
       return await usersService.getUsers()
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+export const getUsersByUsername = createAsyncThunk(
+  "tweets/getUsersByUsername",
+  async (username, thunkAPI) => {
+    try {
+      return await usersService.getUsersByUsername(username)
     } catch (error) {
       const message =
         (error.response &&
@@ -58,6 +75,20 @@ const usersSlice = createSlice({
         state.isError = true
         state.message = action.payload
         state.tweets = null
+      })
+      .addCase(getUsersByUsername.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getUsersByUsername.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.searchedUsers = action.payload
+      })
+      .addCase(getUsersByUsername.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.searchedUsers = []
       })
   },
 })

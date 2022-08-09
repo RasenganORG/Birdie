@@ -9,6 +9,7 @@ import Tweets from "./components/tweets/Tweets"
 import Login from "./components/auth/Login"
 import Register from "./components/auth/Register"
 import PrivateRoute from "./components/auth/PrivateRoute"
+import Search from "./pages/Search"
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path='tweets' element={<Tweets />} />
           <Route path='profile' element={<Profile />} />
           <Route path='tweets/:tweetId' element={<TweetItem />} />
+          <Route path='search' element={<Search />} />
         </Route>
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />

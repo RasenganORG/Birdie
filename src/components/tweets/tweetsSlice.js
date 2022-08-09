@@ -3,11 +3,10 @@ import tweetsService from "./tweetsService"
 
 const initialState = {
   tweets: [],
-  currentTweet: null,
-  currentTweetReplies: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
+  isLoadingLike: false,
   message: "",
 }
 
@@ -79,6 +78,23 @@ export const getReplies = createAsyncThunk(
   }
 )
 
+export const likeTweet = createAsyncThunk(
+  "tweets/likeTweet",
+  async (tweetId, thunkAPI) => {
+    try {
+      return await tweetsService.likeTweet(tweetId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 const tweetsSlice = createSlice({
   name: "tweets",
   initialState,
@@ -88,9 +104,6 @@ const tweetsSlice = createSlice({
       state.isSuccess = false
       state.isError = false
       state.message = ""
-    },
-    like: (state, action) => {
-      state.tweets.find((tweet) => tweet.id === action.payload).likes++
     },
   },
   extraReducers: (builder) => {
@@ -153,8 +166,20 @@ const tweetsSlice = createSlice({
         state.message = action.payload
         state.currentTweetReplies = null
       })
+      .addCase(likeTweet.pending, (state) => {
+        state.isLoadingLike = true
+      })
+      .addCase(likeTweet.fulfilled, (state, action) => {
+        state.isLoadingLike = false
+        state.isSuccess = true
+        state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
+      })
+      .addCase(likeTweet.rejected, (state, action) => {
+        state.isLoadingLike = false
+        state.isError = true
+        state.message = action.payload
+      })
   },
 })
 
 export default tweetsSlice.reducer
-export const { like } = tweetsSlice.actions

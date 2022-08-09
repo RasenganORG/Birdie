@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { like, retweet } from "./tweetsSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { Avatar, List, Skeleton } from "antd"
 import {
@@ -9,12 +8,13 @@ import {
 } from "@ant-design/icons"
 import { useNavigate, Link } from "react-router-dom"
 import TweetCommentModal from "./TweetCommentModal"
+import { likeTweet } from "./tweetsSlice"
 
 function TweetsList({ tweets }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const handleGoToTweet = (tweet) => navigate(`/tweets/${tweet.id}`)
-  const handleLikeTweet = (tweetId) => dispatch(like(tweetId))
+  const handleLikeTweet = (tweetId) => dispatch(likeTweet(tweetId))
   // const handleRetweetTweet = (tweetId) => dispatch(retweet(tweetId))
   const { isLoading } = useSelector((state) => state.tweets)
 
