@@ -7,6 +7,7 @@ import TweetItem from "./components/tweets/TweetItem"
 import "./App.css"
 import Tweets from "./components/tweets/Tweets"
 import Login from "./components/auth/Login"
+import Register from "./components/auth/Register"
 import PrivateRoute from "./components/auth/PrivateRoute"
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path='tweets/:tweetId' element={<TweetItem />} />
         </Route>
         <Route path='login' element={<Login />} />
+        <Route path='register' element={<Register />} />
         <Route path='*' element={<Error />} />
       </Routes>
     </div>
