@@ -25,7 +25,7 @@ function App() {
           <Route index element={<Tweets />} />
           <Route path='tweets' element={<Tweets />} />
           <Route path='profile' element={<Profile />} />
-          <Route path='tweets/:id' element={<TweetItem />} />
+          <Route path='tweets/:tweetId' element={<TweetItem />} />
         </Route>
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
