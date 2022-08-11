@@ -3,6 +3,7 @@ import tweetsService from "./tweetsService"
 
 const initialState = {
   tweets: [],
+  currentTweet: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -104,6 +105,7 @@ const tweetsSlice = createSlice({
       state.isSuccess = false
       state.isError = false
       state.message = ""
+      state.currentTweet = null
     },
   },
   extraReducers: (builder) => {
@@ -116,6 +118,7 @@ const tweetsSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         state.tweets = action.payload
+        state.currentTweet = null
       })
       .addCase(getTweets.rejected, (state, action) => {
         state.isLoading = false
@@ -170,9 +173,18 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = true
       })
       .addCase(likeTweet.fulfilled, (state, action) => {
+        console.log("action: " + action.payload.id)
+        console.log("state: " + state.tweets[0].id)
         state.isLoadingLike = false
         state.isSuccess = true
-        state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
+        state.currentTweet !== null
+          ? state.currentTweet.id === action.payload.id &&
+            state.currentTweet.likes++
+          : state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
+
+        state.currentTweet !== null &&
+          state.currentTweet.id !== action.payload.id &&
+          state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
       })
       .addCase(likeTweet.rejected, (state, action) => {
         state.isLoadingLike = false

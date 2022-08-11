@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Avatar, List, Skeleton } from "antd"
 import {
@@ -9,6 +9,7 @@ import {
 import { useNavigate, Link } from "react-router-dom"
 import TweetCommentModal from "./TweetCommentModal"
 import { likeTweet } from "./tweetsSlice"
+import { getUserById } from "../users/usersSlice"
 
 function TweetsList({ tweets }) {
   const navigate = useNavigate()
@@ -17,7 +18,8 @@ function TweetsList({ tweets }) {
   const handleLikeTweet = (tweetId) => dispatch(likeTweet(tweetId))
   // const handleRetweetTweet = (tweetId) => dispatch(retweet(tweetId))
   const { isLoading } = useSelector((state) => state.tweets)
-
+  const { user } = useSelector((state) => state.users)
+  const [tweetItem, setTweetItem] = useState({})
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [modalTweet, setModalTweet] = useState({
     id: "",
@@ -31,6 +33,7 @@ function TweetsList({ tweets }) {
   }
 
   return (
+    //
     <>
       <List
         loading={isLoading}
@@ -74,10 +77,10 @@ function TweetsList({ tweets }) {
             <Skeleton avatar title={false} loading={tweet.loading} active>
               <List.Item.Meta
                 style={{ textAlign: "start" }}
-                avatar={<Avatar src={tweet.thumbnail} />}
+                avatar={<Avatar src={tweet.avatar} />}
                 title={
                   <Link to='/profile' style={{ marginBottom: "0" }}>
-                    {tweet.user}
+                    {tweet.username}
                   </Link>
                 }
               />

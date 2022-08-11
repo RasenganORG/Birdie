@@ -3,6 +3,8 @@ import usersService from "./usersService"
 
 const initialState = {
   users: [],
+  userById: null,
+  usersById: [],
   searchedUsers: [],
   isError: false,
   isSuccess: false,
@@ -26,11 +28,46 @@ export const getUsers = createAsyncThunk(
     }
   }
 )
+
 export const getUsersByUsername = createAsyncThunk(
   "tweets/getUsersByUsername",
   async (username, thunkAPI) => {
     try {
       return await usersService.getUsersByUsername(username)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getUserById = createAsyncThunk(
+  "tweets/getUserById",
+  async (userId, thunkAPI) => {
+    try {
+      return await usersService.getUserById(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getUsersById = createAsyncThunk(
+  "tweets/getUsersById",
+  async (userIds, thunkAPI) => {
+    try {
+      return await usersService.getUsersById(userIds)
     } catch (error) {
       const message =
         (error.response &&
@@ -89,6 +126,34 @@ const usersSlice = createSlice({
         state.isError = true
         state.message = action.payload
         state.searchedUsers = []
+      })
+      .addCase(getUserById.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getUserById.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.userById = action.payload
+      })
+      .addCase(getUserById.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.userById = null
+      })
+      .addCase(getUsersById.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getUsersById.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.usersById = action.payload
+      })
+      .addCase(getUsersById.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.usersById = []
       })
   },
 })

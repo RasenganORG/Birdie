@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector, useDispatch } from "react-redux"
 import {
   Button,
   PageHeader,
@@ -16,12 +17,14 @@ import "../index.css"
 const { TabPane } = Tabs
 
 export default function Profile() {
+  const { user } = useSelector((state) => state.auth)
+  console.log(user)
   return (
     <>
       <PageHeader
         // style={{ margin: "0 25%", padding: "0" }}
         onBack={() => window.history.back()}
-        title='Han Solo'
+        title={user.fullName}
         subTitle='1 tweet'
         extra={
           <Link to='edit'>
@@ -52,21 +55,21 @@ export default function Profile() {
                   xl: 80,
                   xxl: 90,
                 }}
-                src='https://joeschmoe.io/api/v1/random'
+                src={user.avatar}
               />
               <h2
                 style={{
                   textAlign: "start",
                 }}
               >
-                Han Solo
+                {user.fullName}
               </h2>
               <p
                 style={{
                   textAlign: "start",
                 }}
               >
-                @han_solo
+                @{user.username}
               </p>
               <p style={{ textAlign: "justify" }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam

@@ -32,7 +32,7 @@ const addTweet = async (tweetData) => {
   if (response.data.id) {
     localStorage.setItem("addedTweetId", JSON.stringify(response.data.id))
   }
-
+  console.log("response.data", response.data)
   return response.data
 }
 

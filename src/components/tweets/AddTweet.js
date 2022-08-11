@@ -28,10 +28,8 @@ function AddTweet({ parentId }) {
   return (
     <Comment
       className='align-tweets'
-      author={<a>Han Solo</a>}
-      avatar={
-        <Avatar src='https://joeschmoe.io/api/v1/random' alt='Han Solo' />
-      }
+      author={<a>{user.username}</a>}
+      avatar={<Avatar src={user.avatar} alt='Han Solo' />}
       content={
         <Form form={form} name='addTweet' initialValues={{ tweetText: "" }}>
           <Row gutter={16}>
