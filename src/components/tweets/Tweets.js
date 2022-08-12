@@ -3,10 +3,6 @@ import { useSelector, useDispatch } from "react-redux"
 import AddTweet from "./AddTweet"
 import TweetsList from "./TweetsList"
 import { getTweets } from "./tweetsSlice"
-import {
-  getUsersById,
-  getUsersByUsername,
-} from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
 
 function Tweets() {
   const dispatch = useDispatch()

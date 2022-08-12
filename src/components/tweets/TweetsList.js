@@ -18,8 +18,6 @@ function TweetsList({ tweets }) {
   const handleLikeTweet = (tweetId) => dispatch(likeTweet(tweetId))
   // const handleRetweetTweet = (tweetId) => dispatch(retweet(tweetId))
   const { isLoading } = useSelector((state) => state.tweets)
-  const { user } = useSelector((state) => state.users)
-  const [tweetItem, setTweetItem] = useState({})
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [modalTweet, setModalTweet] = useState({
     id: "",

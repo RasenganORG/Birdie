@@ -84,7 +84,7 @@ export default function Register() {
               />
             </Form.Item>
             <Form.Item
-              name={["user", "fullName"]}
+              name={["user", "name"]}
               rules={[
                 {
                   required: true,

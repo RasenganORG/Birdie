@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import "antd/dist/antd.css"
 import "./layout.css"
-import { Layout, Menu, Input, Row, Col, AutoComplete } from "antd"
+import { Layout, Menu, Input, Row, Col, Dropdown } from "antd"
 import { Outlet, NavLink, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { getUsersByUsername } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
@@ -9,51 +9,85 @@ import { getUsersByUsername } from "/home/ana/Documents/GitHub/Birdie/src/compon
 let activeClassName = "underline"
 const { Header, Content, Footer } = Layout
 const { Search } = Input
-const menuItems = [
-  {
-    key: "home",
-    label: (
-      <NavLink
-        to='/'
-        className={({ isActive }) => (isActive ? activeClassName : undefined)}
-      >
-        {/* <Button>Tweets</Button> */}
-        Tweets
-      </NavLink>
-    ),
-  },
-  {
-    key: "profile",
-    label: (
-      <NavLink
-        to='/profile'
-        className={({ isActive }) => (isActive ? activeClassName : undefined)}
-      >
-        {/* <Button>Profile</Button> */}
-        Profile
-      </NavLink>
-    ),
-  },
-  {
-    key: "tweetId",
-    label: (
-      <NavLink
-        to='/tweets/1'
-        className={({ isActive }) => (isActive ? activeClassName : undefined)}
-      >
-        {/* <Button>tweet1</Button> */}
-        Messages
-      </NavLink>
-    ),
-  },
-]
 
 function LayoutPage() {
+  const { user } = useSelector((state) => state.auth)
+  const [searchItem, setSearchItem] = useState("")
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { searchedUsers } = useSelector((state) => state.users)
+  const [visible, setVisible] = useState(false)
+
+  const menuItems = [
+    {
+      key: "home",
+      label: (
+        <NavLink
+          to='/'
+          className={({ isActive }) => (isActive ? activeClassName : undefined)}
+        >
+          {/* <Button>Tweets</Button> */}
+          Tweets
+        </NavLink>
+      ),
+    },
+    {
+      key: "profile",
+      label: (
+        <NavLink
+          to={`/profile/${user.id}`}
+          className={({ isActive }) => (isActive ? activeClassName : undefined)}
+        >
+          {/* <Button>Profile</Button> */}
+          Profile
+        </NavLink>
+      ),
+    },
+    {
+      key: "messages",
+      label: (
+        <NavLink
+          to='/messages'
+          className={({ isActive }) => (isActive ? activeClassName : undefined)}
+        >
+          {/* <Button>tweet1</Button> */}
+          Messages
+        </NavLink>
+      ),
+    },
+  ]
+
+  useEffect(() => {
+    console.log("in useEffect get users")
+    dispatch(getUsersByUsername(searchItem))
+  }, [searchItem])
+
+  const handleMenuClick = (e) => {
+    setVisible(false)
+    console.log("e", e)
+    navigate(`/profile/${e.key}`)
+  }
+
+  const menu = (
+    <Menu
+      onClick={handleMenuClick}
+      items={[
+        {
+          key: searchedUsers.length > 0 ? searchedUsers[0].id : "",
+          label: searchedUsers.length > 0 ? searchedUsers[0].username : "",
+        },
+      ]}
+    />
+  )
+
+  const handleVisibleChange = (flag) => {
+    setVisible(flag)
+  }
 
   const onSearch = (value) => {
-    console.log(value)
-    navigate(`/search?q=${value}`)
+    console.log({ value })
+    setSearchItem(value)
+    // navigate(`/search?q=${value}`)
     // dispatch(getUsersByUsername(value))
     // console.log({ searchedUsers })
     // console.log({ options })
@@ -81,13 +115,19 @@ function LayoutPage() {
             />
           </Col>
           <Col span={6} style={{ marginTop: "12px" }}>
-            <Search
-              className='navbar--search'
-              placeholder='Search Twitter'
-              enterButton='Search'
-              size='large'
-              onSearch={onSearch}
-            />
+            <Dropdown
+              overlay={menu}
+              onVisibleChange={handleVisibleChange}
+              visible={visible}
+            >
+              <Search
+                className='navbar--search'
+                placeholder='Search Twitter'
+                enterButton='Search'
+                size='large'
+                onSearch={onSearch}
+              />
+            </Dropdown>
           </Col>
           <Col span={9}> </Col>
         </Row>

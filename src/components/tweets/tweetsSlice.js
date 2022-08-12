@@ -96,6 +96,23 @@ export const likeTweet = createAsyncThunk(
   }
 )
 
+export const getTweetsByUserId = createAsyncThunk(
+  "tweets/getTweetsByUserId",
+  async (userId, thunkAPI) => {
+    try {
+      return await tweetsService.getTweetsByUserId(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 const tweetsSlice = createSlice({
   name: "tweets",
   initialState,
@@ -190,6 +207,22 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = false
         state.isError = true
         state.message = action.payload
+      })
+      .addCase(getTweetsByUserId.pending, (state) => {
+        state.isLoading = true
+        state.tweets = []
+      })
+      .addCase(getTweetsByUserId.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.tweets = action.payload
+        state.currentTweet = null
+      })
+      .addCase(getTweetsByUserId.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.tweets = null
       })
   },
 })
