@@ -3,6 +3,7 @@ import axios from "axios"
 const API_TWEETS_URL = "http://localhost:8080/api/tweets/"
 const API_TWEET_URL = "http://localhost:8080/api/tweet/"
 const API_TWEETS_BY_USER_ID_URL = "http://localhost:8080/api/tweetsByUserId/"
+const API_TWEETS_HOME_URL = "http://localhost:8080/api/tweetsForHome/"
 
 const getTweets = async () => {
   const response = await axios.get(API_TWEETS_URL)
@@ -18,6 +19,13 @@ const getTweetById = async (tweetId) => {
 
 const getTweetsByUserId = async (userId) => {
   const response = await axios.get(`${API_TWEETS_BY_USER_ID_URL}${userId}`)
+  console.log("response.data", response.data)
+
+  return response.data
+}
+
+const getTweetsForHome = async (userId) => {
+  const response = await axios.get(`${API_TWEETS_HOME_URL}${userId}`)
   console.log("response.data", response.data)
 
   return response.data
@@ -64,6 +72,7 @@ const tweetsService = {
   deleteTweet,
   likeTweet,
   getTweetsByUserId,
+  getTweetsForHome,
 }
 
 export default tweetsService

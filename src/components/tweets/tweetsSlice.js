@@ -28,6 +28,23 @@ export const getTweets = createAsyncThunk(
   }
 )
 
+export const getTweetsForHome = createAsyncThunk(
+  "tweets/getTweetsForHome",
+  async (userId, thunkAPI) => {
+    try {
+      return await tweetsService.getTweetsForHome(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const addTweet = createAsyncThunk(
   "tweets/addTweet",
   async (tweet, thunkAPI) => {
@@ -219,6 +236,22 @@ const tweetsSlice = createSlice({
         state.currentTweet = null
       })
       .addCase(getTweetsByUserId.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.tweets = null
+      })
+      .addCase(getTweetsForHome.pending, (state) => {
+        state.isLoading = true
+        state.tweets = []
+      })
+      .addCase(getTweetsForHome.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.tweets = action.payload
+        state.currentTweet = null
+      })
+      .addCase(getTweetsForHome.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload

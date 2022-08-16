@@ -80,6 +80,7 @@ function EditProfile() {
               type='primary'
               htmlType='submit'
               className='login-form-button'
+              onClick={() => navigate(`/profile/${userId}`)}
             >
               Submit
             </Button>

@@ -9,7 +9,9 @@ import {
   Avatar,
   Col,
   Tabs,
+  Spin,
 } from "antd"
+import { LoadingOutlined } from "@ant-design/icons"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import {
   getUserById,
@@ -64,7 +66,19 @@ export default function Profile() {
   console.log()
   return (
     <>
-      {userById && (
+      {nrOfFollowedUsers === null && (
+        <Spin
+          indicator={
+            <LoadingOutlined
+              style={{
+                fontSize: "50px",
+              }}
+              spin
+            />
+          }
+        />
+      )}
+      {userById && nrOfFollowedUsers !== null && (
         <PageHeader
           // style={{ margin: "0 25%", padding: "0" }}
           onBack={() => window.history.back()}

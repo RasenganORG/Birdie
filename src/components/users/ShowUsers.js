@@ -31,9 +31,6 @@ function ShowUsers({ userId, userType, setIsModalVisible, isModalVisible }) {
 
   return (
     <>
-      <Button type='primary' onClick={showModal}>
-        Open Modal
-      </Button>
       <Modal
         title='Basic Modal'
         visible={isModalVisible}

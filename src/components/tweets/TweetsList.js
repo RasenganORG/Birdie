@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Avatar, List, Skeleton } from "antd"
+import { Avatar, List, Skeleton, Spin } from "antd"
 import {
   CommentOutlined,
   HeartOutlined,
   RetweetOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons"
 import { useNavigate, Link } from "react-router-dom"
 import TweetCommentModal from "./TweetCommentModal"
@@ -77,7 +78,10 @@ function TweetsList({ tweets }) {
                 style={{ textAlign: "start" }}
                 avatar={<Avatar src={tweet.avatar} />}
                 title={
-                  <Link to='/profile' style={{ marginBottom: "0" }}>
+                  <Link
+                    to={`/profile/${tweet.userId}`}
+                    style={{ marginBottom: "0" }}
+                  >
                     {tweet.username}
                   </Link>
                 }
