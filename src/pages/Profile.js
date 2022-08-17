@@ -19,7 +19,6 @@ import {
   getFollowers,
   getFollowedUsers,
 } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
-
 import "antd/dist/antd.min.css"
 import "../index.css"
 import TweetsList from "../components/tweets/TweetsList"
@@ -97,8 +96,10 @@ export default function Profile() {
               <div
                 style={{
                   backgroundColor: "#f0f2f5",
+                  border: "2px solid #f0f2f5",
+                  borderRadius: "12px",
                   padding: "15%",
-                  height: "50vh",
+                  height: "100%",
                 }}
               >
                 <Avatar
@@ -142,7 +143,7 @@ export default function Profile() {
               <div
                 style={{
                   borderLeft: "3px solid #40a9ff",
-                  height: "50vh",
+                  height: "100%",
                   marginRight: "30px",
                 }}
               ></div>
@@ -191,16 +192,25 @@ export default function Profile() {
                 </Button>
                 <Button onClick={handleOnClickFollow}>Follow</Button>
               </Row>
-              <Row style={{ marginLeft: "50%" }}>
-                <Tabs defaultActiveKey='1'>
-                  <TabPane tab='Tweets' key='1'>
-                    {tweets && <TweetsList tweets={tweets} />}
-                  </TabPane>
-                  <TabPane tab='Retweets' key='2'>
-                    Content of Tab Pane 2
-                  </TabPane>
-                </Tabs>
-              </Row>
+              {/* <Row style={{ width: "100%" }}> */}
+              <Tabs defaultActiveKey='1' centered>
+                <TabPane
+                  tab='Tweets'
+                  key='1'
+                  style={{
+                    border: "2px solid #f0f2f5",
+                    borderRadius: "12px",
+                    backgroundColor: "#f0f2f5",
+                    paddingLeft: "2%",
+                  }}
+                >
+                  {tweets && <TweetsList tweets={tweets} />}
+                </TabPane>
+                <TabPane tab='Retweets' key='2'>
+                  Content of Tab Pane 2
+                </TabPane>
+              </Tabs>
+              {/* </Row> */}
             </Col>
           </Row>
           {isModalVisible && (

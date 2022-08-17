@@ -96,11 +96,62 @@ export const getReplies = createAsyncThunk(
   }
 )
 
+export const addLike = createAsyncThunk(
+  "tweets/addLike",
+  async (data, thunkAPI) => {
+    try {
+      return await tweetsService.addLike(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const deleteLike = createAsyncThunk(
+  "tweets/deleteLike",
+  async (data, thunkAPI) => {
+    try {
+      return await tweetsService.deleteLike(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const likeTweet = createAsyncThunk(
   "tweets/likeTweet",
   async (tweetId, thunkAPI) => {
     try {
       return await tweetsService.likeTweet(tweetId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const dislikeTweet = createAsyncThunk(
+  "tweets/dislikeTweet",
+  async (tweetId, thunkAPI) => {
+    try {
+      return await tweetsService.dislikeTweet(tweetId)
     } catch (error) {
       const message =
         (error.response &&
@@ -203,6 +254,36 @@ const tweetsSlice = createSlice({
         state.message = action.payload
         state.currentTweetReplies = null
       })
+      .addCase(addLike.pending, (state) => {
+        state.isLoadingLike = true
+      })
+      .addCase(addLike.fulfilled, (state, action) => {
+        console.log("action: " + action.payload.id)
+        console.log("state: " + state.tweets[0].id)
+        console.log("action.payload: " + action.payload.likes)
+        state.isLoadingLike = false
+        state.isSuccess = true
+      })
+      .addCase(addLike.rejected, (state, action) => {
+        state.isLoadingLike = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(deleteLike.pending, (state) => {
+        state.isLoadingLike = true
+      })
+      .addCase(deleteLike.fulfilled, (state, action) => {
+        console.log("action: " + action.payload.id)
+        console.log("state: " + state.tweets[0].id)
+        console.log("action.payload: " + action.payload.likes)
+        state.isLoadingLike = false
+        state.isSuccess = true
+      })
+      .addCase(deleteLike.rejected, (state, action) => {
+        state.isLoadingLike = false
+        state.isError = true
+        state.message = action.payload
+      })
       .addCase(likeTweet.pending, (state) => {
         state.isLoadingLike = true
       })
@@ -221,6 +302,28 @@ const tweetsSlice = createSlice({
           state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
       })
       .addCase(likeTweet.rejected, (state, action) => {
+        state.isLoadingLike = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(dislikeTweet.pending, (state) => {
+        state.isLoadingLike = true
+      })
+      .addCase(dislikeTweet.fulfilled, (state, action) => {
+        console.log("action: " + action.payload.id)
+        console.log("state: " + state.tweets[0].id)
+        state.isLoadingLike = false
+        state.isSuccess = true
+        state.currentTweet !== null
+          ? state.currentTweet.id === action.payload.id &&
+            state.currentTweet.likes--
+          : state.tweets.find((tweet) => tweet.id === action.payload.id).likes--
+
+        state.currentTweet !== null &&
+          state.currentTweet.id !== action.payload.id &&
+          state.tweets.find((tweet) => tweet.id === action.payload.id).likes--
+      })
+      .addCase(dislikeTweet.rejected, (state, action) => {
         state.isLoadingLike = false
         state.isError = true
         state.message = action.payload

@@ -19,6 +19,7 @@ function AddTweet({ parentId }) {
         text: tweetText,
         likes: "0",
         retweets: "0",
+        liked: false,
       })
     )
 
