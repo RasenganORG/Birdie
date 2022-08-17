@@ -16,6 +16,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import {
   getUserById,
   followUser,
+  unfollowUser,
   getFollowers,
   getFollowedUsers,
 } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
@@ -43,7 +44,11 @@ export default function Profile() {
   } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.auth)
   useEffect(() => {
-    dispatch(getUserById(userId))
+    const data = {
+      userId: user.id,
+      followedUserId: userId,
+    }
+    dispatch(getUserById(data))
     dispatch(getTweetsByUserId(userId))
     dispatch(getFollowers(userId))
     dispatch(getFollowedUsers(userId))
@@ -54,7 +59,11 @@ export default function Profile() {
     console.log("user.id", user.id)
     if (user.id !== userId) {
       const data = { userId: user.id, followedUserId: userId }
-      dispatch(followUser(data))
+      if (userById.isFollowed === false) {
+        dispatch(followUser(data))
+      } else {
+        dispatch(unfollowUser(data))
+      }
     }
   }
 
@@ -190,7 +199,13 @@ export default function Profile() {
                 >
                   <Statistic title='Following' value={nrOfFollowedUsers} />
                 </Button>
-                <Button onClick={handleOnClickFollow}>Follow</Button>
+                <Button onClick={handleOnClickFollow}>
+                  {userById.isFollowed === false ? (
+                    <h1>Follow</h1>
+                  ) : (
+                    <h1>Following</h1>
+                  )}
+                </Button>
               </Row>
               {/* <Row style={{ width: "100%" }}> */}
               <Tabs defaultActiveKey='1' centered>
