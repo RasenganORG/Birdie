@@ -1,0 +1,23 @@
+.btn-white {
+  background-color: #fff;
+  color: #3a9ef0;
+}
+
+.btn-blue {
+  background-color: #40a9ff;
+  color: white;
+}
+
+.btn-white:hover {
+  background-color: #3a9ef0;
+}
+
+.btn-blue:hover {
+  background-color: #3a9ef0;
+  color: white;
+}
+
+.btn-white:focus {
+  background-color: inherit;
+  color: #3a9ef0;
+}

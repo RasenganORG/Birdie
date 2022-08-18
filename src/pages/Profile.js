@@ -12,7 +12,7 @@ import {
   Spin,
 } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import {
   getUserById,
   followUser,
@@ -22,6 +22,7 @@ import {
 } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
 import "antd/dist/antd.min.css"
 import "../index.css"
+import "./profile.css"
 import TweetsList from "../components/tweets/TweetsList"
 import { getTweetsByUserId } from "../components/tweets/tweetsSlice"
 import ShowUsers from "../components/users/ShowUsers"
@@ -91,10 +92,10 @@ export default function Profile() {
           // style={{ margin: "0 25%", padding: "0" }}
           onBack={() => window.history.back()}
           title={userById.name}
-          subTitle='1 tweet'
+          subTitle={tweets.length}
           extra={
             <Link to='edit'>
-              <Button key='1' type='primary'>
+              <Button type='primary' shape='round'>
                 Edit Profile
               </Button>
             </Link>
@@ -159,8 +160,8 @@ export default function Profile() {
             </Col>
             <Col span={16}>
               <Image
-                height={200}
-                width='60vw'
+                height='30vh'
+                width='59vw'
                 src='https://cdn.pixabay.com/photo/2016/10/20/18/35/earth-1756274_960_720.jpg'
               />
               <Row style={{ margin: "20px" }}>
@@ -179,7 +180,7 @@ export default function Profile() {
                     setUserType("followers")
                     setIsModalVisible(true)
                   }}
-                  style={{ marginTop: "0", paddingTop: "0" }}
+                  style={{ margin: "0", padding: "0" }}
                 >
                   <Statistic
                     title='Followers'
@@ -195,17 +196,32 @@ export default function Profile() {
                     setUserType("followedUsers")
                     setIsModalVisible(true)
                   }}
-                  style={{ marginTop: "0", paddingTop: "0" }}
+                  style={{ margin: "0", padding: "0" }}
                 >
-                  <Statistic title='Following' value={nrOfFollowedUsers} />
+                  <Statistic
+                    title='Following'
+                    value={nrOfFollowedUsers}
+                    style={{
+                      paddingRight: "1vw",
+                    }}
+                  />
                 </Button>
-                <Button onClick={handleOnClickFollow}>
-                  {userById.isFollowed === false ? (
-                    <h1>Follow</h1>
-                  ) : (
-                    <h1>Following</h1>
-                  )}
-                </Button>
+                {userById.id !== user.id && (
+                  <Button
+                    type='primary'
+                    shape='round'
+                    onClick={handleOnClickFollow}
+                    className={
+                      userById.isFollowed === false ? "btn-white" : "btn-blue"
+                    }
+                  >
+                    {userById.isFollowed === false ? (
+                      <>Follow</>
+                    ) : (
+                      <>Following</>
+                    )}
+                  </Button>
+                )}
               </Row>
               {/* <Row style={{ width: "100%" }}> */}
               <Tabs defaultActiveKey='1' centered>
@@ -215,7 +231,7 @@ export default function Profile() {
                   style={{
                     border: "2px solid #f0f2f5",
                     borderRadius: "12px",
-                    backgroundColor: "#f0f2f5",
+                    backgroundColor: "#f5f6f8",
                     paddingLeft: "2%",
                   }}
                 >

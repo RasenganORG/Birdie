@@ -164,6 +164,23 @@ export const dislikeTweet = createAsyncThunk(
   }
 )
 
+export const retweetTweet = createAsyncThunk(
+  "tweets/retweetTweet",
+  async (tweetId, thunkAPI) => {
+    try {
+      return await tweetsService.retweetTweet(tweetId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const getTweetsByUserId = createAsyncThunk(
   "tweets/getTweetsByUserId",
   async (userId, thunkAPI) => {

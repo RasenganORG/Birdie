@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Avatar, List, Skeleton, Spin } from "antd"
+import { Avatar, List, Skeleton } from "antd"
 import {
   CommentOutlined,
   HeartOutlined,
   RetweetOutlined,
-  LoadingOutlined,
-  HeartTwoTone,
+  HeartFilled,
 } from "@ant-design/icons"
 import { useNavigate, Link } from "react-router-dom"
-import TweetCommentModal from "./TweetCommentModal"
 import { likeTweet, dislikeTweet, addLike, deleteLike } from "./tweetsSlice"
-import { getUserById } from "../users/usersSlice"
 
-function Tweet({
-  tweet,
-  isModalVisible,
-  setIsModalVisible,
-  handleCancel,
-  setModalTweet,
-}) {
+function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
@@ -51,9 +42,8 @@ function Tweet({
       actions={[
         <a key='list-loadmore-edit'>
           {isLiked && (
-            <HeartTwoTone
-              style={{ fontSize: "20px" }}
-              twoToneColor='#eb2f96'
+            <HeartFilled
+              style={{ fontSize: "20px", color: "#e63946" }}
               onClick={() => handleDislikeTweet(tweet.id)}
             />
           )}
@@ -93,6 +83,7 @@ function Tweet({
         <List.Item.Meta
           style={{ textAlign: "start" }}
           avatar={<Avatar src={tweet.avatar} />}
+          description={tweet.name}
           title={
             <Link to={`/profile/${tweet.userId}`} style={{ marginBottom: "0" }}>
               {tweet.username}

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import AddTweet from "./AddTweet"
 import TweetsList from "./TweetsList"
 import { getTweetsForHome } from "./tweetsSlice"
+import { Divider } from "antd"
 
 function Tweets() {
   const dispatch = useDispatch()
@@ -17,11 +18,11 @@ function Tweets() {
   }, [])
 
   return (
-    <>
+    <div style={{ padding: "10px 20px" }}>
       <AddTweet parentId={null} />
-      <h1>List of tweets</h1>
+      <Divider style={{ marginTop: "0" }} />
       <TweetsList tweets={tweets} />
-    </>
+    </div>
   )
 }
 

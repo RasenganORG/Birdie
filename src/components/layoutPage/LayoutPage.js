@@ -15,7 +15,7 @@ function LayoutPage() {
   const [searchItem, setSearchItem] = useState("")
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { searchedUsers } = useSelector((state) => state.users)
+  const { searchedUsers, isLoading } = useSelector((state) => state.users)
   const [visible, setVisible] = useState(false)
 
   const menuItems = [
@@ -87,11 +87,6 @@ function LayoutPage() {
   const onSearch = (value) => {
     console.log({ value })
     setSearchItem(value)
-    // navigate(`/search?q=${value}`)
-    // dispatch(getUsersByUsername(value))
-    // console.log({ searchedUsers })
-    // console.log({ options })
-    // setOptions([usernames])
   }
 
   return (
@@ -124,6 +119,7 @@ function LayoutPage() {
                 className='navbar--search'
                 placeholder='Search Twitter'
                 enterButton='Search'
+                loading={isLoading}
                 size='large'
                 onSearch={onSearch}
               />
@@ -134,7 +130,7 @@ function LayoutPage() {
       </Header>
       <Content
         style={{
-          padding: "0 50px",
+          padding: "50px 70px",
         }}
       >
         <div className='site-layout-content'>

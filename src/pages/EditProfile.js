@@ -24,8 +24,13 @@ function EditProfile() {
   const params = useParams()
   const userId = params.userId
   const { userById } = useSelector((state) => state.users)
+  const { user } = useSelector((state) => state.auth)
   useEffect(() => {
-    dispatch(getUserById(userId))
+    const data = {
+      userId: user.id,
+      followedUserId: userId,
+    }
+    dispatch(getUserById(data))
   }, [])
 
   const handleFinish = (values) => {

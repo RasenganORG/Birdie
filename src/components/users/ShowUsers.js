@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import "antd/dist/antd.css"
-import { Button, Modal, Avatar, List } from "antd"
+import { Modal, Avatar, List } from "antd"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { getFollowedUsers, getFollowers } from "./usersSlice"

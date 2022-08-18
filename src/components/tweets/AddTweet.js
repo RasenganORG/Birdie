@@ -57,8 +57,6 @@ function AddTweet({ parentId }) {
               </Form.Item>
             </Col>
           </Row>
-
-          <hr />
         </Form>
       }
     />
