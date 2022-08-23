@@ -24,7 +24,10 @@ import "antd/dist/antd.min.css"
 import "../index.css"
 import "./profile.css"
 import TweetsList from "../components/tweets/TweetsList"
-import { getTweetsByUserId } from "../components/tweets/tweetsSlice"
+import {
+  getRetweetsByUserId,
+  getTweetsByUserId,
+} from "../components/tweets/tweetsSlice"
 import ShowUsers from "../components/users/ShowUsers"
 
 const { TabPane } = Tabs
@@ -35,7 +38,7 @@ export default function Profile() {
   const userId = params.userId
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [userType, setUserType] = useState("")
-  const { tweets } = useSelector((state) => state.tweets)
+  const { tweets, retweets } = useSelector((state) => state.tweets)
   const {
     userById,
     followers,
@@ -53,6 +56,7 @@ export default function Profile() {
     dispatch(getTweetsByUserId(userId))
     dispatch(getFollowers(userId))
     dispatch(getFollowedUsers(userId))
+    dispatch(getRetweetsByUserId(userId))
   }, [userId])
 
   const handleOnClickFollow = () => {
@@ -237,8 +241,17 @@ export default function Profile() {
                 >
                   {tweets && <TweetsList tweets={tweets} />}
                 </TabPane>
-                <TabPane tab='Retweets' key='2'>
-                  Content of Tab Pane 2
+                <TabPane
+                  tab='Retweets'
+                  key='2'
+                  style={{
+                    border: "2px solid #f0f2f5",
+                    borderRadius: "12px",
+                    backgroundColor: "#f5f6f8",
+                    paddingLeft: "2%",
+                  }}
+                >
+                  {retweets && <TweetsList tweets={retweets} />}
                 </TabPane>
               </Tabs>
               {/* </Row> */}

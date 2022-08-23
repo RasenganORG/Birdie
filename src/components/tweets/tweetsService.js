@@ -8,6 +8,8 @@ const API_TWEETS_BY_USER_ID_URL = "http://localhost:8080/api/tweetsByUserId/"
 const API_TWEETS_HOME_URL = "http://localhost:8080/api/tweetsForHome/"
 const API_LIKE_URL = "http://localhost:8080/api/likes/"
 const API_DELETE_LIKE_URL = "http://localhost:8080/api/deleteLike/"
+const API_RETWEETS_URL = "http://localhost:8080/api/retweets/"
+const API_GET_RETWEETS_URL = "http://localhost:8080/api/getRetweetsByUserId/"
 
 const getTweets = async () => {
   const response = await axios.get(API_TWEETS_URL)
@@ -49,9 +51,34 @@ const addTweet = async (tweetData) => {
     },
   })
 
-  if (response.data.id) {
-    localStorage.setItem("addedTweetId", JSON.stringify(response.data.id))
-  }
+  console.log("response.data", response.data)
+  return response.data
+}
+
+const addRetweet = async (data) => {
+  const response = await axios.post(API_RETWEETS_URL, data, {
+    headers: {
+      // Overwrite Axios's automatically set Content-Type
+      "Content-Type": "application/json",
+    },
+  })
+
+  console.log("response.data", response.data)
+  return response.data
+}
+
+const getRetweetsForHome = async (userId) => {
+  console.log({ userId })
+  const response = await axios.get(`${API_RETWEETS_URL}${userId}`)
+
+  console.log("response.data", response.data)
+  return response.data
+}
+
+const getRetweetsByUserId = async (userId) => {
+  console.log({ userId })
+  const response = await axios.get(`${API_GET_RETWEETS_URL}${userId}`)
+
   console.log("response.data", response.data)
   return response.data
 }
@@ -109,6 +136,9 @@ const tweetsService = {
   dislikeTweet,
   getTweetsByUserId,
   getTweetsForHome,
+  addRetweet,
+  getRetweetsForHome,
+  getRetweetsByUserId,
 }
 
 export default tweetsService

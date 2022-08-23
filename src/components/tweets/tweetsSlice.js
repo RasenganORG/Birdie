@@ -3,6 +3,7 @@ import tweetsService from "./tweetsService"
 
 const initialState = {
   tweets: [],
+  retweets: [],
   currentTweet: null,
   isError: false,
   isSuccess: false,
@@ -164,11 +165,11 @@ export const dislikeTweet = createAsyncThunk(
   }
 )
 
-export const retweetTweet = createAsyncThunk(
-  "tweets/retweetTweet",
-  async (tweetId, thunkAPI) => {
+export const addRetweet = createAsyncThunk(
+  "tweets/addRetweet",
+  async (data, thunkAPI) => {
     try {
-      return await tweetsService.retweetTweet(tweetId)
+      return await tweetsService.addRetweet(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -186,6 +187,40 @@ export const getTweetsByUserId = createAsyncThunk(
   async (userId, thunkAPI) => {
     try {
       return await tweetsService.getTweetsByUserId(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getRetweetsForHome = createAsyncThunk(
+  "tweets/getRetweetsForHome",
+  async (userId, thunkAPI) => {
+    try {
+      return await tweetsService.getRetweetsForHome(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getRetweetsByUserId = createAsyncThunk(
+  "tweets/getRetweetsByUserId",
+  async (userId, thunkAPI) => {
+    try {
+      return await tweetsService.getRetweetsByUserId(userId)
     } catch (error) {
       const message =
         (error.response &&
@@ -376,6 +411,50 @@ const tweetsSlice = createSlice({
         state.isError = true
         state.message = action.payload
         state.tweets = null
+      })
+      .addCase(addRetweet.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+      })
+      .addCase(addRetweet.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getRetweetsForHome.pending, (state) => {
+        state.isLoading = true
+        state.retweets = []
+      })
+      .addCase(getRetweetsForHome.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.retweets = action.payload
+        state.currentTweet = null
+      })
+      .addCase(getRetweetsForHome.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.retweets = null
+      })
+      .addCase(getRetweetsByUserId.pending, (state) => {
+        state.isLoading = true
+        state.retweets = []
+      })
+      .addCase(getRetweetsByUserId.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.retweets = action.payload
+        state.currentTweet = null
+      })
+      .addCase(getRetweetsByUserId.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.retweets = null
       })
   },
 })

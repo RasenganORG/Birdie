@@ -8,13 +8,21 @@ import {
   HeartFilled,
 } from "@ant-design/icons"
 import { useNavigate, Link } from "react-router-dom"
-import { likeTweet, dislikeTweet, addLike, deleteLike } from "./tweetsSlice"
+import {
+  likeTweet,
+  dislikeTweet,
+  addLike,
+  deleteLike,
+  addRetweet,
+} from "./tweetsSlice"
 
 function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
+
   const handleGoToTweet = (tweet) => navigate(`/tweets/${tweet.id}`)
+
   const handleLikeTweet = (tweetId) => {
     const data = {
       userId: user.id,
@@ -24,6 +32,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
     dispatch(likeTweet(tweet.id))
     dispatch(addLike(data))
   }
+
   const handleDislikeTweet = (tweetId) => {
     const data = {
       userId: user.id,
@@ -33,7 +42,20 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
     dispatch(dislikeTweet(tweetId))
     dispatch(deleteLike(data))
   }
-  // const handleRetweetTweet = (tweetId) => dispatch(retweet(tweetId))
+
+  const handleRetweetTweet = (tweet) => {
+    const data = {
+      userId: user.id,
+      // likes: tweet.likes,
+      // parentId: tweet.parentId,
+      // retweets: tweet.retweets,
+      // text: tweet.text,
+      // userId: tweet.userId,
+      retweetedTweetId: tweet.id,
+    }
+    dispatch(addRetweet(data))
+  }
+
   const [isLiked, setIsLiked] = useState(tweet.isLiked)
   console.log("tweet.id : " + tweet.id + isLiked)
 
@@ -41,10 +63,16 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
     <List.Item
       actions={[
         <a key='list-loadmore-edit'>
-          {isLiked && (
+          {isLiked && tweet.isLiked !== undefined && (
             <HeartFilled
               style={{ fontSize: "20px", color: "#e63946" }}
               onClick={() => handleDislikeTweet(tweet.id)}
+            />
+          )}
+          {isLiked && tweet.isLiked === undefined && (
+            <HeartOutlined
+              style={{ fontSize: "20px" }}
+              onClick={() => handleLikeTweet(tweet.id)}
             />
           )}
           {!isLiked && (
@@ -59,7 +87,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
           <RetweetOutlined
             style={{ fontSize: "20px" }}
             rotate='90'
-            // onClick={() => handleRetweetTweet(tweet.id)}
+            onClick={() => handleRetweetTweet(tweet)}
           />{" "}
           {tweet.retweets}
         </a>,
@@ -79,6 +107,9 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
         </a>,
       ]}
     >
+      {tweet.isRetweet === true && (
+        <h1>this is retweeted by {tweet.retweetedUsername}</h1>
+      )}
       <Skeleton avatar title={false} loading={tweet.loading} active>
         <List.Item.Meta
           style={{ textAlign: "start" }}

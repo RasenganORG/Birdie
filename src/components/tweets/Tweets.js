@@ -2,12 +2,12 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import AddTweet from "./AddTweet"
 import TweetsList from "./TweetsList"
-import { getTweetsForHome } from "./tweetsSlice"
+import { getTweetsForHome, getRetweetsForHome } from "./tweetsSlice"
 import { Divider } from "antd"
 
 function Tweets() {
   const dispatch = useDispatch()
-  const { tweets } = useSelector((state) => state.tweets)
+  const { tweets, retweets } = useSelector((state) => state.tweets)
   const { user } = useSelector((state) => state.auth)
 
   console.log({ user })
@@ -15,6 +15,7 @@ function Tweets() {
   useEffect(() => {
     console.log("in uE")
     dispatch(getTweetsForHome(user.id))
+    dispatch(getRetweetsForHome(user.id))
   }, [])
 
   return (
@@ -22,6 +23,7 @@ function Tweets() {
       <AddTweet parentId={null} />
       <Divider style={{ marginTop: "0" }} />
       <TweetsList tweets={tweets} />
+      <TweetsList tweets={retweets} />
     </div>
   )
 }
