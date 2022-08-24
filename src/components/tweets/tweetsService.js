@@ -17,8 +17,10 @@ const getTweets = async () => {
   return response.data
 }
 
-const getTweetById = async (tweetId) => {
-  const response = await axios.get(`${API_TWEET_URL}${tweetId}`)
+const getTweetById = async (data) => {
+  const response = await axios.get(
+    `${API_TWEET_URL}${data.tweetId}/${data.userId}`
+  )
 
   return response.data
 }
@@ -51,7 +53,7 @@ const addTweet = async (tweetData) => {
     },
   })
 
-  console.log("response.data", response.data)
+  console.log("ADD TWEET response.data", response.data)
   return response.data
 }
 
@@ -64,6 +66,18 @@ const addRetweet = async (data) => {
   })
 
   console.log("response.data", response.data)
+  return response.data
+}
+
+const deleteRetweet = async (data) => {
+  const response = await axios.delete(API_RETWEETS_URL, {
+    headers: {
+      // Overwrite Axios's automatically set Content-Type
+      "Content-Type": "application/json",
+    },
+    data: { data },
+  })
+
   return response.data
 }
 
@@ -139,6 +153,7 @@ const tweetsService = {
   addRetweet,
   getRetweetsForHome,
   getRetweetsByUserId,
+  deleteRetweet,
 }
 
 export default tweetsService

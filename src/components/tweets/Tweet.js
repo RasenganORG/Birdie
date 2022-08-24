@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Avatar, List, Skeleton } from "antd"
+import { Avatar, List, Skeleton, Typography } from "antd"
 import {
   CommentOutlined,
   HeartOutlined,
@@ -14,9 +14,23 @@ import {
   addLike,
   deleteLike,
   addRetweet,
+  deleteRetweet,
 } from "./tweetsSlice"
 
+const { Text } = Typography
+
 function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
+  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : " + isLiked)
+  console.log(
+    "tweet.id : " +
+      tweet.id +
+      tweet.isRetweetedByHomeUser +
+      "isRetweeted : " +
+      isRetweeted
+  )
+  const [isLiked, setIsLiked] = useState(tweet.isLiked)
+  const [isRetweeted, setIsRetweeted] = useState(tweet.isRetweetedByHomeUser)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
@@ -43,21 +57,25 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
     dispatch(deleteLike(data))
   }
 
-  const handleRetweetTweet = (tweet) => {
+  const handleRetweetTweet = (tweetId) => {
+    setIsRetweeted(true)
     const data = {
       userId: user.id,
-      // likes: tweet.likes,
-      // parentId: tweet.parentId,
-      // retweets: tweet.retweets,
-      // text: tweet.text,
-      // userId: tweet.userId,
       retweetedTweetId: tweet.id,
     }
     dispatch(addRetweet(data))
   }
 
-  const [isLiked, setIsLiked] = useState(tweet.isLiked)
-  console.log("tweet.id : " + tweet.id + isLiked)
+  const handleDeleteRetweetTweet = (tweetId) => {
+    const data = {
+      userId: user.id,
+      retweetedTweetId: tweet.id,
+    }
+    setIsRetweeted(false)
+    dispatch(deleteRetweet(data))
+  }
+
+  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : " + isLiked)
 
   return (
     <List.Item
@@ -84,11 +102,18 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
           {tweet.likes}
         </a>,
         <a key='list-loadmore-edit'>
-          <RetweetOutlined
-            style={{ fontSize: "20px" }}
-            rotate='90'
-            onClick={() => handleRetweetTweet(tweet)}
-          />{" "}
+          {isRetweeted && (
+            <RetweetOutlined
+              style={{ fontSize: "20px", color: "green" }}
+              onClick={() => handleDeleteRetweetTweet(tweet.id)}
+            />
+          )}
+          {!isRetweeted && (
+            <RetweetOutlined
+              style={{ fontSize: "20px" }}
+              onClick={() => handleRetweetTweet(tweet.id)}
+            />
+          )}{" "}
           {tweet.retweets}
         </a>,
         <a
@@ -108,7 +133,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
       ]}
     >
       {tweet.isRetweet === true && (
-        <h1>this is retweeted by {tweet.retweetedUsername}</h1>
+        <Text type='secondary'>retweeted by {tweet.retweetedUsername}</Text>
       )}
       <Skeleton avatar title={false} loading={tweet.loading} active>
         <List.Item.Meta

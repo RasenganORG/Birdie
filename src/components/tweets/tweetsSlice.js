@@ -65,9 +65,9 @@ export const addTweet = createAsyncThunk(
 
 export const getTweetById = createAsyncThunk(
   "tweets/getTweetById",
-  async (tweetId, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await tweetsService.getTweetById(tweetId)
+      return await tweetsService.getTweetById(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -170,6 +170,23 @@ export const addRetweet = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       return await tweetsService.addRetweet(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const deleteRetweet = createAsyncThunk(
+  "tweets/deleteRetweet",
+  async (data, thunkAPI) => {
+    try {
+      return await tweetsService.deleteRetweet(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -311,7 +328,7 @@ const tweetsSlice = createSlice({
       })
       .addCase(addLike.fulfilled, (state, action) => {
         console.log("action: " + action.payload.id)
-        console.log("state: " + state.tweets[0].id)
+        // console.log("state: " + state.tweets[0].id)
         console.log("action.payload: " + action.payload.likes)
         state.isLoadingLike = false
         state.isSuccess = true
@@ -326,7 +343,7 @@ const tweetsSlice = createSlice({
       })
       .addCase(deleteLike.fulfilled, (state, action) => {
         console.log("action: " + action.payload.id)
-        console.log("state: " + state.tweets[0].id)
+        // console.log("state: " + state.tweets[0].id)
         console.log("action.payload: " + action.payload.likes)
         state.isLoadingLike = false
         state.isSuccess = true
@@ -336,18 +353,48 @@ const tweetsSlice = createSlice({
         state.isError = true
         state.message = action.payload
       })
+      .addCase(deleteRetweet.pending, (state) => {
+        state.isLoadingRetweet = true
+      })
+      .addCase(deleteRetweet.fulfilled, (state, action) => {
+        console.log("action: " + action.payload.id)
+        // console.log("state: " + state.tweets[0].id)
+        console.log("action.payload: " + action.payload.likes)
+        state.isLoadingRetweet = false
+        state.isSuccess = true
+      })
+      .addCase(deleteRetweet.rejected, (state, action) => {
+        state.isLoadingRetweet = false
+        state.isError = true
+        state.message = action.payload
+      })
       .addCase(likeTweet.pending, (state) => {
         state.isLoadingLike = true
       })
       .addCase(likeTweet.fulfilled, (state, action) => {
         console.log("action: " + action.payload.id)
-        console.log("state: " + state.tweets[0].id)
+        // console.log("state: " + state.tweets[0].id)
         state.isLoadingLike = false
         state.isSuccess = true
-        state.currentTweet !== null
-          ? state.currentTweet.id === action.payload.id &&
-            state.currentTweet.likes++
-          : state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
+        if (
+          state.tweets.find((tweet) => tweet.id === action.payload.id) !==
+          undefined
+        ) {
+          console.log("check this")
+          state.currentTweet !== null
+            ? state.currentTweet.id === action.payload.id &&
+              state.currentTweet.likes++
+            : state.tweets.find((tweet) => tweet.id === action.payload.id)
+                .likes++
+        } else {
+          if (
+            state.retweets.find((tweet) => tweet.id === action.payload.id) !==
+            undefined
+          )
+            state.retweets.find((tweet) => tweet.id === action.payload.id)
+              .likes++
+          else state.currentTweet.likes++
+        }
 
         state.currentTweet !== null &&
           state.currentTweet.id !== action.payload.id &&
@@ -363,14 +410,27 @@ const tweetsSlice = createSlice({
       })
       .addCase(dislikeTweet.fulfilled, (state, action) => {
         console.log("action: " + action.payload.id)
-        console.log("state: " + state.tweets[0].id)
+        // console.log("state: " + state.tweets[0].id)
         state.isLoadingLike = false
         state.isSuccess = true
-        state.currentTweet !== null
-          ? state.currentTweet.id === action.payload.id &&
-            state.currentTweet.likes--
-          : state.tweets.find((tweet) => tweet.id === action.payload.id).likes--
-
+        if (
+          state.tweets.find((tweet) => tweet.id === action.payload.id) !==
+          undefined
+        )
+          state.currentTweet !== null
+            ? state.currentTweet.id === action.payload.id &&
+              state.currentTweet.likes--
+            : state.tweets.find((tweet) => tweet.id === action.payload.id)
+                .likes--
+        else {
+          if (
+            state.retweets.find((tweet) => tweet.id === action.payload.id) !==
+            undefined
+          )
+            state.retweets.find((tweet) => tweet.id === action.payload.id)
+              .likes--
+          else state.currentTweet.likes--
+        }
         state.currentTweet !== null &&
           state.currentTweet.id !== action.payload.id &&
           state.tweets.find((tweet) => tweet.id === action.payload.id).likes--

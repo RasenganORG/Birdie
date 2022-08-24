@@ -12,9 +12,14 @@ function TweetItem() {
   const dispatch = useDispatch()
 
   const { currentTweet, tweets } = useSelector((state) => state.tweets)
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    dispatch(getTweetById(tweetId))
+    const data = {
+      userId: user.id,
+      tweetId,
+    }
+    dispatch(getTweetById(data))
     dispatch(getReplies(tweetId))
   }, [tweetId])
 
