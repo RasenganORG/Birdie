@@ -165,6 +165,40 @@ export const dislikeTweet = createAsyncThunk(
   }
 )
 
+export const retweetTweet = createAsyncThunk(
+  "tweets/retweetTweet",
+  async (tweetId, thunkAPI) => {
+    try {
+      return await tweetsService.retweetTweet(tweetId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const unretweetTweet = createAsyncThunk(
+  "tweets/unretweetTweet",
+  async (tweetId, thunkAPI) => {
+    try {
+      return await tweetsService.unretweetTweet(tweetId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const addRetweet = createAsyncThunk(
   "tweets/addRetweet",
   async (data, thunkAPI) => {
@@ -261,6 +295,18 @@ const tweetsSlice = createSlice({
       state.message = ""
       state.currentTweet = null
     },
+    setIsLiked(state, action) {
+      state.tweets[action.payload.index].isLiked = action.payload.value
+    },
+    setIsRetweeted(state, action) {
+      console.log("type", action.payload.type)
+      if (action.payload.type === "tweet")
+        state.tweets[action.payload.index].isRetweetedByHomeUser =
+          action.payload.value
+      else
+        state.retweets[action.payload.index].isRetweetedByHomeUser =
+          action.payload.value
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -353,6 +399,58 @@ const tweetsSlice = createSlice({
         state.isError = true
         state.message = action.payload
       })
+      .addCase(retweetTweet.pending, (state) => {
+        state.isLoadingLike = true
+      })
+      .addCase(retweetTweet.fulfilled, (state, action) => {
+        console.log("action: " + action.payload.id)
+        // console.log("state: " + state.tweets[0].id)
+        state.isLoadingLike = false
+        state.isSuccess = true
+      })
+      .addCase(retweetTweet.rejected, (state, action) => {
+        state.isLoadingLike = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(unretweetTweet.pending, (state) => {
+        state.isLoadingLike = true
+      })
+      .addCase(unretweetTweet.fulfilled, (state, action) => {
+        console.log("action: " + action.payload.id)
+        // console.log("state: " + state.tweets[0].id)
+        state.isLoadingLike = false
+        state.isSuccess = true
+      })
+      .addCase(unretweetTweet.rejected, (state, action) => {
+        state.isLoadingLike = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(addRetweet.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(addRetweet.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        if (
+          state.tweets.find(
+            (tweet) => tweet.id === action.payload.retweetedTweetId
+          ) !== undefined
+        )
+          state.tweets.find(
+            (tweet) => tweet.id === action.payload.retweetedTweetId
+          ).retweets++
+        else
+          state.retweets.find(
+            (retweet) => retweet.id === action.payload.retweetedTweetId
+          ).retweets++
+      })
+      .addCase(addRetweet.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
       .addCase(deleteRetweet.pending, (state) => {
         state.isLoadingRetweet = true
       })
@@ -362,6 +460,18 @@ const tweetsSlice = createSlice({
         console.log("action.payload: " + action.payload.likes)
         state.isLoadingRetweet = false
         state.isSuccess = true
+        if (
+          state.tweets.find(
+            (tweet) => tweet.id === action.payload.retweetedTweetId
+          ) !== undefined
+        )
+          state.tweets.find(
+            (tweet) => tweet.id === action.payload.retweetedTweetId
+          ).retweets--
+        else
+          state.retweets.find(
+            (retweet) => retweet.id === action.payload.retweetedTweetId
+          ).retweets--
       })
       .addCase(deleteRetweet.rejected, (state, action) => {
         state.isLoadingRetweet = false
@@ -472,18 +582,6 @@ const tweetsSlice = createSlice({
         state.message = action.payload
         state.tweets = null
       })
-      .addCase(addRetweet.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(addRetweet.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.isSuccess = true
-      })
-      .addCase(addRetweet.rejected, (state, action) => {
-        state.isLoading = false
-        state.isError = true
-        state.message = action.payload
-      })
       .addCase(getRetweetsForHome.pending, (state) => {
         state.isLoading = true
         state.retweets = []
@@ -519,4 +617,5 @@ const tweetsSlice = createSlice({
   },
 })
 
+export const { setIsLiked, setIsRetweeted } = tweetsSlice.actions
 export default tweetsSlice.reducer

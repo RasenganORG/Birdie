@@ -109,9 +109,6 @@ export default function Profile() {
             <Col span={5} style={{ marginRight: "30px" }}>
               <div
                 style={{
-                  backgroundColor: "#f0f2f5",
-                  border: "2px solid #f0f2f5",
-                  borderRadius: "12px",
                   padding: "15%",
                   height: "100%",
                 }}
@@ -233,9 +230,6 @@ export default function Profile() {
                   tab='Tweets'
                   key='1'
                   style={{
-                    border: "2px solid #f0f2f5",
-                    borderRadius: "12px",
-                    backgroundColor: "#f5f6f8",
                     paddingLeft: "2%",
                   }}
                 >
@@ -245,9 +239,6 @@ export default function Profile() {
                   tab='Retweets'
                   key='2'
                   style={{
-                    border: "2px solid #f0f2f5",
-                    borderRadius: "12px",
-                    backgroundColor: "#f5f6f8",
                     paddingLeft: "2%",
                   }}
                 >

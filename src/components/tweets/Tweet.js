@@ -15,21 +15,19 @@ import {
   deleteLike,
   addRetweet,
   deleteRetweet,
+  setIsLiked,
+  setIsRetweeted,
+  unretweetTweet,
+  retweetTweet,
 } from "./tweetsSlice"
 
 const { Text } = Typography
 
-function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
-  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : " + isLiked)
-  console.log(
-    "tweet.id : " +
-      tweet.id +
-      tweet.isRetweetedByHomeUser +
-      "isRetweeted : " +
-      isRetweeted
-  )
-  const [isLiked, setIsLiked] = useState(tweet.isLiked)
-  const [isRetweeted, setIsRetweeted] = useState(tweet.isRetweetedByHomeUser)
+function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
+  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : ")
+
+  // const [isLiked, setIsLiked] = useState(tweet.isLiked)
+  // const [isRetweeted, setIsRetweeted] = useState(tweet.isRetweetedByHomeUser)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -42,7 +40,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
       userId: user.id,
       likedTweetId: tweet.id,
     }
-    setIsLiked(true)
+    dispatch(setIsLiked({ index: index, value: true }))
     dispatch(likeTweet(tweet.id))
     dispatch(addLike(data))
   }
@@ -52,48 +50,56 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
       userId: user.id,
       likedTweetId: tweet.id,
     }
-    setIsLiked(false)
+    dispatch(setIsLiked({ index: index, value: false }))
     dispatch(dislikeTweet(tweetId))
     dispatch(deleteLike(data))
   }
 
   const handleRetweetTweet = (tweetId) => {
-    setIsRetweeted(true)
+    dispatch(
+      setIsRetweeted({
+        index: index,
+        value: true,
+        type: tweet.isRetweet === true ? "retweet" : "tweet",
+      })
+    )
     const data = {
       userId: user.id,
       retweetedTweetId: tweet.id,
     }
+    dispatch(retweetTweet(tweet.id))
     dispatch(addRetweet(data))
   }
 
   const handleDeleteRetweetTweet = (tweetId) => {
+    dispatch(
+      setIsRetweeted({
+        index: index,
+        value: false,
+        type: tweet.isRetweet === true ? "retweet" : "tweet",
+      })
+    )
     const data = {
       userId: user.id,
       retweetedTweetId: tweet.id,
     }
-    setIsRetweeted(false)
+    dispatch(unretweetTweet(tweet.id))
     dispatch(deleteRetweet(data))
   }
 
-  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : " + isLiked)
+  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : ")
 
   return (
     <List.Item
       actions={[
         <a key='list-loadmore-edit'>
-          {isLiked && tweet.isLiked !== undefined && (
+          {tweet.isLiked && (
             <HeartFilled
               style={{ fontSize: "20px", color: "#e63946" }}
               onClick={() => handleDislikeTweet(tweet.id)}
             />
           )}
-          {isLiked && tweet.isLiked === undefined && (
-            <HeartOutlined
-              style={{ fontSize: "20px" }}
-              onClick={() => handleLikeTweet(tweet.id)}
-            />
-          )}
-          {!isLiked && (
+          {!tweet.isLiked && (
             <HeartOutlined
               style={{ fontSize: "20px" }}
               onClick={() => handleLikeTweet(tweet.id)}
@@ -102,13 +108,13 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet }) {
           {tweet.likes}
         </a>,
         <a key='list-loadmore-edit'>
-          {isRetweeted && (
+          {tweet.isRetweetedByHomeUser && (
             <RetweetOutlined
               style={{ fontSize: "20px", color: "green" }}
               onClick={() => handleDeleteRetweetTweet(tweet.id)}
             />
           )}
-          {!isRetweeted && (
+          {!tweet.isRetweetedByHomeUser && (
             <RetweetOutlined
               style={{ fontSize: "20px" }}
               onClick={() => handleRetweetTweet(tweet.id)}

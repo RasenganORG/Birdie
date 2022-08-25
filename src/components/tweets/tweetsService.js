@@ -10,6 +10,8 @@ const API_LIKE_URL = "http://localhost:8080/api/likes/"
 const API_DELETE_LIKE_URL = "http://localhost:8080/api/deleteLike/"
 const API_RETWEETS_URL = "http://localhost:8080/api/retweets/"
 const API_GET_RETWEETS_URL = "http://localhost:8080/api/getRetweetsByUserId/"
+const API_RETWEET_TWEET_URL = "http://localhost:8080/api/retweetTweet/"
+const API_UNRETWEET_TWEET_URL = "http://localhost:8080/api/unretweetTweet/"
 
 const getTweets = async () => {
   const response = await axios.get(API_TWEETS_URL)
@@ -93,7 +95,7 @@ const getRetweetsByUserId = async (userId) => {
   console.log({ userId })
   const response = await axios.get(`${API_GET_RETWEETS_URL}${userId}`)
 
-  console.log("response.data", response.data)
+  console.log("retweets", response.data)
   return response.data
 }
 
@@ -138,6 +140,18 @@ const dislikeTweet = async (tweetId) => {
   return response.data
 }
 
+const retweetTweet = async (tweetId) => {
+  const response = await axios.put(`${API_RETWEET_TWEET_URL}${tweetId}`)
+
+  return response.data
+}
+
+const unretweetTweet = async (tweetId) => {
+  const response = await axios.put(`${API_UNRETWEET_TWEET_URL}${tweetId}`)
+
+  return response.data
+}
+
 const tweetsService = {
   getTweets,
   getTweetById,
@@ -154,6 +168,8 @@ const tweetsService = {
   getRetweetsForHome,
   getRetweetsByUserId,
   deleteRetweet,
+  retweetTweet,
+  unretweetTweet,
 }
 
 export default tweetsService

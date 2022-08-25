@@ -25,9 +25,10 @@ function TweetsList({ tweets }) {
         itemLayout='vertical'
         dataSource={tweets}
         style={{ textAlign: "start" }}
-        renderItem={(tweet) => (
+        renderItem={(tweet, index) => (
           <Tweet
             tweet={tweet}
+            index={index}
             setIsModalVisible={setIsModalVisible}
             setModalTweet={setModalTweet}
           />
