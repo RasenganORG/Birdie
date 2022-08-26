@@ -96,7 +96,7 @@ export default function Profile() {
           // style={{ margin: "0 25%", padding: "0" }}
           onBack={() => window.history.back()}
           title={userById.name}
-          subTitle={tweets.length}
+          subTitle={`${tweets.length} Tweets`}
           extra={
             <Link to='edit'>
               <Button type='primary' shape='round'>
@@ -225,10 +225,18 @@ export default function Profile() {
                 )}
               </Row>
               {/* <Row style={{ width: "100%" }}> */}
-              <Tabs defaultActiveKey='1' centered>
+              <Tabs
+                defaultActiveKey='tweets'
+                centered
+                onChange={(activeKey) => {
+                  activeKey === "tweets"
+                    ? dispatch(getTweetsByUserId(userId))
+                    : dispatch(getRetweetsByUserId(userId))
+                }}
+              >
                 <TabPane
                   tab='Tweets'
-                  key='1'
+                  key='tweets'
                   style={{
                     paddingLeft: "2%",
                   }}
@@ -237,7 +245,7 @@ export default function Profile() {
                 </TabPane>
                 <TabPane
                   tab='Retweets'
-                  key='2'
+                  key='retweets'
                   style={{
                     paddingLeft: "2%",
                   }}
