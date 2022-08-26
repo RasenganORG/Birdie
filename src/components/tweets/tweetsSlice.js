@@ -296,7 +296,10 @@ const tweetsSlice = createSlice({
       state.currentTweet = null
     },
     setIsLiked(state, action) {
-      state.tweets[action.payload.index].isLiked = action.payload.value
+      console.log("setIsLiked ", action.payload.type)
+      if (action.payload.type === "tweet")
+        state.tweets[action.payload.index].isLiked = action.payload.value
+      else state.retweets[action.payload.index].isLiked = action.payload.value
     },
     setIsRetweeted(state, action) {
       console.log("type", action.payload.type)

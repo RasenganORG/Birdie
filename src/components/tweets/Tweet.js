@@ -40,7 +40,13 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
       userId: user.id,
       likedTweetId: tweet.id,
     }
-    dispatch(setIsLiked({ index: index, value: true }))
+    dispatch(
+      setIsLiked({
+        index: index,
+        value: true,
+        type: tweet.isRetweet === true ? "retweet" : "tweet",
+      })
+    )
     dispatch(likeTweet(tweet.id))
     dispatch(addLike(data))
   }
@@ -50,7 +56,13 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
       userId: user.id,
       likedTweetId: tweet.id,
     }
-    dispatch(setIsLiked({ index: index, value: false }))
+    dispatch(
+      setIsLiked({
+        index: index,
+        value: false,
+        type: tweet.isRetweet === true ? "retweet" : "tweet",
+      })
+    )
     dispatch(dislikeTweet(tweetId))
     dispatch(deleteLike(data))
   }
