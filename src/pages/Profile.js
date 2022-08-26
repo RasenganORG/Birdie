@@ -19,6 +19,8 @@ import {
   unfollowUser,
   getFollowers,
   getFollowedUsers,
+  followUserFromTheirProfile,
+  unfollowUserFromTheirProfile,
 } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
 import "antd/dist/antd.min.css"
 import "../index.css"
@@ -56,7 +58,7 @@ export default function Profile() {
     dispatch(getTweetsByUserId(userId))
     dispatch(getFollowers(userId))
     dispatch(getFollowedUsers(userId))
-    dispatch(getRetweetsByUserId(userId))
+    // dispatch(getRetweetsByUserId(userId))
   }, [userId])
 
   const handleOnClickFollow = () => {
@@ -66,8 +68,10 @@ export default function Profile() {
       const data = { userId: user.id, followedUserId: userId }
       if (userById.isFollowed === false) {
         dispatch(followUser(data))
+        dispatch(followUserFromTheirProfile())
       } else {
         dispatch(unfollowUser(data))
+        dispatch(unfollowUserFromTheirProfile())
       }
     }
   }

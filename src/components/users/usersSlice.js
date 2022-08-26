@@ -174,6 +174,27 @@ const usersSlice = createSlice({
       state.isError = false
       state.message = ""
     },
+    followUserFromTheirProfile(state) {
+      state.userById.isFollowed = !state.userById.isFollowed
+      state.nrOfFollowers++
+    },
+    unfollowUserFromTheirProfile(state) {
+      state.userById.isFollowed = !state.userById.isFollowed
+      state.nrOfFollowers--
+    },
+    followUserFromModal(state, action) {
+      state.followedUsers[action.payload].isFollowed = !state.followedUsers[
+        action.payload
+      ].isFollowed
+      state.nrOfFollowedUsers++
+    },
+    unfollowUserFromModal(state, action) {
+      console.log("INDEX", action.payload)
+      state.followedUsers[action.payload].isFollowed = !state.followedUsers[
+        action.payload
+      ].isFollowed
+      state.nrOfFollowedUsers--
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -251,8 +272,8 @@ const usersSlice = createSlice({
       .addCase(followUser.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.userById.isFollowed = !state.userById.isFollowed
-        state.nrOfFollowers++
+        // state.userById.isFollowed = !state.userById.isFollowed
+        // state.nrOfFollowers++
       })
       .addCase(followUser.rejected, (state, action) => {
         state.isLoading = false
@@ -265,8 +286,8 @@ const usersSlice = createSlice({
       .addCase(unfollowUser.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.userById.isFollowed = !state.userById.isFollowed
-        state.nrOfFollowers--
+        // state.userById.isFollowed = !state.userById.isFollowed
+        // state.nrOfFollowers--
       })
       .addCase(unfollowUser.rejected, (state, action) => {
         state.isLoading = false
@@ -304,4 +325,10 @@ const usersSlice = createSlice({
   },
 })
 
+export const {
+  followUserFromTheirProfile,
+  unfollowUserFromTheirProfile,
+  followUserFromModal,
+  unfollowUserFromModal,
+} = usersSlice.actions
 export default usersSlice.reducer

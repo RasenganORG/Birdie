@@ -514,7 +514,7 @@ const tweetsSlice = createSlice({
         ) {
           console.log("check this in retweets")
           state.retweets.find((tweet) => tweet.id === action.payload.id).likes++
-        } else state.currentTweet.likes++
+        }
 
         state.currentTweet !== null &&
           state.currentTweet.id !== action.payload.id &&
@@ -548,7 +548,6 @@ const tweetsSlice = createSlice({
           undefined
         )
           state.retweets.find((tweet) => tweet.id === action.payload.id).likes--
-        else state.currentTweet.likes--
 
         state.currentTweet !== null &&
           state.currentTweet.id !== action.payload.id &&
