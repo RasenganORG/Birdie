@@ -53,23 +53,11 @@ function EditProfile() {
           onFinish={handleFinish}
           onFinishFailed={onFinishFailed}
         >
-          <Form.Item
-            name='avatar'
-            label='Upload Avatar'
-            // valuePropName='fileList'
-            // getValueFromEvent={normFile}
-            // extra='upload a new profile picture'
-          >
+          <Form.Item name='avatar' label='Upload Avatar'>
             <Input placeholder='Avatar link' />
           </Form.Item>
 
-          <Form.Item
-            name='background'
-            label='Upload Background'
-            // valuePropName='fileList'
-            // getValueFromEvent={normFile}
-            // extra='upload a new backgroud picture'
-          >
+          <Form.Item name='background' label='Upload Background'>
             <Input placeholder='Background link' />
           </Form.Item>
 

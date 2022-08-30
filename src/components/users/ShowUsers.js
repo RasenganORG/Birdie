@@ -92,10 +92,6 @@ function ShowUsers({
                   className={
                     user.isFollowed === false ? "btn-white" : "btn-blue"
                   }
-                  // style={{
-                  //   backgroundColor:
-                  //     user.isFollowed === false ? "white" : "#3a9ef0",
-                  // }}
                   onClick={() => handleOnClickFollow(user, index)}
                 >
                   {user.isFollowed === false ? <>Follow</> : <>Following</>}
@@ -107,10 +103,6 @@ function ShowUsers({
                   className={
                     user.isFollowed === false ? "btn-white" : "btn-blue"
                   }
-                  // style={{
-                  //   backgroundColor:
-                  //     user.isFollowed === false ? "white" : "#3a9ef0",
-                  // }}
                   onClick={() => handleOnClickFollow(user, index)}
                 >
                   {user.isFollowed === false ? (

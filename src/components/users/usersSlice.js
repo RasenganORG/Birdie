@@ -189,7 +189,6 @@ const usersSlice = createSlice({
           ].isFollowed)
         : (state.followedUsers[action.payload.index].isFollowed = !state
             .followedUsers[action.payload.index].isFollowed)
-      // state.nrOfFollowedUsers++
     },
     unfollowUserFromModal(state, action) {
       action.payload.userType === "followers"
@@ -198,7 +197,6 @@ const usersSlice = createSlice({
           ].isFollowed)
         : (state.followedUsers[action.payload.index].isFollowed = !state
             .followedUsers[action.payload.index].isFollowed)
-      // state.nrOfFollowedUsers--
     },
   },
   extraReducers: (builder) => {
@@ -277,8 +275,6 @@ const usersSlice = createSlice({
       .addCase(followUser.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        // state.userById.isFollowed = !state.userById.isFollowed
-        // state.nrOfFollowers++
       })
       .addCase(followUser.rejected, (state, action) => {
         state.isLoading = false
@@ -291,8 +287,6 @@ const usersSlice = createSlice({
       .addCase(unfollowUser.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        // state.userById.isFollowed = !state.userById.isFollowed
-        // state.nrOfFollowers--
       })
       .addCase(unfollowUser.rejected, (state, action) => {
         state.isLoading = false

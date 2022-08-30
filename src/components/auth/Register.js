@@ -1,9 +1,9 @@
 import React from "react"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { register, authActions } from "./authSlice"
-import { Button, Checkbox, Form, Input, Row, Col, Spin } from "antd"
+import { Button, Checkbox, Form, Input, Row, Col } from "antd"
 import {
   LockOutlined,
   UserOutlined,
@@ -16,9 +16,7 @@ import "./Register.css"
 export default function Register() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  // let location = useLocation()
-  // let from = location.state?.from?.pathname || "/"
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
 
