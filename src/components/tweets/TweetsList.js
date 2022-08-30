@@ -9,8 +9,7 @@ function TweetsList({ tweets }) {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [modalTweet, setModalTweet] = useState({
     id: "",
-    parentId: "",
-    user: "",
+    username: "",
     text: "",
   })
 

@@ -33,7 +33,7 @@ function AddTweet({ parentId }) {
       content={
         <Form form={form} name='addTweet' initialValues={{ tweetText: "" }}>
           <Row gutter={16}>
-            <Col span={22}>
+            <Col span={20}>
               <Form.Item name='tweetText'>
                 <TextArea
                   value={tweetText}
@@ -48,9 +48,14 @@ function AddTweet({ parentId }) {
               </Form.Item>
             </Col>
 
-            <Col span={2}>
+            <Col span={1}>
               <Form.Item>
-                <Button htmlType='submit' type='primary' onClick={handleSubmit}>
+                <Button
+                  htmlType='submit'
+                  shape='round'
+                  type='primary'
+                  onClick={handleSubmit}
+                >
                   Tweet
                 </Button>
               </Form.Item>

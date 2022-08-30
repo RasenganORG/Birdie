@@ -135,9 +135,9 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
             setIsModalVisible(true)
             setModalTweet({
               id: tweet.id,
-              user: tweet.user,
+              username: tweet.username,
               text: tweet.text,
-              replies: tweet.replies,
+              avatar: tweet.avatar,
             })
           }}
         >
