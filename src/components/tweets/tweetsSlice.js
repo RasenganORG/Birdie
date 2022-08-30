@@ -467,7 +467,8 @@ const tweetsSlice = createSlice({
           ) !== undefined
         )
           state.retweets = state.retweets.filter(
-            (retweet) => retweet.id !== action.payload.retweetedTweetId
+            // (retweet) => retweet.id !== action.payload.retweetedTweetId
+            (retweet) => retweet.id !== action.payload.id
           )
       })
       .addCase(deleteRetweet.rejected, (state, action) => {

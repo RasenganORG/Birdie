@@ -41,13 +41,9 @@ export default function Profile() {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [userType, setUserType] = useState("")
   const { tweets, retweets } = useSelector((state) => state.tweets)
-  const {
-    userById,
-    followers,
-    nrOfFollowers,
-    followedUsers,
-    nrOfFollowedUsers,
-  } = useSelector((state) => state.users)
+  const { userById, nrOfFollowers, nrOfFollowedUsers } = useSelector(
+    (state) => state.users
+  )
   const { user } = useSelector((state) => state.auth)
   useEffect(() => {
     const data = {
@@ -63,7 +59,6 @@ export default function Profile() {
     dispatch(getTweetsByUserId(userId))
     dispatch(getFollowers(userData))
     dispatch(getFollowedUsers(userData))
-    // dispatch(getRetweetsByUserId(userId))
   }, [userId])
 
   const handleOnClickFollow = () => {
@@ -81,7 +76,9 @@ export default function Profile() {
 
   return (
     <>
-      {nrOfFollowedUsers === null && (
+      {(nrOfFollowedUsers === null ||
+        nrOfFollowers === null ||
+        userById === null) && (
         <Spin
           indicator={
             <LoadingOutlined
@@ -95,7 +92,6 @@ export default function Profile() {
       )}
       {userById && nrOfFollowedUsers !== null && (
         <PageHeader
-          // style={{ margin: "0 25%", padding: "0" }}
           onBack={() => window.history.back()}
           title={userById.name}
           subTitle={`${tweets.length} Tweets`}
@@ -253,7 +249,6 @@ export default function Profile() {
                   {retweets && <TweetsList tweets={retweets} />}
                 </TabPane>
               </Tabs>
-              {/* </Row> */}
             </Col>
           </Row>
           {isModalVisible && (

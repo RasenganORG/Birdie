@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react"
 import "antd/dist/antd.css"
 import "./layout.css"
-import { Layout, Menu, Input, Row, Col, Dropdown } from "antd"
+import { Layout, Menu, Input, Row, Col, Dropdown, Button } from "antd"
 import { Outlet, NavLink, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { getUsersByUsername } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
+import { logout } from "/home/ana/Documents/GitHub/Birdie/src/components/auth/authSlice.js"
 
 let activeClassName = "underline"
 const { Header, Content, Footer } = Layout
@@ -53,6 +54,24 @@ function LayoutPage() {
           {/* <Button>tweet1</Button> */}
           Messages
         </NavLink>
+      ),
+    },
+    {
+      key: "logout",
+      label: (
+        <Button
+          ghost={true}
+          style={{
+            border: "none",
+            color: "hsla(0,0%,100%,.65)",
+          }}
+          onClick={() => {
+            dispatch(logout())
+            navigate("/login")
+          }}
+        >
+          Log Out
+        </Button>
       ),
     },
   ]
@@ -122,7 +141,7 @@ function LayoutPage() {
               />
             </Dropdown>
           </Col>
-          <Col span={9}> </Col>
+          <Col span={9}></Col>
         </Row>
       </Header>
       <Content

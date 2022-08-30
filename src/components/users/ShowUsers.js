@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import "antd/dist/antd.css"
-import { Modal, Avatar, List, Button } from "antd"
+import { Modal, Avatar, List, Button, Spin } from "antd"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import {
@@ -11,6 +11,7 @@ import {
   followUserFromModal,
   unfollowUserFromModal,
 } from "./usersSlice"
+import { LoadingOutlined } from "@ant-design/icons"
 import "/home/ana/Documents/GitHub/Birdie/src/pages/profile.css"
 
 function ShowUsers({
@@ -69,52 +70,68 @@ function ShowUsers({
         onCancel={handleCancel}
         footer={null}
       >
-        <List
-          loading={isLoading}
-          itemLayout='horizontal'
-          dataSource={userType === "followers" ? followers : followedUsers}
-          renderItem={(user, index) => (
-            <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar src={user.avatar} />}
-                title={
-                  <Link
-                    to={`/profile/${user.id}`}
-                    onClick={() => handleCancel()}
-                  >
-                    {user.name}
-                  </Link>
-                }
+        {isLoading && (
+          <Spin
+            indicator={
+              <LoadingOutlined
+                style={{
+                  fontSize: "50px",
+                  marginLeft: "175px",
+                }}
+                spin
               />
-              {userType === "followedUsers" && (
-                <Button
-                  shape='round'
-                  className={
-                    user.isFollowed === false ? "btn-white" : "btn-blue"
+            }
+          />
+        )}
+
+        {isLoading === false && (
+          <List
+            // loading={isLoading}
+            itemLayout='horizontal'
+            dataSource={userType === "followers" ? followers : followedUsers}
+            renderItem={(user, index) => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar src={user.avatar} />}
+                  title={
+                    <Link
+                      to={`/profile/${user.id}`}
+                      onClick={() => handleCancel()}
+                    >
+                      {user.name}
+                    </Link>
                   }
-                  onClick={() => handleOnClickFollow(user, index)}
-                >
-                  {user.isFollowed === false ? <>Follow</> : <>Following</>}
-                </Button>
-              )}
-              {userType === "followers" && (
-                <Button
-                  shape='round'
-                  className={
-                    user.isFollowed === false ? "btn-white" : "btn-blue"
-                  }
-                  onClick={() => handleOnClickFollow(user, index)}
-                >
-                  {user.isFollowed === false ? (
-                    <>Follow back</>
-                  ) : (
-                    <>Following</>
-                  )}
-                </Button>
-              )}
-            </List.Item>
-          )}
-        />
+                />
+                {userType === "followedUsers" && homeUserId != user.id && (
+                  <Button
+                    shape='round'
+                    className={
+                      user.isFollowed === false ? "btn-white" : "btn-blue"
+                    }
+                    onClick={() => handleOnClickFollow(user, index)}
+                  >
+                    {user.isFollowed === false ? <>Follow</> : <>Following</>}
+                  </Button>
+                )}
+                {userType === "followers" && homeUserId != user.id && (
+                  <Button
+                    shape='round'
+                    className={
+                      user.isFollowed === false ? "btn-white" : "btn-blue"
+                    }
+                    onClick={() => handleOnClickFollow(user, index)}
+                  >
+                    {user.isFollowed === false ? (
+                      <>Follow back</>
+                    ) : (
+                      <>Following</>
+                    )}
+                  </Button>
+                )}
+              </List.Item>
+            )}
+          />
+        )}
       </Modal>
     </>
   )

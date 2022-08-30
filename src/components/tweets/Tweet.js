@@ -144,16 +144,22 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
       ]}
     >
       {tweet.isRetweet === true && (
-        <Text type='secondary'>retweeted by {tweet.retweetedUsername}</Text>
+        <Text type='secondary'>
+          <RetweetOutlined
+            style={{ fontSize: "20px" }}
+            onClick={() => handleRetweetTweet(tweet.id)}
+          />
+          {tweet.retweetedUsername} retweeted
+        </Text>
       )}
       <Skeleton avatar title={false} loading={tweet.loading} active>
         <List.Item.Meta
           style={{ textAlign: "start" }}
           avatar={<Avatar src={tweet.avatar} />}
-          description={tweet.name}
+          // description={tweet.name}
           title={
             <Link to={`/profile/${tweet.userId}`} style={{ marginBottom: "0" }}>
-              {tweet.username}
+              {tweet.name} <Text type='secondary'>@{tweet.username}</Text>
             </Link>
           }
         />
