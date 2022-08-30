@@ -54,10 +54,15 @@ export default function Profile() {
       userId: user.id,
       followedUserId: userId,
     }
+
+    const userData = {
+      userId: userId,
+      homeUserId: userId,
+    }
     dispatch(getUserById(data))
     dispatch(getTweetsByUserId(userId))
-    dispatch(getFollowers(userId))
-    dispatch(getFollowedUsers(userId))
+    dispatch(getFollowers(userData))
+    dispatch(getFollowedUsers(userData))
     // dispatch(getRetweetsByUserId(userId))
   }, [userId])
 
@@ -263,6 +268,7 @@ export default function Profile() {
           {isModalVisible && (
             <ShowUsers
               userId={userId}
+              homeUserId={user.id}
               userType={userType}
               isModalVisible={isModalVisible}
               setIsModalVisible={setIsModalVisible}

@@ -34,8 +34,13 @@ function EditProfile() {
   }, [])
 
   const handleFinish = (values) => {
-    console.log(values)
+    console.log("values from form", values)
     dispatch(editUser({ ...values, id: userId }))
+    navigate(`/profile/${userId}`)
+  }
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo)
   }
 
   return (
@@ -51,6 +56,7 @@ function EditProfile() {
             bio: userById.bio,
           }}
           onFinish={handleFinish}
+          onFinishFailed={onFinishFailed}
         >
           <Form.Item
             name='avatar'
@@ -85,7 +91,6 @@ function EditProfile() {
               type='primary'
               htmlType='submit'
               className='login-form-button'
-              onClick={() => navigate(`/profile/${userId}`)}
             >
               Submit
             </Button>
@@ -96,7 +101,6 @@ function EditProfile() {
               type='primary'
               htmlType='cancel'
               className='login-form-button'
-              onClick={() => navigate(`/profile/${userId}`)}
             >
               Cancel
             </Button>

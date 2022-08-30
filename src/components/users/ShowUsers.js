@@ -13,7 +13,13 @@ import {
 } from "./usersSlice"
 import "/home/ana/Documents/GitHub/Birdie/src/pages/profile.css"
 
-function ShowUsers({ userId, userType, setIsModalVisible, isModalVisible }) {
+function ShowUsers({
+  userId,
+  userType,
+  homeUserId,
+  setIsModalVisible,
+  isModalVisible,
+}) {
   const dispatch = useDispatch()
   const { isLoading, followers, followedUsers } = useSelector(
     (state) => state.users
@@ -34,22 +40,26 @@ function ShowUsers({ userId, userType, setIsModalVisible, isModalVisible }) {
     console.log({ index })
     console.log("user.id", user.id)
     if (user.id !== userId) {
-      const data = { userId: userId, followedUserId: user.id }
+      const data = { userId: homeUserId, followedUserId: user.id }
       if (user.isFollowed === false) {
         dispatch(followUser(data))
-        dispatch(followUserFromModal(index))
+        dispatch(followUserFromModal({ index, userType }))
       } else {
         dispatch(unfollowUser(data))
-        dispatch(unfollowUserFromModal(index))
+        dispatch(unfollowUserFromModal({ index, userType }))
       }
     }
   }
 
   useEffect(() => {
     console.log("userId", { userId })
+    const data = {
+      userId: userId,
+      homeUserId: homeUserId,
+    }
     userType === "followers"
-      ? dispatch(getFollowers(userId))
-      : dispatch(getFollowedUsers(userId))
+      ? dispatch(getFollowers(data))
+      : dispatch(getFollowedUsers(data))
   }, [])
 
   return (
@@ -57,6 +67,7 @@ function ShowUsers({ userId, userType, setIsModalVisible, isModalVisible }) {
       <Modal
         title={userType === "followers" ? "Followers" : "Following"}
         visible={isModalVisible}
+        centered
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
@@ -69,7 +80,14 @@ function ShowUsers({ userId, userType, setIsModalVisible, isModalVisible }) {
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar src={user.avatar} />}
-                title={<Link to={`/profile/${user.id}`}>{user.name}</Link>}
+                title={
+                  <Link
+                    to={`/profile/${user.id}`}
+                    onClick={() => handleCancel()}
+                  >
+                    {user.name}
+                  </Link>
+                }
               />
               {userType === "followedUsers" && (
                 <Button
@@ -77,6 +95,10 @@ function ShowUsers({ userId, userType, setIsModalVisible, isModalVisible }) {
                   className={
                     user.isFollowed === false ? "btn-white" : "btn-blue"
                   }
+                  // style={{
+                  //   backgroundColor:
+                  //     user.isFollowed === false ? "white" : "#3a9ef0",
+                  // }}
                   onClick={() => handleOnClickFollow(user, index)}
                 >
                   {user.isFollowed === false ? <>Follow</> : <>Following</>}
@@ -88,6 +110,10 @@ function ShowUsers({ userId, userType, setIsModalVisible, isModalVisible }) {
                   className={
                     user.isFollowed === false ? "btn-white" : "btn-blue"
                   }
+                  // style={{
+                  //   backgroundColor:
+                  //     user.isFollowed === false ? "white" : "#3a9ef0",
+                  // }}
                   onClick={() => handleOnClickFollow(user, index)}
                 >
                   {user.isFollowed === false ? (

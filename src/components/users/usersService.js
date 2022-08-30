@@ -7,8 +7,8 @@ const API_USERNAME_URL = "http://localhost:8080/api/usersbyusername"
 const API_USERS_BY_ID_URL = "http://localhost:8080/api/usersById"
 const API_FOLLOW_USER_URL = "http://localhost:8080/api/follows/"
 const API_UNFOLLOW_USER_URL = "http://localhost:8080/api/unfollow/"
-const API_FOLLOWERS_URL = "http://localhost:8080/api/followers/"
-const API_FOLLOWING_URL = "http://localhost:8080/api/following/"
+const API_FOLLOWERS_URL = "http://localhost:8080/api/followers"
+const API_FOLLOWING_URL = "http://localhost:8080/api/following"
 
 const getUsers = async () => {
   const response = await axios.get(API_USERS_URL)
@@ -83,18 +83,40 @@ const unfollowUser = async (data) => {
   return response.data
 }
 
-const getFollowers = async (userId) => {
-  console.log({ userId })
-  const response = await axios.get(`${API_FOLLOWERS_URL}${userId}`)
+// const getFollowers = async (userId) => {
+//   console.log({ userId })
+//   const response = await axios.get(`${API_FOLLOWERS_URL}${userId}`)
+
+//   console.log("response.data", response.data)
+
+//   return response.data
+// }
+
+// const getFollowedUsers = async (userId) => {
+//   console.log({ userId })
+//   const response = await axios.get(`${API_FOLLOWING_URL}${userId}`)
+
+//   console.log("response.data", response.data)
+
+//   return response.data
+// }
+
+const getFollowers = async (data) => {
+  console.log(data.userId)
+  const response = await axios.get(
+    `${API_FOLLOWERS_URL}?userId=${data.userId}&homeUserId=${data.homeUserId}`
+  )
 
   console.log("response.data", response.data)
 
   return response.data
 }
 
-const getFollowedUsers = async (userId) => {
-  console.log({ userId })
-  const response = await axios.get(`${API_FOLLOWING_URL}${userId}`)
+const getFollowedUsers = async (data) => {
+  console.log(data.userId)
+  const response = await axios.get(
+    `${API_FOLLOWING_URL}?userId=${data.userId}&homeUserId=${data.homeUserId}`
+  )
 
   console.log("response.data", response.data)
 

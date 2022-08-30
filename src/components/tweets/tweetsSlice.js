@@ -620,7 +620,7 @@ const tweetsSlice = createSlice({
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.retweets = null
+        state.retweets = []
       })
   },
 })

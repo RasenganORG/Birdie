@@ -58,13 +58,11 @@ function LayoutPage() {
   ]
 
   useEffect(() => {
-    console.log("in useEffect get users")
     dispatch(getUsersByUsername(searchItem))
   }, [searchItem])
 
   const handleMenuClick = (e) => {
     setVisible(false)
-    console.log("e", e)
     navigate(`/profile/${e.key}`)
   }
 
@@ -85,7 +83,6 @@ function LayoutPage() {
   }
 
   const onSearch = (value) => {
-    console.log({ value })
     setSearchItem(value)
   }
 

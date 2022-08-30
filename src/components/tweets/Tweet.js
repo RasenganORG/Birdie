@@ -24,11 +24,6 @@ import {
 const { Text } = Typography
 
 function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
-  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : ")
-
-  // const [isLiked, setIsLiked] = useState(tweet.isLiked)
-  // const [isRetweeted, setIsRetweeted] = useState(tweet.isRetweetedByHomeUser)
-
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)

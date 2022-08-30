@@ -24,7 +24,7 @@ export default function Register() {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/profile")
+      navigate("/")
     }
 
     dispatch(authActions.reset())
@@ -34,7 +34,6 @@ export default function Register() {
     const userData = {
       ...values.user,
     }
-    console.log(values.user)
     dispatch(register(userData))
   }
 

@@ -132,9 +132,9 @@ export const unfollowUser = createAsyncThunk(
 
 export const getFollowers = createAsyncThunk(
   "users/getFollowers",
-  async (userId, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await usersService.getFollowers(userId)
+      return await usersService.getFollowers(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -149,9 +149,9 @@ export const getFollowers = createAsyncThunk(
 
 export const getFollowedUsers = createAsyncThunk(
   "users/getFollowedUsers",
-  async (userId, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await usersService.getFollowedUsers(userId)
+      return await usersService.getFollowedUsers(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -183,17 +183,23 @@ const usersSlice = createSlice({
       state.nrOfFollowers--
     },
     followUserFromModal(state, action) {
-      state.followedUsers[action.payload].isFollowed = !state.followedUsers[
-        action.payload
-      ].isFollowed
-      state.nrOfFollowedUsers++
+      action.payload.userType === "followers"
+        ? (state.followers[action.payload.index].isFollowed = !state.followers[
+            action.payload.index
+          ].isFollowed)
+        : (state.followedUsers[action.payload.index].isFollowed = !state
+            .followedUsers[action.payload.index].isFollowed)
+      // state.nrOfFollowedUsers++
     },
     unfollowUserFromModal(state, action) {
-      console.log("INDEX", action.payload)
-      state.followedUsers[action.payload].isFollowed = !state.followedUsers[
-        action.payload
-      ].isFollowed
-      state.nrOfFollowedUsers--
+      console.log("INDEX", action.payload.index)
+      action.payload.userType === "followers"
+        ? (state.followers[action.payload.index].isFollowed = !state.followers[
+            action.payload.index
+          ].isFollowed)
+        : (state.followedUsers[action.payload.index].isFollowed = !state
+            .followedUsers[action.payload.index].isFollowed)
+      // state.nrOfFollowedUsers--
     },
   },
   extraReducers: (builder) => {
