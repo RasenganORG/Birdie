@@ -10,10 +10,8 @@ function Search() {
   const src = searchParams.get("src")
   const f = searchParams.get("f")
   const { searchedUsers } = useSelector((state) => state.users)
-  console.log({ q })
 
   useEffect(() => {
-    console.log("in useEffect get users")
     dispatch(getUsersByUsername(q))
   }, [q])
 

@@ -296,13 +296,11 @@ const tweetsSlice = createSlice({
       state.currentTweet = null
     },
     setIsLiked(state, action) {
-      console.log("setIsLiked ", action.payload.type)
       if (action.payload.type === "tweet")
         state.tweets[action.payload.index].isLiked = action.payload.value
       else state.retweets[action.payload.index].isLiked = action.payload.value
     },
     setIsRetweeted(state, action) {
-      console.log("type", action.payload.type)
       if (action.payload.type === "tweet")
         state.tweets[action.payload.index].isRetweetedByHomeUser =
           action.payload.value
@@ -377,9 +375,6 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = true
       })
       .addCase(addLike.fulfilled, (state, action) => {
-        console.log("action: " + action.payload.id)
-        // console.log("state: " + state.tweets[0].id)
-        console.log("action.payload: " + action.payload.likes)
         state.isLoadingLike = false
         state.isSuccess = true
       })
@@ -392,9 +387,6 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = true
       })
       .addCase(deleteLike.fulfilled, (state, action) => {
-        console.log("action: " + action.payload.id)
-        // console.log("state: " + state.tweets[0].id)
-        console.log("action.payload: " + action.payload.likes)
         state.isLoadingLike = false
         state.isSuccess = true
       })
@@ -407,8 +399,6 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = true
       })
       .addCase(retweetTweet.fulfilled, (state, action) => {
-        console.log("action: " + action.payload.id)
-        // console.log("state: " + state.tweets[0].id)
         state.isLoadingLike = false
         state.isSuccess = true
       })
@@ -421,8 +411,6 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = true
       })
       .addCase(unretweetTweet.fulfilled, (state, action) => {
-        console.log("action: " + action.payload.id)
-        // console.log("state: " + state.tweets[0].id)
         state.isLoadingLike = false
         state.isSuccess = true
       })
@@ -463,9 +451,6 @@ const tweetsSlice = createSlice({
         state.isLoadingRetweet = true
       })
       .addCase(deleteRetweet.fulfilled, (state, action) => {
-        console.log("action: " + action.payload.id)
-        // console.log("state: " + state.tweets[0].id)
-        console.log("action.payload: " + action.payload.likes)
         state.isLoadingRetweet = false
         state.isSuccess = true
         if (
@@ -494,15 +479,12 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = true
       })
       .addCase(likeTweet.fulfilled, (state, action) => {
-        console.log("actionPAYLOAD LIKE TWEET: " + action.payload.id)
-        // console.log("state: " + state.tweets[0].id)
         state.isLoadingLike = false
         state.isSuccess = true
         if (
           state.tweets.find((tweet) => tweet.id === action.payload.id) !==
           undefined
         ) {
-          console.log("check this")
           state.currentTweet !== null
             ? state.currentTweet.id === action.payload.id &&
               state.currentTweet.likes++
@@ -513,7 +495,6 @@ const tweetsSlice = createSlice({
           state.retweets.find((tweet) => tweet.id === action.payload.id) !==
           undefined
         ) {
-          console.log("check this in retweets")
           state.retweets.find((tweet) => tweet.id === action.payload.id).likes++
         }
 
@@ -530,8 +511,6 @@ const tweetsSlice = createSlice({
         state.isLoadingLike = true
       })
       .addCase(dislikeTweet.fulfilled, (state, action) => {
-        console.log("action: " + action.payload.id)
-        // console.log("state: " + state.tweets[0].id)
         state.isLoadingLike = false
         state.isSuccess = true
         if (

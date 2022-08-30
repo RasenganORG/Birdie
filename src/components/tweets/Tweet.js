@@ -94,8 +94,6 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
     dispatch(deleteRetweet(data))
   }
 
-  console.log("tweet.id : " + tweet.id + tweet.isLiked + "isLiked : ")
-
   return (
     <List.Item
       actions={[

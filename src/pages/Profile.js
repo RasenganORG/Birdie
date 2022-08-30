@@ -67,8 +67,6 @@ export default function Profile() {
   }, [userId])
 
   const handleOnClickFollow = () => {
-    console.log({ user })
-    console.log("user.id", user.id)
     if (user.id !== userId) {
       const data = { userId: user.id, followedUserId: userId }
       if (userById.isFollowed === false) {
@@ -81,11 +79,6 @@ export default function Profile() {
     }
   }
 
-  console.log({ followers })
-  console.log({ followedUsers })
-  console.log(userById)
-  console.log({ tweets })
-  console.log()
   return (
     <>
       {nrOfFollowedUsers === null && (
@@ -185,8 +178,6 @@ export default function Profile() {
                 <Button
                   type='text'
                   onClick={() => {
-                    // const newData = followers.map((item) => item.userId)
-                    // console.log({ newData })
                     setUserType("followers")
                     setIsModalVisible(true)
                   }}

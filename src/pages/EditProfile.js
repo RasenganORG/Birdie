@@ -9,13 +9,9 @@ import {
 
 const { TextArea } = Input
 const normFile = (e) => {
-  console.log("Upload event:", e)
-
   if (Array.isArray(e)) {
     return e
   }
-
-  // return e?.fileList
 }
 
 function EditProfile() {
@@ -34,7 +30,6 @@ function EditProfile() {
   }, [])
 
   const handleFinish = (values) => {
-    console.log("values from form", values)
     dispatch(editUser({ ...values, id: userId }))
     navigate(`/profile/${userId}`)
   }

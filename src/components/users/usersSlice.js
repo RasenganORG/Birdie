@@ -192,7 +192,6 @@ const usersSlice = createSlice({
       // state.nrOfFollowedUsers++
     },
     unfollowUserFromModal(state, action) {
-      console.log("INDEX", action.payload.index)
       action.payload.userType === "followers"
         ? (state.followers[action.payload.index].isFollowed = !state.followers[
             action.payload.index

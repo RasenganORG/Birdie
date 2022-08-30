@@ -10,10 +10,7 @@ function Tweets() {
   const { tweets, retweets } = useSelector((state) => state.tweets)
   const { user } = useSelector((state) => state.auth)
 
-  console.log({ user })
-
   useEffect(() => {
-    console.log("in uE")
     dispatch(getTweetsForHome(user.id))
     dispatch(getRetweetsForHome(user.id))
   }, [])

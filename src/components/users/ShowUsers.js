@@ -37,8 +37,6 @@ function ShowUsers({
   }
 
   const handleOnClickFollow = (user, index) => {
-    console.log({ index })
-    console.log("user.id", user.id)
     if (user.id !== userId) {
       const data = { userId: homeUserId, followedUserId: user.id }
       if (user.isFollowed === false) {
@@ -52,7 +50,6 @@ function ShowUsers({
   }
 
   useEffect(() => {
-    console.log("userId", { userId })
     const data = {
       userId: userId,
       homeUserId: homeUserId,
