@@ -45,18 +45,20 @@ export default function Profile() {
     (state) => state.users
   )
   const { user } = useSelector((state) => state.auth)
+
   useEffect(() => {
     const data = {
       userId: user.id,
       followedUserId: userId,
     }
-
     const userData = {
       userId: userId,
       homeUserId: userId,
     }
+
     dispatch(getUserById(data))
     dispatch(getTweetsByUserId(userId))
+    dispatch(getRetweetsByUserId(userId))
     dispatch(getFollowers(userData))
     dispatch(getFollowedUsers(userData))
   }, [userId])

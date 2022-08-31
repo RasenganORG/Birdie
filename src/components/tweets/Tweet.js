@@ -27,7 +27,6 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
-
   const handleGoToTweet = (tweet) => navigate(`/tweets/${tweet.id}`)
 
   const handleLikeTweet = (tweetId) => {
@@ -39,6 +38,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
       setIsLiked({
         index: index,
         value: true,
+        tweetId: tweet.id,
         type: tweet.isRetweet === true ? "retweet" : "tweet",
       })
     )
@@ -55,6 +55,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
       setIsLiked({
         index: index,
         value: false,
+        tweetId: tweet.id,
         type: tweet.isRetweet === true ? "retweet" : "tweet",
       })
     )
@@ -66,6 +67,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
     dispatch(
       setIsRetweeted({
         index: index,
+        tweetId: tweet.id,
         value: true,
         type: tweet.isRetweet === true ? "retweet" : "tweet",
       })
@@ -82,6 +84,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
     dispatch(
       setIsRetweeted({
         index: index,
+        tweetId: tweet.id,
         value: false,
         type: tweet.isRetweet === true ? "retweet" : "tweet",
       })

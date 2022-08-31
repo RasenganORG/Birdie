@@ -296,17 +296,97 @@ const tweetsSlice = createSlice({
       state.currentTweet = null
     },
     setIsLiked(state, action) {
-      if (action.payload.type === "tweet")
-        state.tweets[action.payload.index].isLiked = action.payload.value
-      else state.retweets[action.payload.index].isLiked = action.payload.value
+      // if (action.payload.type === "tweet")
+      //   state.tweets[action.payload.index].isLiked = action.payload.value
+      // else state.retweets[action.payload.index].isLiked = action.payload.value
+
+      const filteredTweets = state.tweets.filter(
+        (tweet) => tweet.id === action.payload.tweetId
+      )
+
+      filteredTweets.forEach((tweet) => {
+        const index = state.tweets.indexOf(tweet)
+        state.tweets[index].isLiked = action.payload.value
+        if (action.payload.value === true) {
+          state.tweets[index].likes++
+        } else {
+          state.tweets[index].likes--
+        }
+      })
+
+      const filteredRetweets = state.retweets.filter(
+        (tweet) => tweet.id === action.payload.tweetId
+      )
+
+      filteredRetweets.forEach((retweet) => {
+        const index = state.retweets.indexOf(retweet)
+        state.retweets[index].isLiked = action.payload.value
+        if (action.payload.value === true) {
+          state.retweets[index].likes++
+        } else {
+          state.retweets[index].likes--
+        }
+      })
+
+      // const indexInTweets = state.tweets.indexOf(
+      //   state.tweets.find((tweet) => tweet.id === action.payload.tweetId)
+      // )
+      // if (indexInTweets !== -1)
+      //   state.tweets[indexInTweets].isLiked = action.payload.value
+
+      // const indexInRetweets = state.retweets.indexOf(
+      //   state.retweets.find((tweet) => tweet.id === action.payload.tweetId)
+      // )
+      // if (indexInRetweets !== -1)
+      //   state.retweets[indexInRetweets].isLiked = action.payload.value
     },
     setIsRetweeted(state, action) {
-      if (action.payload.type === "tweet")
-        state.tweets[action.payload.index].isRetweetedByHomeUser =
-          action.payload.value
-      else
-        state.retweets[action.payload.index].isRetweetedByHomeUser =
-          action.payload.value
+      const filteredTweets = state.tweets.filter(
+        (tweet) => tweet.id === action.payload.tweetId
+      )
+
+      filteredTweets.forEach((tweet) => {
+        const index = state.tweets.indexOf(tweet)
+        state.tweets[index].isRetweetedByHomeUser = action.payload.value
+        if (action.payload.value === true) {
+          state.tweets[index].retweets++
+        } else {
+          state.tweets[index].retweets--
+        }
+      })
+
+      const filteredRetweets = state.retweets.filter(
+        (tweet) => tweet.id === action.payload.tweetId
+      )
+
+      filteredRetweets.forEach((retweet) => {
+        const index = state.retweets.indexOf(retweet)
+        state.retweets[index].isRetweetedByHomeUser = action.payload.value
+        if (action.payload.value === true) {
+          state.retweets[index].retweets++
+        } else {
+          state.retweets[index].retweets--
+        }
+      })
+      // if (action.payload.type === "tweet")
+      //   state.tweets[action.payload.index].isRetweetedByHomeUser =
+      //     action.payload.value
+      // else
+      //   state.retweets[action.payload.index].isRetweetedByHomeUser =
+      //     action.payload.value
+
+      // const indexInTweets = state.tweets.indexOf(
+      //   state.tweets.find((tweet) => tweet.id === action.payload.tweetId)
+      // )
+      // if (indexInTweets !== -1)
+      //   state.tweets[indexInTweets].isRetweetedByHomeUser = action.payload.value
+
+      // const indexInRetweets = state.retweets.indexOf(
+      //   state.retweets.find((tweet) => tweet.id === action.payload.tweetId)
+      // )
+      // if (indexInRetweets !== -1)
+      //   state.retweets[indexInRetweets].isRetweetedByHomeUser =
+      //     action.payload.value
     },
   },
   extraReducers: (builder) => {
@@ -425,22 +505,22 @@ const tweetsSlice = createSlice({
       .addCase(addRetweet.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        if (
-          state.tweets.find(
-            (tweet) => tweet.id === action.payload.retweetedTweetId
-          ) !== undefined
-        )
-          state.tweets.find(
-            (tweet) => tweet.id === action.payload.retweetedTweetId
-          ).retweets++
-        if (
-          state.retweets.find(
-            (tweet) => tweet.id === action.payload.retweetedTweetId
-          ) !== undefined
-        )
-          state.retweets.find(
-            (retweet) => retweet.id === action.payload.retweetedTweetId
-          ).retweets++
+        // if (
+        //   state.tweets.find(
+        //     (tweet) => tweet.id === action.payload.retweetedTweetId
+        //   ) !== undefined
+        // )
+        //   state.tweets.find(
+        //     (tweet) => tweet.id === action.payload.retweetedTweetId
+        //   ).retweets++
+        // if (
+        //   state.retweets.find(
+        //     (tweet) => tweet.id === action.payload.retweetedTweetId
+        //   ) !== undefined
+        // )
+        //   state.retweets.find(
+        //     (retweet) => retweet.id === action.payload.retweetedTweetId
+        //   ).retweets++
       })
       .addCase(addRetweet.rejected, (state, action) => {
         state.isLoading = false
@@ -465,11 +545,16 @@ const tweetsSlice = createSlice({
           state.retweets.find(
             (tweet) => tweet.id === action.payload.retweetedTweetId
           ) !== undefined
-        )
+        ) {
+          state.retweets.find(
+            (tweet) => tweet.id === action.payload.retweetedTweetId
+          ).retweets--
+
           state.retweets = state.retweets.filter(
             // (retweet) => retweet.id !== action.payload.retweetedTweetId
             (retweet) => retweet.id !== action.payload.id
           )
+        }
       })
       .addCase(deleteRetweet.rejected, (state, action) => {
         state.isLoadingRetweet = false
@@ -482,26 +567,26 @@ const tweetsSlice = createSlice({
       .addCase(likeTweet.fulfilled, (state, action) => {
         state.isLoadingLike = false
         state.isSuccess = true
-        if (
-          state.tweets.find((tweet) => tweet.id === action.payload.id) !==
-          undefined
-        ) {
-          state.currentTweet !== null
-            ? state.currentTweet.id === action.payload.id &&
-              state.currentTweet.likes++
-            : state.tweets.find((tweet) => tweet.id === action.payload.id)
-                .likes++
-        }
-        if (
-          state.retweets.find((tweet) => tweet.id === action.payload.id) !==
-          undefined
-        ) {
-          state.retweets.find((tweet) => tweet.id === action.payload.id).likes++
-        }
+        // if (
+        //   state.tweets.find((tweet) => tweet.id === action.payload.id) !==
+        //   undefined
+        // ) {
+        //   state.currentTweet !== null
+        //     ? state.currentTweet.id === action.payload.id &&
+        //       state.currentTweet.likes++
+        //     : state.tweets.find((tweet) => tweet.id === action.payload.id)
+        //         .likes++
+        // }
+        // if (
+        //   state.retweets.find((tweet) => tweet.id === action.payload.id) !==
+        //   undefined
+        // ) {
+        //   state.retweets.find((tweet) => tweet.id === action.payload.id).likes++
+        // }
 
-        state.currentTweet !== null &&
-          state.currentTweet.id !== action.payload.id &&
-          state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
+        // state.currentTweet !== null &&
+        //   state.currentTweet.id !== action.payload.id &&
+        //   state.tweets.find((tweet) => tweet.id === action.payload.id).likes++
       })
       .addCase(likeTweet.rejected, (state, action) => {
         state.isLoadingLike = false
@@ -514,25 +599,25 @@ const tweetsSlice = createSlice({
       .addCase(dislikeTweet.fulfilled, (state, action) => {
         state.isLoadingLike = false
         state.isSuccess = true
-        if (
-          state.tweets.find((tweet) => tweet.id === action.payload.id) !==
-          undefined
-        )
-          state.currentTweet !== null
-            ? state.currentTweet.id === action.payload.id &&
-              state.currentTweet.likes--
-            : state.tweets.find((tweet) => tweet.id === action.payload.id)
-                .likes--
+        // if (
+        //   state.tweets.find((tweet) => tweet.id === action.payload.id) !==
+        //   undefined
+        // )
+        //   state.currentTweet !== null
+        //     ? state.currentTweet.id === action.payload.id &&
+        //       state.currentTweet.likes--
+        //     : state.tweets.find((tweet) => tweet.id === action.payload.id)
+        //         .likes--
 
-        if (
-          state.retweets.find((tweet) => tweet.id === action.payload.id) !==
-          undefined
-        )
-          state.retweets.find((tweet) => tweet.id === action.payload.id).likes--
+        // if (
+        //   state.retweets.find((tweet) => tweet.id === action.payload.id) !==
+        //   undefined
+        // )
+        //   state.retweets.find((tweet) => tweet.id === action.payload.id).likes--
 
-        state.currentTweet !== null &&
-          state.currentTweet.id !== action.payload.id &&
-          state.tweets.find((tweet) => tweet.id === action.payload.id).likes--
+        // state.currentTweet !== null &&
+        //   state.currentTweet.id !== action.payload.id &&
+        //   state.tweets.find((tweet) => tweet.id === action.payload.id).likes--
       })
       .addCase(dislikeTweet.rejected, (state, action) => {
         state.isLoadingLike = false
