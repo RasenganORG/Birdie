@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import "antd/dist/antd.css"
 import "./layout.css"
-import { Layout, Menu, Input, Row, Col, Dropdown, Button } from "antd"
+import { Layout, Menu, Input, Row, Col, Dropdown, Button, Avatar } from "antd"
 import { Outlet, NavLink, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { getUsersByUsername } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
@@ -18,14 +18,14 @@ function LayoutPage() {
   const dispatch = useDispatch()
   const { searchedUsers, isLoading } = useSelector((state) => state.users)
   const [visible, setVisible] = useState(false)
-
   const menuItems = [
     {
-      key: "home",
+      key: "",
       label: (
         <NavLink
           to='/'
           className={({ isActive }) => (isActive ? activeClassName : undefined)}
+          onClick={() => (href = window.location.href.split("/"))}
         >
           {/* <Button>Tweets</Button> */}
           Tweets
@@ -35,13 +35,19 @@ function LayoutPage() {
     {
       key: "profile",
       label: (
-        <NavLink
-          to={`/profile/${user.id}`}
-          className={({ isActive }) => (isActive ? activeClassName : undefined)}
-        >
-          {/* <Button>Profile</Button> */}
-          Profile
-        </NavLink>
+        <>
+          <Avatar src={user.avatar} />{" "}
+          <NavLink
+            to={`/profile/${user.id}`}
+            className={({ isActive }) =>
+              isActive ? activeClassName : undefined
+            }
+            onClick={() => (href = window.location.href.split("/"))}
+          >
+            {/* <Button>Profile</Button> */}
+            Profile
+          </NavLink>
+        </>
       ),
     },
     {
@@ -50,6 +56,7 @@ function LayoutPage() {
         <NavLink
           to='/messages'
           className={({ isActive }) => (isActive ? activeClassName : undefined)}
+          onClick={() => (href = window.location.href.split("/"))}
         >
           {/* <Button>tweet1</Button> */}
           Messages
@@ -75,10 +82,7 @@ function LayoutPage() {
       ),
     },
   ]
-
-  useEffect(() => {
-    dispatch(getUsersByUsername(searchItem))
-  }, [searchItem])
+  let href = window.location.href.split("/")
 
   const handleMenuClick = (e) => {
     setVisible(false)
@@ -105,6 +109,10 @@ function LayoutPage() {
     setSearchItem(value)
   }
 
+  useEffect(() => {
+    dispatch(getUsersByUsername(searchItem))
+  }, [searchItem])
+
   return (
     <Layout className='layout'>
       <Header>
@@ -121,7 +129,7 @@ function LayoutPage() {
             <Menu
               theme='dark'
               mode='horizontal'
-              defaultSelectedKeys={"home"}
+              selectedKeys={href[3]}
               items={menuItems}
             />
           </Col>

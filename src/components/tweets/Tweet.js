@@ -29,7 +29,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
   const { user } = useSelector((state) => state.auth)
   const handleGoToTweet = (tweet) => navigate(`/tweets/${tweet.id}`)
 
-  const handleLikeTweet = (tweetId) => {
+  const handleLikeTweet = (tweetId, value) => {
     const data = {
       userId: user.id,
       likedTweetId: tweet.id,
@@ -37,38 +37,27 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
     dispatch(
       setIsLiked({
         index: index,
-        value: true,
+        value: value,
         tweetId: tweet.id,
         type: tweet.isRetweet === true ? "retweet" : "tweet",
       })
     )
-    dispatch(likeTweet(tweet.id))
-    dispatch(addLike(data))
-  }
 
-  const handleDislikeTweet = (tweetId) => {
-    const data = {
-      userId: user.id,
-      likedTweetId: tweet.id,
+    if (value === true) {
+      dispatch(likeTweet(tweetId))
+      dispatch(addLike(data))
+    } else {
+      dispatch(dislikeTweet(tweetId))
+      dispatch(deleteLike(data))
     }
-    dispatch(
-      setIsLiked({
-        index: index,
-        value: false,
-        tweetId: tweet.id,
-        type: tweet.isRetweet === true ? "retweet" : "tweet",
-      })
-    )
-    dispatch(dislikeTweet(tweetId))
-    dispatch(deleteLike(data))
   }
 
-  const handleRetweetTweet = (tweetId) => {
+  const handleRetweetTweet = (tweetId, value) => {
     dispatch(
       setIsRetweeted({
         index: index,
         tweetId: tweet.id,
-        value: true,
+        value: value,
         type: tweet.isRetweet === true ? "retweet" : "tweet",
       })
     )
@@ -76,25 +65,14 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
       userId: user.id,
       retweetedTweetId: tweet.id,
     }
-    dispatch(retweetTweet(tweet.id))
-    dispatch(addRetweet(data))
-  }
 
-  const handleDeleteRetweetTweet = (tweetId) => {
-    dispatch(
-      setIsRetweeted({
-        index: index,
-        tweetId: tweet.id,
-        value: false,
-        type: tweet.isRetweet === true ? "retweet" : "tweet",
-      })
-    )
-    const data = {
-      userId: user.id,
-      retweetedTweetId: tweet.id,
+    if (value === true) {
+      dispatch(retweetTweet(tweet.id))
+      dispatch(addRetweet(data))
+    } else {
+      dispatch(unretweetTweet(tweet.id))
+      dispatch(deleteRetweet(data))
     }
-    dispatch(unretweetTweet(tweet.id))
-    dispatch(deleteRetweet(data))
   }
 
   return (
@@ -104,13 +82,13 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
           {tweet.isLiked && (
             <HeartFilled
               style={{ fontSize: "20px", color: "#e63946" }}
-              onClick={() => handleDislikeTweet(tweet.id)}
+              onClick={() => handleLikeTweet(tweet.id, false)}
             />
           )}
           {!tweet.isLiked && (
             <HeartOutlined
               style={{ fontSize: "20px" }}
-              onClick={() => handleLikeTweet(tweet.id)}
+              onClick={() => handleLikeTweet(tweet.id, true)}
             />
           )}{" "}
           {tweet.likes}
@@ -119,13 +97,13 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
           {tweet.isRetweetedByHomeUser && (
             <RetweetOutlined
               style={{ fontSize: "20px", color: "green" }}
-              onClick={() => handleDeleteRetweetTweet(tweet.id)}
+              onClick={() => handleRetweetTweet(tweet.id, false)}
             />
           )}
           {!tweet.isRetweetedByHomeUser && (
             <RetweetOutlined
               style={{ fontSize: "20px" }}
-              onClick={() => handleRetweetTweet(tweet.id)}
+              onClick={() => handleRetweetTweet(tweet.id, true)}
             />
           )}{" "}
           {tweet.retweets}

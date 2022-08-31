@@ -182,15 +182,7 @@ const usersSlice = createSlice({
       state.userById.isFollowed = !state.userById.isFollowed
       state.nrOfFollowers--
     },
-    followUserFromModal(state, action) {
-      action.payload.userType === "followers"
-        ? (state.followers[action.payload.index].isFollowed = !state.followers[
-            action.payload.index
-          ].isFollowed)
-        : (state.followedUsers[action.payload.index].isFollowed = !state
-            .followedUsers[action.payload.index].isFollowed)
-    },
-    unfollowUserFromModal(state, action) {
+    toggleFollow(state, action) {
       action.payload.userType === "followers"
         ? (state.followers[action.payload.index].isFollowed = !state.followers[
             action.payload.index
@@ -327,7 +319,6 @@ const usersSlice = createSlice({
 export const {
   followUserFromTheirProfile,
   unfollowUserFromTheirProfile,
-  followUserFromModal,
-  unfollowUserFromModal,
+  toggleFollow,
 } = usersSlice.actions
 export default usersSlice.reducer

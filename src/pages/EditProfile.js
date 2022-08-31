@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Button, Form, Upload, Input } from "antd"
+import { Button, Form, Input } from "antd"
 import { useNavigate, useParams } from "react-router-dom"
 import {
   getUserById,
@@ -8,11 +8,6 @@ import {
 } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
 
 const { TextArea } = Input
-const normFile = (e) => {
-  if (Array.isArray(e)) {
-    return e
-  }
-}
 
 function EditProfile() {
   const navigate = useNavigate()

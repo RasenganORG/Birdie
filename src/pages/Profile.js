@@ -30,7 +30,7 @@ import {
   getRetweetsByUserId,
   getTweetsByUserId,
 } from "../components/tweets/tweetsSlice"
-import ShowUsers from "../components/users/ShowUsers"
+import FollowersList from "../components/users/FollowersList"
 
 const { TabPane } = Tabs
 
@@ -254,7 +254,7 @@ export default function Profile() {
             </Col>
           </Row>
           {isModalVisible && (
-            <ShowUsers
+            <FollowersList
               userId={userId}
               homeUserId={user.id}
               userType={userType}

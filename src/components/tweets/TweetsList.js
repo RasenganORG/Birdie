@@ -1,9 +1,8 @@
 import React, { useState } from "react"
 import { useSelector } from "react-redux"
-import { List, Spin } from "antd"
+import { List } from "antd"
 import TweetCommentModal from "./TweetCommentModal"
 import Tweet from "./Tweet"
-import { LoadingOutlined } from "@ant-design/icons"
 
 function TweetsList({ tweets }) {
   const { isLoading } = useSelector((state) => state.tweets)

@@ -8,13 +8,12 @@ import {
   getFollowers,
   followUser,
   unfollowUser,
-  followUserFromModal,
-  unfollowUserFromModal,
+  toggleFollow,
 } from "./usersSlice"
 import { LoadingOutlined } from "@ant-design/icons"
 import "/home/ana/Documents/GitHub/Birdie/src/pages/profile.css"
 
-function ShowUsers({
+function FollowersList({
   userId,
   userType,
   homeUserId,
@@ -25,9 +24,6 @@ function ShowUsers({
   const { isLoading, followers, followedUsers } = useSelector(
     (state) => state.users
   )
-  const showModal = () => {
-    setIsModalVisible(true)
-  }
 
   const handleOk = () => {
     setIsModalVisible(false)
@@ -42,10 +38,10 @@ function ShowUsers({
       const data = { userId: homeUserId, followedUserId: user.id }
       if (user.isFollowed === false) {
         dispatch(followUser(data))
-        dispatch(followUserFromModal({ index, userType }))
+        dispatch(toggleFollow({ index, userType }))
       } else {
         dispatch(unfollowUser(data))
-        dispatch(unfollowUserFromModal({ index, userType }))
+        dispatch(toggleFollow({ index, userType }))
       }
     }
   }
@@ -86,7 +82,6 @@ function ShowUsers({
 
         {isLoading === false && (
           <List
-            // loading={isLoading}
             itemLayout='horizontal'
             dataSource={userType === "followers" ? followers : followedUsers}
             renderItem={(user, index) => (
@@ -137,4 +132,4 @@ function ShowUsers({
   )
 }
 
-export default ShowUsers
+export default FollowersList
