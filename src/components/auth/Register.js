@@ -1,13 +1,14 @@
 import React from "react"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { register, authActions } from "./authSlice"
-import { Button, Checkbox, Form, Input, Row, Col, Spin } from "antd"
+import { Button, Checkbox, Form, Input, Row, Col } from "antd"
 import {
   LockOutlined,
   UserOutlined,
   LoadingOutlined,
+  LinkOutlined,
   MailOutlined,
 } from "@ant-design/icons"
 import "./Register.css"
@@ -15,15 +16,13 @@ import "./Register.css"
 export default function Register() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  // let location = useLocation()
-  // let from = location.state?.from?.pathname || "/"
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/profile")
+      navigate("/")
     }
 
     dispatch(authActions.reset())
@@ -82,6 +81,18 @@ export default function Register() {
               />
             </Form.Item>
             <Form.Item
+              name={["user", "name"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter a valid name.",
+                  type: "text",
+                },
+              ]}
+            >
+              <Input placeholder='Full Name' data-cy='register-name-input' />
+            </Form.Item>
+            <Form.Item
               name={["user", "password"]}
               rules={[
                 {
@@ -95,6 +106,21 @@ export default function Register() {
                 type='password'
                 placeholder='Password'
                 data-cy='register-password-input'
+              />
+            </Form.Item>
+            <Form.Item
+              name={["user", "avatar"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter a valid url.",
+                  type: "link",
+                },
+              ]}
+            >
+              <Input
+                prefix={<LinkOutlined className='site-form-item-icon' />}
+                placeholder='Avatar link'
               />
             </Form.Item>
             <Form.Item>

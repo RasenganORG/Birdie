@@ -2,32 +2,26 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import AddTweet from "./AddTweet"
 import TweetsList from "./TweetsList"
-import { getTweets } from "./tweetsSlice"
-import { getUsers } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
+import { getTweetsForHome, getRetweetsForHome } from "./tweetsSlice"
+import { Divider } from "antd"
 
 function Tweets() {
   const dispatch = useDispatch()
-  const { tweets } = useSelector((state) => state.tweets)
-
-  const homeTweets = tweets.filter((tweet) => tweet.parentId === null)
-
-  useEffect(() => {
-    dispatch(getTweets())
-  }, [])
+  const { tweets, retweets } = useSelector((state) => state.tweets)
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    dispatch(getUsers())
+    dispatch(getTweetsForHome(user.id))
+    dispatch(getRetweetsForHome(user.id))
   }, [])
-
-  const { users } = useSelector((state) => state.users)
-  console.log({ users })
 
   return (
-    <>
+    <div style={{ padding: "10px 20px" }}>
       <AddTweet parentId={null} />
-      <h1>List of tweets</h1>
-      <TweetsList tweets={homeTweets} />
-    </>
+      <Divider style={{ marginTop: "0" }} />
+      <TweetsList tweets={tweets} />
+      <TweetsList tweets={retweets} />
+    </div>
   )
 }
 
