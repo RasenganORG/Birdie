@@ -11,6 +11,8 @@ import Login from "./components/auth/Login"
 import Register from "./components/auth/Register"
 import PrivateRoute from "./components/auth/PrivateRoute"
 import Search from "./pages/Search"
+import Chat from "./components/chat/Chat"
+import Conversation from "./components/chat/Conversation"
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
           <Route path='profile/:userId' element={<Profile />} />
           <Route path='tweets/:tweetId' element={<TweetItem />} />
           <Route path='search' element={<Search />} />
+        </Route>
+        <Route path='chat' element={<Chat />}>
+          <Route path=':chatId' element={<Conversation />} />
         </Route>
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />

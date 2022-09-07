@@ -6,11 +6,9 @@ import AddTweet from "./AddTweet"
 import { getTweetById, getReplies } from "./tweetsSlice"
 
 function TweetItem() {
+  const dispatch = useDispatch()
   const params = useParams()
   const tweetId = params.tweetId
-
-  const dispatch = useDispatch()
-
   const { currentTweet, tweets } = useSelector((state) => state.tweets)
   const { user } = useSelector((state) => state.auth)
 

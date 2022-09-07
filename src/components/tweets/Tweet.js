@@ -20,6 +20,7 @@ import {
   unretweetTweet,
   retweetTweet,
 } from "./tweetsSlice"
+// import { format } from "timeago.js"
 
 const { Text } = Typography
 
@@ -141,6 +142,7 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
           title={
             <Link to={`/profile/${tweet.userId}`} style={{ marginBottom: "0" }}>
               {tweet.name} <Text type='secondary'>@{tweet.username}</Text>
+              {/* <Text type='secondary'> {format(tweet.createdAt)}</Text> */}
             </Link>
           }
         />

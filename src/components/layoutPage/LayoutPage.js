@@ -51,10 +51,10 @@ function LayoutPage() {
       ),
     },
     {
-      key: "messages",
+      key: "chat",
       label: (
         <NavLink
-          to='/messages'
+          to='/chat'
           className={({ isActive }) => (isActive ? activeClassName : undefined)}
           onClick={() => (href = window.location.href.split("/"))}
         >

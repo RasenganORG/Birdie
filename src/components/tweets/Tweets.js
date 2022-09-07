@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import AddTweet from "./AddTweet"
 import TweetsList from "./TweetsList"

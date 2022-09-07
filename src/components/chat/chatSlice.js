@@ -1,0 +1,191 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import chatService from "./chatService"
+
+const initialState = {
+  users: [],
+  messages: [],
+  currentUser: null,
+  currentChat: null,
+  currentChatId: null,
+  isError: false,
+  isSuccess: false,
+  isLoading: false,
+  message: "",
+}
+
+export const getUsers = createAsyncThunk(
+  "chat/getUsers",
+  async (userId, thunkAPI) => {
+    try {
+      return await chatService.getUsers(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getChatId = createAsyncThunk(
+  "chat/getChatId",
+  async (data, thunkAPI) => {
+    try {
+      return await chatService.getChatId(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getChatById = createAsyncThunk(
+  "chat/getChatById",
+  async (data, thunkAPI) => {
+    try {
+      return await chatService.getChatById(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getMessages = createAsyncThunk(
+  "chat/getMessages",
+  async (chatId, thunkAPI) => {
+    try {
+      return await chatService.getMessages(chatId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const addMessage = createAsyncThunk(
+  "chat/getMessage",
+  async (data, thunkAPI) => {
+    try {
+      return await chatService.addMessage(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+const chatSlice = createSlice({
+  name: "chat",
+  initialState,
+  reducers: {
+    reset(state) {
+      state.isLoading = false
+      state.isSuccess = false
+      state.isError = false
+      state.message = ""
+    },
+    setMessages(state, action) {
+      console.log("action.payload", action.payload)
+      state.messages = [...state.messages, action.payload]
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUsers.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.users = action.payload
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getChatId.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getChatId.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.currentChatId = action.payload
+      })
+      .addCase(getChatId.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getChatById.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getChatById.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.currentChat = action.payload
+        state.currentUser = state.users.find(
+          (user) => user.id === action.payload.userId
+        )
+      })
+      .addCase(getChatById.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.currentChat = null
+      })
+      .addCase(getMessages.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getMessages.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.messages = action.payload
+      })
+      .addCase(getMessages.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.messages = []
+      })
+      .addCase(addMessage.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(addMessage.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.messages = [...state.messages, action.payload]
+      })
+      .addCase(addMessage.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.messages = []
+      })
+  },
+})
+
+export const { setMessages } = chatSlice.actions
+export default chatSlice.reducer
