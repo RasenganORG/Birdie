@@ -6,7 +6,8 @@ import { Avatar, Input, Button, Form, Row, Col, Typography } from "antd"
 import { addMessage, setMessages } from "./chatSlice"
 import { io } from "socket.io-client"
 import "./Chat.css"
-// import { format } from "timeago.js"
+import "./scrollbar.css"
+import moment from "moment"
 
 const { Text } = Typography
 
@@ -22,6 +23,7 @@ function Conversation() {
   const [sendMessage, setSendMessage] = useState(null)
   const [receivedMessage, setReceivedMessage] = useState(null)
   const socket = useRef()
+  const scroll = useRef()
 
   useEffect(() => {
     socket.current = io("http://localhost:5000")
@@ -48,14 +50,17 @@ function Conversation() {
 
   // sets the message in the state whenever we received a message
   useEffect(() => {
-    const date = new Date()
+    // const date = new Date().toUTCString()
     console.log({ receivedMessage })
     if (receivedMessage !== null && receivedMessage.receiverId === user.id) {
+      const timeNow = moment().unix()
+      console.log({ timeNow })
       const data = {
-        id: "new",
+        id: "now",
         chatId: currentChat.id,
         senderId: currentUser.id,
         text: receivedMessage.message,
+        createdAt: timeNow,
         // createdAt: date,
       }
       dispatch(setMessages(data))
@@ -70,6 +75,17 @@ function Conversation() {
     dispatch(getChatById(data))
     dispatch(getMessages(chatId))
   }, [chatId])
+
+  const scrollToBottom = () => {
+    // eslint-disable-next-line no-unused-expressions
+    scroll.current?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const onFinish = (values) => {
     const data = {
@@ -91,15 +107,11 @@ function Conversation() {
         height: "100%",
       }}
     >
-      {currentChat && (
-        <div>
-          Conversation {chatId} {user.name} {currentChat.name}
-        </div>
-      )}
       {messages.length > 0 && currentUser && (
-        <div className='chatArea'>
+        <div className='chatArea scrollbar'>
           {messages.map((message) => (
             <div
+              ref={scroll}
               className={
                 message.senderId === user.id
                   ? "message sent"
@@ -118,11 +130,20 @@ function Conversation() {
                 <Text
                   type='secondary'
                   style={{
-                    display: "block",
+                    display: "inline",
                     fontSize: "11px",
                   }}
                 >
-                  {/* {format(message.createdAt)} */}
+                  <span
+                    style={{
+                      fontWeight: "300",
+                      display: "inline",
+                      fontSize: "12px",
+                      paddingLeft: "1rem",
+                    }}
+                  >
+                    {moment(message.createdAt, "X").format("HH:mm")}
+                  </span>
                 </Text>
               </p>
             </div>
@@ -132,10 +153,18 @@ function Conversation() {
       {messages.length == 0 && currentUser && (
         <div
           style={{
-            margin: "25% 25%",
+            padding: "25% 25%",
+            textAlign: "center",
           }}
+          className='chatArea'
         >
-          There are no messages in this chat
+          <p
+            style={{
+              textAlign: "center",
+            }}
+          >
+            There are no messages in this chat
+          </p>
         </div>
       )}
       <Form
@@ -147,10 +176,13 @@ function Conversation() {
       >
         <Row gutter={16}>
           <Col span={20}>
-            <Form.Item name={["message", "text"]}>
+            <Form.Item
+              name={["message", "text"]}
+              style={{ paddingLeft: "0", paddingRight: "0" }}
+            >
               <Input
                 placeholder='Type your message'
-                className='message-input-area'
+                className='message message-input-area'
                 rules={[
                   {
                     required: true,

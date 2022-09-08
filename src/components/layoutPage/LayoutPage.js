@@ -154,7 +154,9 @@ function LayoutPage() {
       </Header>
       <Content
         style={{
-          padding: "50px 70px",
+          padding: "50px 0",
+          // padding: "50px 70px",
+          margin: "0 10%",
         }}
       >
         <div className='site-layout-content'>

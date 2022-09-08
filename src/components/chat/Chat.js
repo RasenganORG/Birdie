@@ -116,36 +116,53 @@ function Chat() {
       </Header>
       <Content
         style={{
-          padding: "0 50px",
+          padding: "50px 0",
+          margin: "0 10%",
         }}
       >
         <Layout
           className='site-layout-background'
           style={{
-            padding: "24px 0",
+            padding: "0 0",
           }}
         >
-          <Sider className='site-layout-background' width={200}>
+          <Sider className='site-layout-background' width={300}>
+            {/* <h1
+              style={{
+                color: "black",
+                background: "white",
+                padding: "0",
+                margin: "0 0 0 0",
+              }}
+            >
+              Messages
+            </h1> */}
             <Menu
               mode='inline'
-              defaultSelectedKeys={["1"]}
+              // defaultSelectedKeys={["1"]}
               style={{
                 height: "100%",
+                padding: "6px 0",
               }}
               items={items3}
             />
           </Sider>
           <Content
             style={{
-              padding: "0 24px",
-              minHeight: "90vh",
+              padding: "0 0",
+              // minHeight: "50vh",
+              width: "100vw",
             }}
           >
             <div
+              style={{
+                position: "absolute",
+              }}
               className='site-layout-content'
               style={{
                 padding: "0 24px",
                 minHeight: "90vh",
+                height: "100%",
               }}
             >
               <Outlet />
@@ -153,13 +170,13 @@ function Chat() {
           </Content>
         </Layout>
       </Content>
-      <Footer
+      {/* <Footer
         style={{
           textAlign: "center",
         }}
       >
         Ant Design ©2018 Created by Ant UED
-      </Footer>
+      </Footer> */}
     </Layout>
   )
 }

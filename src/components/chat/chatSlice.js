@@ -82,7 +82,7 @@ export const getMessages = createAsyncThunk(
 )
 
 export const addMessage = createAsyncThunk(
-  "chat/getMessage",
+  "chat/addMessage",
   async (data, thunkAPI) => {
     try {
       return await chatService.addMessage(data)
@@ -175,6 +175,7 @@ const chatSlice = createSlice({
         state.isLoading = true
       })
       .addCase(addMessage.fulfilled, (state, action) => {
+        console.log("action.payload.seconds", action.payload.createdAt)
         state.isLoading = false
         state.isSuccess = true
         state.messages = [...state.messages, action.payload]

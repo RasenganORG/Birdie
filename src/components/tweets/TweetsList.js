@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { useSelector } from "react-redux"
 import { List } from "antd"
 import TweetCommentModal from "./TweetCommentModal"
