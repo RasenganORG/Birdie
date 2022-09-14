@@ -78,6 +78,13 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
 
   return (
     <List.Item
+      style={{
+        // boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+        boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+        // borderRadius: "15px",
+        marginBottom: "7px",
+        padding: "5px",
+      }}
       actions={[
         <a key='list-loadmore-edit'>
           {tweet.isLiked && (

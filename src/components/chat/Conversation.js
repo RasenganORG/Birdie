@@ -96,7 +96,6 @@ function Conversation() {
     const receiverId = currentUser.id
 
     dispatch(addMessage(data))
-
     setSendMessage({ message: values.message.text, receiverId })
     form.resetFields()
   }
@@ -119,6 +118,7 @@ function Conversation() {
               }
             >
               <Avatar
+                size={40}
                 src={
                   message.senderId === user.id
                     ? user.avatar

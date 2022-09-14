@@ -130,9 +130,6 @@ const chatSlice = createSlice({
       console.log("action.payload", action.payload)
       state.messages = [...state.messages, action.payload]
     },
-    addConvo(state, action) {
-      state.users = [...state.users, action.payload]
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -142,7 +139,7 @@ const chatSlice = createSlice({
       .addCase(getUsers.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.users = [...state.users, action.payload]
+        state.users = action.payload
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.isLoading = false
@@ -226,5 +223,5 @@ const chatSlice = createSlice({
   },
 })
 
-export const { setMessages, addConvo } = chatSlice.actions
+export const { setMessages } = chatSlice.actions
 export default chatSlice.reducer

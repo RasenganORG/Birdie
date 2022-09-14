@@ -80,22 +80,32 @@ function Chat() {
     },
   ]
 
-  const items3 = users.map((elem, index) => {
+  const usersList = users.map((elem, index) => {
     return {
       key: elem.chatId,
-      icon: <Avatar src={elem.avatar} />,
+      icon: (
+        <Avatar
+          size={50}
+          src={elem.avatar}
+          onClick={() => navigate(`/profile/${elem.userId}`)}
+        />
+      ),
       label: (
-        <NavLink
-          to={`/chat/${elem.chatId}`}
+        <div
+          style={{
+            paddingLeft: "10px",
+            fontSize: "20px",
+          }}
+          onClick={() => navigate(`/chat/${elem.chatId}`)}
           className={({ isActive }) => (isActive ? activeClassName : undefined)}
         >
           {elem.username}
-        </NavLink>
+        </div>
       ),
     }
   })
 
-  console.log({ items3 })
+  console.log({ usersList })
 
   useEffect(() => {
     dispatch(getUsers(user.id))
@@ -124,6 +134,7 @@ function Chat() {
           className='site-layout-background'
           style={{
             padding: "0 0",
+            boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           }}
         >
           <Sider className='site-layout-background' width={300}>
@@ -144,7 +155,7 @@ function Chat() {
                 height: "100%",
                 padding: "6px 0",
               }}
-              items={items3}
+              items={usersList}
             />
           </Sider>
           <Content

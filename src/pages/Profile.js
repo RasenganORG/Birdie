@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "antd"
 import { LoadingOutlined, MailOutlined } from "@ant-design/icons"
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import {
   getUserById,
   followUser,
@@ -32,7 +32,7 @@ import {
   getTweetsByUserId,
 } from "../components/tweets/tweetsSlice"
 import FollowersList from "../components/users/FollowersList"
-import { addChat, addConvo } from "../components/chat/chatSlice"
+import { addChat } from "../components/chat/chatSlice"
 
 const { TabPane } = Tabs
 
@@ -84,9 +84,11 @@ export default function Profile() {
   }
 
   const handleOnClickChat = () => {
-    // const data = [user.id, userId]
-    // dispatch(addChat(data))
-    dispatch(addConvo({ ...userById, chatId: "new" }))
+    const data = {
+      users: [user.id, userId],
+      createdBy: user.id,
+    }
+    dispatch(addChat(data))
     navigate("/chat")
   }
 

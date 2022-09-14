@@ -159,7 +159,12 @@ function LayoutPage() {
           margin: "0 10%",
         }}
       >
-        <div className='site-layout-content'>
+        <div
+          className='site-layout-content'
+          style={{
+            boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+          }}
+        >
           <Outlet />
         </div>
       </Content>
