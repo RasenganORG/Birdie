@@ -10,9 +10,10 @@ import {
   Col,
   Tabs,
   Spin,
+  Tooltip,
 } from "antd"
-import { LoadingOutlined } from "@ant-design/icons"
-import { Link, useParams } from "react-router-dom"
+import { LoadingOutlined, MailOutlined } from "@ant-design/icons"
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
 import {
   getUserById,
   followUser,
@@ -31,16 +32,19 @@ import {
   getTweetsByUserId,
 } from "../components/tweets/tweetsSlice"
 import FollowersList from "../components/users/FollowersList"
+import { addChat, addConvo } from "../components/chat/chatSlice"
 
 const { TabPane } = Tabs
 
 export default function Profile() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const params = useParams()
   const userId = params.userId
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [userType, setUserType] = useState("")
   const { tweets, retweets } = useSelector((state) => state.tweets)
+  const { isLoadingAddChat, currentChat } = useSelector((state) => state.chats)
   const { userById, nrOfFollowers, nrOfFollowedUsers } = useSelector(
     (state) => state.users
   )
@@ -65,7 +69,10 @@ export default function Profile() {
 
   const handleOnClickFollow = () => {
     if (user.id !== userId) {
-      const data = { userId: user.id, followedUserId: userId }
+      const data = {
+        userId: user.id,
+        followedUserId: userId,
+      }
       if (userById.isFollowed === false) {
         dispatch(followUser(data))
         dispatch(followUserFromTheirProfile())
@@ -75,6 +82,20 @@ export default function Profile() {
       }
     }
   }
+
+  const handleOnClickChat = () => {
+    // const data = [user.id, userId]
+    // dispatch(addChat(data))
+    dispatch(addConvo({ ...userById, chatId: "new" }))
+    navigate("/chat")
+  }
+
+  // useEffect(() => {
+  //   isLoadingAddChat === false &&
+  //     isLoadingAddChat !== null &&
+  //     currentChat !== null &&
+  //     navigate(`/chat/${currentChat.id}`)
+  // }, [isLoadingAddChat])
 
   return (
     <>
@@ -205,6 +226,21 @@ export default function Profile() {
                     }}
                   />
                 </Button>
+                {userById.id !== user.id && (
+                  <Tooltip title='Message' placement='bottom'>
+                    <Button
+                      type='primary'
+                      shape='round'
+                      onClick={handleOnClickChat}
+                      style={{
+                        marginRight: "10px",
+                      }}
+                      className={"btn-white"}
+                    >
+                      <MailOutlined />
+                    </Button>
+                  </Tooltip>
+                )}
                 {userById.id !== user.id && (
                   <Button
                     type='primary'

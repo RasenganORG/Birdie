@@ -150,7 +150,8 @@ function Conversation() {
           ))}
         </div>
       )}
-      {messages.length == 0 && currentUser && (
+      {messages.length == 0 && (
+        // && currentUser
         <div
           style={{
             padding: "25% 25%",

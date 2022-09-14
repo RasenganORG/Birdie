@@ -155,14 +155,12 @@ function Chat() {
             }}
           >
             <div
-              style={{
-                position: "absolute",
-              }}
               className='site-layout-content'
               style={{
                 padding: "0 24px",
                 minHeight: "90vh",
                 height: "100%",
+                // position: "absolute",
               }}
             >
               <Outlet />

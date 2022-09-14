@@ -10,6 +10,7 @@ const initialState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
+  isLoadingAddChat: false,
   message: "",
 }
 
@@ -52,6 +53,23 @@ export const getChatById = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       return await chatService.getChatById(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const addChat = createAsyncThunk(
+  "chat/addChat",
+  async (data, thunkAPI) => {
+    try {
+      return await chatService.addChat(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -112,6 +130,9 @@ const chatSlice = createSlice({
       console.log("action.payload", action.payload)
       state.messages = [...state.messages, action.payload]
     },
+    addConvo(state, action) {
+      state.users = [...state.users, action.payload]
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -121,7 +142,7 @@ const chatSlice = createSlice({
       .addCase(getUsers.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.users = action.payload
+        state.users = [...state.users, action.payload]
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.isLoading = false
@@ -158,6 +179,23 @@ const chatSlice = createSlice({
         state.message = action.payload
         state.currentChat = null
       })
+      .addCase(addChat.pending, (state) => {
+        state.isLoadingAddChat = true
+      })
+      .addCase(addChat.fulfilled, (state, action) => {
+        state.isLoadingAddChat = false
+        state.isSuccess = true
+        state.currentChat = action.payload
+        state.currentUser = state.users.find(
+          (user) => user.id === action.payload.userId
+        )
+      })
+      .addCase(addChat.rejected, (state, action) => {
+        state.isLoadingAddChat = false
+        state.isError = true
+        state.message = action.payload
+        state.currentChat = null
+      })
       .addCase(getMessages.pending, (state) => {
         state.isLoading = true
       })
@@ -188,5 +226,5 @@ const chatSlice = createSlice({
   },
 })
 
-export const { setMessages } = chatSlice.actions
+export const { setMessages, addConvo } = chatSlice.actions
 export default chatSlice.reducer
