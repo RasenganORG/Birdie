@@ -6,7 +6,6 @@ const initialState = {
   messages: [],
   currentUser: null,
   currentChat: null,
-  currentChatId: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -125,6 +124,7 @@ const chatSlice = createSlice({
       state.isSuccess = false
       state.isError = false
       state.message = ""
+      state.currentChat = null
     },
     setMessages(state, action) {
       console.log("action.payload", action.payload)
@@ -152,7 +152,7 @@ const chatSlice = createSlice({
       .addCase(getChatId.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.currentChatId = action.payload
+        state.currentChat = action.payload
       })
       .addCase(getChatId.rejected, (state, action) => {
         state.isLoading = false
@@ -223,5 +223,5 @@ const chatSlice = createSlice({
   },
 })
 
-export const { setMessages } = chatSlice.actions
+export const { setMessages, reset } = chatSlice.actions
 export default chatSlice.reducer

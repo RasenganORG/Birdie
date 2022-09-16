@@ -31,7 +31,7 @@ function Conversation() {
     socket.current.on("get-users", (users) => {
       console.log(users)
     })
-  }, [user])
+  })
 
   // sends a message to the socket whenever we have a message to send
   useEffect(() => {

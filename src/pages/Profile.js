@@ -32,7 +32,12 @@ import {
   getTweetsByUserId,
 } from "../components/tweets/tweetsSlice"
 import FollowersList from "../components/users/FollowersList"
-import { addChat } from "../components/chat/chatSlice"
+import {
+  addChat,
+  getChatById,
+  getChatId,
+  reset,
+} from "../components/chat/chatSlice"
 
 const { TabPane } = Tabs
 
@@ -42,6 +47,7 @@ export default function Profile() {
   const params = useParams()
   const userId = params.userId
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [readyToDispatch, setReadyToDispatch] = useState(false)
   const [userType, setUserType] = useState("")
   const { tweets, retweets } = useSelector((state) => state.tweets)
   const { isLoadingAddChat, currentChat } = useSelector((state) => state.chats)
@@ -60,11 +66,17 @@ export default function Profile() {
       homeUserId: userId,
     }
 
+    const users = {
+      firstUserId: user.id,
+      secondUserId: userId,
+    }
+    dispatch(reset())
     dispatch(getUserById(data))
     dispatch(getTweetsByUserId(userId))
     dispatch(getRetweetsByUserId(userId))
     dispatch(getFollowers(userData))
     dispatch(getFollowedUsers(userData))
+    dispatch(getChatId(users))
   }, [userId])
 
   const handleOnClickFollow = () => {
@@ -88,9 +100,16 @@ export default function Profile() {
       users: [user.id, userId],
       createdBy: user.id,
     }
+    setReadyToDispatch(true)
     dispatch(addChat(data))
-    navigate("/chat")
   }
+
+  useEffect(() => {
+    console.log({ currentChat })
+    readyToDispatch === true &&
+      isLoadingAddChat === false &&
+      navigate(`/chat/${currentChat.id}`)
+  }, [readyToDispatch, isLoadingAddChat])
 
   // useEffect(() => {
   //   isLoadingAddChat === false &&
@@ -122,14 +141,16 @@ export default function Profile() {
           subTitle={`${tweets.length} Tweets`}
           extra={
             <Link to='edit'>
-              <Button type='primary' shape='round'>
-                Edit Profile
-              </Button>
+              {userById.id === user.id && (
+                <Button type='primary' shape='round'>
+                  Edit Profile
+                </Button>
+              )}
             </Link>
           }
         >
           <Row>
-            <Col span={5} style={{ marginRight: "30px" }}>
+            <Col span={5} style={{ marginRight: "5px" }}>
               <div
                 style={{
                   padding: "15%",
@@ -178,14 +199,14 @@ export default function Profile() {
                 style={{
                   borderLeft: "3px solid #40a9ff",
                   height: "100%",
-                  marginRight: "30px",
+                  marginRight: "80px",
                 }}
               ></div>
             </Col>
             <Col span={16}>
               <Image
                 height='30vh'
-                width='59vw'
+                width='95%'
                 src='https://cdn.pixabay.com/photo/2016/10/20/18/35/earth-1756274_960_720.jpg'
               />
               <Row style={{ margin: "20px" }}>

@@ -14,6 +14,7 @@ const getUsers = async (userId) => {
 }
 
 const getChatId = async (data) => {
+  console.log({ data })
   const response = await axios.get(
     `${API_FIND_CHAT_URL}${data.firstUserId}/${data.secondUserId}`
   )
