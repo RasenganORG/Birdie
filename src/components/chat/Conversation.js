@@ -11,7 +11,7 @@ import moment from "moment"
 
 const { Text } = Typography
 
-function Conversation() {
+function Conversation({ socket }) {
   const dispatch = useDispatch()
   const params = useParams()
   const chatId = params.chatId
@@ -22,28 +22,28 @@ function Conversation() {
   const [form] = Form.useForm()
   const [sendMessage, setSendMessage] = useState(null)
   const [receivedMessage, setReceivedMessage] = useState(null)
-  const socket = useRef()
+  // const socket = useRef()
   const scroll = useRef()
 
-  useEffect(() => {
-    socket.current = io("http://localhost:5000")
-    socket.current.emit("new-user-add", user.id)
-    socket.current.on("get-users", (users) => {
-      console.log(users)
-    })
-  })
+  // useEffect(() => {
+  //   socket.current = io("http://localhost:5000")
+  //   socket.current.emit("new-user-add", user.id)
+  //   socket.current.on("get-users", (users) => {
+  //     console.log(users)
+  //   })
+  // })
 
   // sends a message to the socket whenever we have a message to send
   useEffect(() => {
     if (sendMessage != null) {
-      socket.current.emit("send-message", sendMessage)
+      socket.emit("send-message", sendMessage)
       console.log("sending message", sendMessage)
     }
   }, [sendMessage])
 
   // receives the message sent from the other user
   useEffect(() => {
-    socket.current.on("receive-message", (data) => {
+    socket.on("receive-message", (data) => {
       setReceivedMessage(data)
     })
   }, [])

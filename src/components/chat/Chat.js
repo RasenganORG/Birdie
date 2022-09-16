@@ -1,18 +1,19 @@
 import React, { useEffect } from "react"
 import "antd/dist/antd.css"
-import { Layout, Menu, Avatar, Button } from "antd"
+import { Layout, Menu, Avatar, Button, Spin } from "antd"
 import { useSelector, useDispatch } from "react-redux"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { logout } from "/home/ana/Documents/GitHub/Birdie/src/components/auth/authSlice.js"
-import { getUsers, getChatId } from "./chatSlice"
+import { getUsers } from "./chatSlice"
+import { LoadingOutlined } from "@ant-design/icons"
 
 const { Header, Content, Footer, Sider } = Layout
 let activeClassName = "underline"
 
-function Chat() {
+function Chat({ socket }) {
   let href = window.location.href.split("/")
   const { user } = useSelector((state) => state.auth)
-  const { users } = useSelector((state) => state.chats)
+  const { users, currentChat, isLoading } = useSelector((state) => state.chats)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const menuItems = [
@@ -71,6 +72,7 @@ function Chat() {
           }}
           onClick={() => {
             dispatch(logout())
+            socket.disconnect()
             navigate("/login")
           }}
         >
@@ -137,8 +139,9 @@ function Chat() {
             boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           }}
         >
-          <Sider className='site-layout-background' width={300}>
-            {/* <h1
+          {!isLoading && (
+            <Sider className='site-layout-background' width={300}>
+              {/* <h1
               style={{
                 color: "black",
                 background: "white",
@@ -148,16 +151,17 @@ function Chat() {
             >
               Messages
             </h1> */}
-            <Menu
-              mode='inline'
-              // defaultSelectedKeys={["1"]}
-              style={{
-                height: "100%",
-                padding: "6px 0",
-              }}
-              items={usersList}
-            />
-          </Sider>
+              <Menu
+                mode='inline'
+                selectedKeys={currentChat.chatId}
+                style={{
+                  height: "100%",
+                  padding: "6px 0",
+                }}
+                items={usersList}
+              />
+            </Sider>
+          )}
           <Content
             style={{
               padding: "0 0",

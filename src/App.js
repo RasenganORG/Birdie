@@ -13,6 +13,9 @@ import PrivateRoute from "./components/auth/PrivateRoute"
 import Search from "./pages/Search"
 import Chat from "./components/chat/Chat"
 import Conversation from "./components/chat/Conversation"
+import socketIO from "socket.io-client"
+
+const socket = socketIO.connect("http://localhost:5000")
 
 function App() {
   return (
@@ -22,7 +25,7 @@ function App() {
           path='/'
           element={
             <PrivateRoute>
-              <LayoutPage />
+              <LayoutPage socket={socket} />
             </PrivateRoute>
           }
         >
@@ -33,10 +36,10 @@ function App() {
           <Route path='tweets/:tweetId' element={<TweetItem />} />
           <Route path='search' element={<Search />} />
         </Route>
-        <Route path='chat' element={<Chat />}>
-          <Route path=':chatId' element={<Conversation />} />
+        <Route path='chat' element={<Chat socket={socket} />}>
+          <Route path=':chatId' element={<Conversation socket={socket} />} />
         </Route>
-        <Route path='login' element={<Login />} />
+        <Route path='login' element={<Login socket={socket} />} />
         <Route path='register' element={<Register />} />
         <Route path='*' element={<Error />} />
       </Routes>

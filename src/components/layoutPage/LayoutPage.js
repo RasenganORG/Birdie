@@ -11,7 +11,7 @@ let activeClassName = "underline"
 const { Header, Content, Footer } = Layout
 const { Search } = Input
 
-function LayoutPage() {
+function LayoutPage({ socket }) {
   const { user } = useSelector((state) => state.auth)
   const [searchItem, setSearchItem] = useState("")
   const navigate = useNavigate()
@@ -74,6 +74,7 @@ function LayoutPage() {
           }}
           onClick={() => {
             dispatch(logout())
+            socket.disconnect()
             navigate("/login")
           }}
         >

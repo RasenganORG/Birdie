@@ -37,7 +37,6 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
     }
     dispatch(
       setIsLiked({
-        index: index,
         value: value,
         tweetId: tweet.id,
         type: tweet.isRetweet === true ? "retweet" : "tweet",

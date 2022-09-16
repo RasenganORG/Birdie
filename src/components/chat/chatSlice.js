@@ -5,7 +5,7 @@ const initialState = {
   users: [],
   messages: [],
   currentUser: null,
-  currentChat: null,
+  currentChat: {},
   isError: false,
   isSuccess: false,
   isLoading: false,

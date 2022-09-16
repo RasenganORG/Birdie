@@ -16,7 +16,7 @@ const antIcon = (
   />
 )
 
-export default function Login() {
+export default function Login({ socket }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -36,6 +36,10 @@ export default function Login() {
     }
     if (isSuccess || user) {
       navigate("/")
+      socket.emit("new-user-add", user.id)
+      socket.on("get-users", (users) => {
+        console.log(users)
+      })
     }
     dispatch(authActions.reset())
   }, [user, isError, isSuccess, message, navigate, dispatch])
