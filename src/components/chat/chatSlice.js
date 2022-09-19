@@ -10,6 +10,8 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   isLoadingAddChat: false,
+  isLoadingUsers: false,
+  isLoadingConversation: false,
   message: "",
 }
 
@@ -125,6 +127,8 @@ const chatSlice = createSlice({
       state.isError = false
       state.message = ""
       state.currentChat = null
+      state.isLoadingUsers = false
+      state.isLoadingConversation = false
     },
     setMessages(state, action) {
       console.log("action.payload", action.payload)
@@ -134,15 +138,15 @@ const chatSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.pending, (state) => {
-        state.isLoading = true
+        state.isLoadingUsers = true
       })
       .addCase(getUsers.fulfilled, (state, action) => {
-        state.isLoading = false
+        state.isLoadingUsers = false
         state.isSuccess = true
         state.users = action.payload
       })
       .addCase(getUsers.rejected, (state, action) => {
-        state.isLoading = false
+        state.isLoadingUsers = false
         state.isError = true
         state.message = action.payload
       })
@@ -160,10 +164,10 @@ const chatSlice = createSlice({
         state.message = action.payload
       })
       .addCase(getChatById.pending, (state) => {
-        state.isLoading = true
+        state.isLoadingConversation = true
       })
       .addCase(getChatById.fulfilled, (state, action) => {
-        state.isLoading = false
+        state.isLoadingConversation = false
         state.isSuccess = true
         state.currentChat = action.payload
         state.currentUser = state.users.find(
@@ -171,7 +175,7 @@ const chatSlice = createSlice({
         )
       })
       .addCase(getChatById.rejected, (state, action) => {
-        state.isLoading = false
+        state.isLoadingConversation = false
         state.isError = true
         state.message = action.payload
         state.currentChat = null

@@ -36,10 +36,6 @@ export default function Login({ socket }) {
     }
     if (isSuccess || user) {
       navigate("/")
-      socket.emit("new-user-add", user.id)
-      socket.on("get-users", (users) => {
-        console.log(users)
-      })
     }
     dispatch(authActions.reset())
   }, [user, isError, isSuccess, message, navigate, dispatch])
@@ -93,7 +89,6 @@ export default function Login({ socket }) {
             <Form.Item name='remember' valuePropName='checked' noStyle>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-
             {/* <a className='login-form-forgot' href=''>
               Forgot password
             </a> */}

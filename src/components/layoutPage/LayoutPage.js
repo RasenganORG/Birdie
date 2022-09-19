@@ -74,8 +74,9 @@ function LayoutPage({ socket }) {
           }}
           onClick={() => {
             dispatch(logout())
-            socket.disconnect()
+            // socket.disconnect()
             navigate("/login")
+            // window.location.reload()
           }}
         >
           Log Out
@@ -156,8 +157,8 @@ function LayoutPage({ socket }) {
       <Content
         style={{
           padding: "50px 0",
-          // padding: "50px 70px",
           margin: "0 10%",
+          minHeight: "100vh",
         }}
       >
         <div

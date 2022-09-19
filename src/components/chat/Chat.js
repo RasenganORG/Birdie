@@ -7,13 +7,15 @@ import { logout } from "/home/ana/Documents/GitHub/Birdie/src/components/auth/au
 import { getUsers } from "./chatSlice"
 import { LoadingOutlined } from "@ant-design/icons"
 
-const { Header, Content, Footer, Sider } = Layout
+const { Header, Content, Sider } = Layout
 let activeClassName = "underline"
 
 function Chat({ socket }) {
   let href = window.location.href.split("/")
   const { user } = useSelector((state) => state.auth)
-  const { users, currentChat, isLoading } = useSelector((state) => state.chats)
+  const { users, currentChat, isLoadingUsers } = useSelector(
+    (state) => state.chats
+  )
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const menuItems = [
@@ -72,7 +74,6 @@ function Chat({ socket }) {
           }}
           onClick={() => {
             dispatch(logout())
-            socket.disconnect()
             navigate("/login")
           }}
         >
@@ -139,18 +140,27 @@ function Chat({ socket }) {
             boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           }}
         >
-          {!isLoading && (
-            <Sider className='site-layout-background' width={300}>
-              {/* <h1
-              style={{
-                color: "black",
-                background: "white",
-                padding: "0",
-                margin: "0 0 0 0",
-              }}
-            >
-              Messages
-            </h1> */}
+          {/* {!isLoading && ( */}
+          <Sider className='site-layout-background' width={300}>
+            {isLoadingUsers && (
+              <Spin
+                style={{
+                  width: "300px",
+                  height: "100%",
+                  paddingTop: "50%",
+                  backgroundColor: "white",
+                }}
+                indicator={
+                  <LoadingOutlined
+                    style={{
+                      fontSize: 40,
+                    }}
+                    spin
+                  />
+                }
+              />
+            )}
+            {!isLoadingUsers && (
               <Menu
                 mode='inline'
                 selectedKeys={currentChat.chatId}
@@ -158,14 +168,13 @@ function Chat({ socket }) {
                   height: "100%",
                   padding: "6px 0",
                 }}
-                items={usersList}
+                items={isLoadingUsers === true ? [] : usersList}
               />
-            </Sider>
-          )}
+            )}
+          </Sider>
           <Content
             style={{
               padding: "0 0",
-              // minHeight: "50vh",
               width: "100vw",
             }}
           >
@@ -175,7 +184,6 @@ function Chat({ socket }) {
                 padding: "0 24px",
                 minHeight: "90vh",
                 height: "100%",
-                // position: "absolute",
               }}
             >
               <Outlet />
@@ -183,13 +191,6 @@ function Chat({ socket }) {
           </Content>
         </Layout>
       </Content>
-      {/* <Footer
-        style={{
-          textAlign: "center",
-        }}
-      >
-        Ant Design ©2018 Created by Ant UED
-      </Footer> */}
     </Layout>
   )
 }

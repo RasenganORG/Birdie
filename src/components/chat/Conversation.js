@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getChatById, getMessages } from "./chatSlice"
-import { Avatar, Input, Button, Form, Row, Col, Typography } from "antd"
+import { Avatar, Input, Button, Form, Row, Col, Typography, Spin } from "antd"
 import { addMessage, setMessages } from "./chatSlice"
-import { io } from "socket.io-client"
 import "./Chat.css"
 import "./scrollbar.css"
 import moment from "moment"
+import { LoadingOutlined } from "@ant-design/icons"
 
 const { Text } = Typography
 
@@ -16,22 +16,19 @@ function Conversation({ socket }) {
   const params = useParams()
   const chatId = params.chatId
   const { user } = useSelector((state) => state.auth)
-  const { currentChat, messages, currentUser } = useSelector(
-    (state) => state.chats
-  )
+  const { currentChat, messages, currentUser, isLoadingConversation } =
+    useSelector((state) => state.chats)
   const [form] = Form.useForm()
   const [sendMessage, setSendMessage] = useState(null)
   const [receivedMessage, setReceivedMessage] = useState(null)
-  // const socket = useRef()
   const scroll = useRef()
 
-  // useEffect(() => {
-  //   socket.current = io("http://localhost:5000")
-  //   socket.current.emit("new-user-add", user.id)
-  //   socket.current.on("get-users", (users) => {
-  //     console.log(users)
-  //   })
-  // })
+  useEffect(() => {
+    socket.emit("new-user-add", user.id)
+    socket.on("get-users", (users) => {
+      console.log(users)
+    })
+  })
 
   // sends a message to the socket whenever we have a message to send
   useEffect(() => {
@@ -52,7 +49,11 @@ function Conversation({ socket }) {
   useEffect(() => {
     // const date = new Date().toUTCString()
     console.log({ receivedMessage })
-    if (receivedMessage !== null && receivedMessage.receiverId === user.id) {
+    if (
+      receivedMessage !== null &&
+      receivedMessage.receiverId === user.id &&
+      receivedMessage.senderId === currentUser.userId
+    ) {
       const timeNow = moment().unix()
       console.log({ timeNow })
       const data = {
@@ -61,7 +62,6 @@ function Conversation({ socket }) {
         senderId: currentUser.id,
         text: receivedMessage.message,
         createdAt: timeNow,
-        // createdAt: date,
       }
       dispatch(setMessages(data))
     }
@@ -93,10 +93,14 @@ function Conversation({ socket }) {
       text: values.message.text,
       chatId,
     }
-    const receiverId = currentUser.id
+    const receiverId = currentChat.userId
 
     dispatch(addMessage(data))
-    setSendMessage({ message: values.message.text, receiverId })
+    setSendMessage({
+      message: values.message.text,
+      receiverId,
+      senderId: user.id,
+    })
     form.resetFields()
   }
 
@@ -106,7 +110,22 @@ function Conversation({ socket }) {
         height: "100%",
       }}
     >
-      {messages.length > 0 && currentUser && (
+      {isLoadingConversation && (
+        <Spin
+          style={{
+            paddingTop: "25%",
+          }}
+          indicator={
+            <LoadingOutlined
+              style={{
+                fontSize: 40,
+              }}
+              spin
+            />
+          }
+        />
+      )}
+      {messages.length > 0 && currentChat && !isLoadingConversation && (
         <div className='chatArea scrollbar'>
           {messages.map((message) => (
             <div
@@ -122,7 +141,7 @@ function Conversation({ socket }) {
                 src={
                   message.senderId === user.id
                     ? user.avatar
-                    : currentUser.avatar
+                    : currentChat.avatar
                 }
               />
               <p>
@@ -151,7 +170,6 @@ function Conversation({ socket }) {
         </div>
       )}
       {messages.length == 0 && (
-        // && currentUser
         <div
           style={{
             padding: "25% 25%",
@@ -168,42 +186,44 @@ function Conversation({ socket }) {
           </p>
         </div>
       )}
-      <Form
-        form={form}
-        name='addMessage'
-        initialValues={{ newMessage: "" }}
-        onFinish={onFinish}
-        className='message-input'
-      >
-        <Row gutter={16}>
-          <Col span={20}>
-            <Form.Item
-              name={["message", "text"]}
-              style={{ paddingLeft: "0", paddingRight: "0" }}
-            >
-              <Input
-                placeholder='Type your message'
-                className='message message-input-area'
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter a message.",
-                    type: "text",
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Col>
+      {!isLoadingConversation && (
+        <Form
+          form={form}
+          name='addMessage'
+          initialValues={{ newMessage: "" }}
+          onFinish={onFinish}
+          className='message-input'
+        >
+          <Row gutter={16}>
+            <Col span={20}>
+              <Form.Item
+                name={["message", "text"]}
+                style={{ paddingLeft: "0", paddingRight: "0" }}
+              >
+                <Input
+                  placeholder='Type your message'
+                  className='message message-input-area'
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter a message.",
+                      type: "text",
+                    },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
 
-          <Col span={1}>
-            <Form.Item>
-              <Button htmlType='submit' shape='round' type='primary'>
-                Send
-              </Button>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+            <Col span={1}>
+              <Form.Item>
+                <Button htmlType='submit' shape='round' type='primary'>
+                  Send
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      )}
     </div>
   )
 }

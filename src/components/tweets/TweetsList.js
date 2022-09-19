@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react"
 import { useSelector } from "react-redux"
-import { List } from "antd"
+import { List, BackTop } from "antd"
 import TweetCommentModal from "./TweetCommentModal"
 import Tweet from "./Tweet"
 
@@ -40,6 +40,7 @@ function TweetsList({ tweets }) {
           handleCancel={handleCancel}
         />
       )}
+      <BackTop />
     </>
   )
 }

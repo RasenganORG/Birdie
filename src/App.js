@@ -1,4 +1,4 @@
-import React from "react"
+import React, { createContext } from "react"
 import { Routes, Route } from "react-router-dom"
 import LayoutPage from "./components/layoutPage/LayoutPage"
 import Error from "./pages/Error"
@@ -15,34 +15,46 @@ import Chat from "./components/chat/Chat"
 import Conversation from "./components/chat/Conversation"
 import socketIO from "socket.io-client"
 
+const SocketContext = createContext()
 const socket = socketIO.connect("http://localhost:5000")
 
 function App() {
   return (
     <div className='App'>
-      <Routes>
-        <Route
-          path='/'
-          element={
-            <PrivateRoute>
-              <LayoutPage socket={socket} />
-            </PrivateRoute>
-          }
-        >
-          <Route index element={<Tweets />} />
-          <Route path='tweets' element={<Tweets />} />
-          <Route path='profile/:userId/edit' element={<EditProfile />} />
-          <Route path='profile/:userId' element={<Profile />} />
-          <Route path='tweets/:tweetId' element={<TweetItem />} />
-          <Route path='search' element={<Search />} />
-        </Route>
-        <Route path='chat' element={<Chat socket={socket} />}>
-          <Route path=':chatId' element={<Conversation socket={socket} />} />
-        </Route>
-        <Route path='login' element={<Login socket={socket} />} />
-        <Route path='register' element={<Register />} />
-        <Route path='*' element={<Error />} />
-      </Routes>
+      <SocketContext.Provider value={socket}>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <PrivateRoute>
+                <LayoutPage socket={socket} />
+              </PrivateRoute>
+            }
+          >
+            <Route index element={<Tweets socket={socket} />} />
+            <Route path='tweets' element={<Tweets socket={socket} />} />
+            <Route
+              path='profile/:userId/edit'
+              element={<EditProfile socket={socket} />}
+            />
+            <Route
+              path='profile/:userId'
+              element={<Profile socket={socket} />}
+            />
+            <Route
+              path='tweets/:tweetId'
+              element={<TweetItem socket={socket} />}
+            />
+            <Route path='search' element={<Search socket={socket} />} />
+          </Route>
+          <Route path='chat' element={<Chat socket={socket} />}>
+            <Route path=':chatId' element={<Conversation socket={socket} />} />
+          </Route>
+          <Route path='login' element={<Login socket={socket} />} />
+          <Route path='register' element={<Register socket={socket} />} />
+          <Route path='*' element={<Error socket={socket} />} />
+        </Routes>
+      </SocketContext.Provider>
     </div>
   )
 }
