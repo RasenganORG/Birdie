@@ -20,8 +20,6 @@ import {
   unfollowUser,
   getFollowers,
   getFollowedUsers,
-  followUserFromTheirProfile,
-  unfollowUserFromTheirProfile,
 } from "/home/ana/Documents/GitHub/Birdie/src/components/users/usersSlice.js"
 import "antd/dist/antd.min.css"
 import "../index.css"
@@ -32,12 +30,7 @@ import {
   getTweetsByUserId,
 } from "../components/tweets/tweetsSlice"
 import FollowersList from "../components/users/FollowersList"
-import {
-  addChat,
-  getChatById,
-  getChatId,
-  reset,
-} from "../components/chat/chatSlice"
+import { addChat, getChatId, reset } from "../components/chat/chatSlice"
 
 const { TabPane } = Tabs
 
@@ -47,11 +40,11 @@ export default function Profile() {
   const params = useParams()
   const userId = params.userId
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [readyToDispatch, setReadyToDispatch] = useState(false)
+  const [initiateChat, setInitiateChat] = useState(false)
   const [userType, setUserType] = useState("")
   const { tweets, retweets } = useSelector((state) => state.tweets)
   const { isLoadingAddChat, currentChat } = useSelector((state) => state.chats)
-  const { userById, nrOfFollowers, nrOfFollowedUsers } = useSelector(
+  const { userData, nrOfFollowers, nrOfFollowedUsers } = useSelector(
     (state) => state.users
   )
   const { user } = useSelector((state) => state.auth)
@@ -79,50 +72,40 @@ export default function Profile() {
     dispatch(getChatId(users))
   }, [userId])
 
-  const handleOnClickFollow = () => {
+  const handleClickFollow = () => {
     if (user.id !== userId) {
       const data = {
         userId: user.id,
         followedUserId: userId,
       }
-      if (userById.isFollowed === false) {
+      if (userData.isFollowed === false) {
         dispatch(followUser(data))
-        dispatch(followUserFromTheirProfile())
       } else {
         dispatch(unfollowUser(data))
-        dispatch(unfollowUserFromTheirProfile())
       }
     }
   }
 
-  const handleOnClickChat = () => {
+  const handleClickChat = () => {
     const data = {
       users: [user.id, userId],
       createdBy: user.id,
     }
-    setReadyToDispatch(true)
+    setInitiateChat(true)
     dispatch(addChat(data))
   }
 
-  useEffect(() => {
-    console.log({ currentChat })
-    readyToDispatch === true &&
-      isLoadingAddChat === false &&
-      navigate(`/chat/${currentChat.id}`)
-  }, [readyToDispatch, isLoadingAddChat])
+  const readyToChat = initiateChat === true && isLoadingAddChat === false
 
-  // useEffect(() => {
-  //   isLoadingAddChat === false &&
-  //     isLoadingAddChat !== null &&
-  //     currentChat !== null &&
-  //     navigate(`/chat/${currentChat.id}`)
-  // }, [isLoadingAddChat])
+  useEffect(() => {
+    readyToChat && navigate(`/chat/${currentChat.id}`)
+  }, [readyToChat])
 
   return (
     <>
       {(nrOfFollowedUsers === null ||
         nrOfFollowers === null ||
-        userById === null) && (
+        userData === null) && (
         <Spin
           indicator={
             <LoadingOutlined
@@ -134,14 +117,14 @@ export default function Profile() {
           }
         />
       )}
-      {userById && nrOfFollowedUsers !== null && (
+      {userData && nrOfFollowedUsers !== null && (
         <PageHeader
           onBack={() => window.history.back()}
-          title={userById.name}
+          title={userData.name}
           subTitle={`${tweets.length} Tweets`}
           extra={
             <Link to='edit'>
-              {userById.id === user.id && (
+              {userData.id === user.id && (
                 <Button type='primary' shape='round'>
                   Edit Profile
                 </Button>
@@ -169,28 +152,28 @@ export default function Profile() {
                     xl: 80,
                     xxl: 90,
                   }}
-                  src={userById.avatar}
+                  src={userData.avatar}
                 />
                 <h2
                   style={{
                     textAlign: "start",
                   }}
                 >
-                  {userById.name}
+                  {userData.name}
                 </h2>
                 <p
                   style={{
                     textAlign: "start",
                   }}
                 >
-                  @{userById.username}
+                  @{userData.username}
                 </p>
                 <p
                   style={{
                     textAlign: "justify",
                   }}
                 >
-                  {userById.bio}
+                  {userData.bio}
                 </p>
               </div>
             </Col>
@@ -249,31 +232,32 @@ export default function Profile() {
                     }}
                   />
                 </Button>
-                {userById.id !== user.id && (
+                {userData.id !== user.id && (
                   <Tooltip title='Message' placement='bottom'>
                     <Button
                       type='primary'
                       shape='round'
-                      onClick={handleOnClickChat}
+                      onClick={handleClickChat}
                       style={{
                         marginRight: "10px",
                       }}
                       className={"btn-white"}
+                      loading={initiateChat}
                     >
                       <MailOutlined />
                     </Button>
                   </Tooltip>
                 )}
-                {userById.id !== user.id && (
+                {userData.id !== user.id && (
                   <Button
                     type='primary'
                     shape='round'
-                    onClick={handleOnClickFollow}
+                    onClick={handleClickFollow}
                     className={
-                      userById.isFollowed === false ? "btn-white" : "btn-blue"
+                      userData.isFollowed === false ? "btn-white" : "btn-blue"
                     }
                   >
-                    {userById.isFollowed === false ? (
+                    {userData.isFollowed === false ? (
                       <>Follow</>
                     ) : (
                       <>Following</>

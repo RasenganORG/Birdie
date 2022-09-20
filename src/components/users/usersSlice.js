@@ -7,7 +7,7 @@ const initialState = {
   nrOfFollowers: null,
   followedUsers: [],
   nrOfFollowedUsers: null,
-  userById: null,
+  userData: null,
   usersById: [],
   searchedUsers: [],
   isError: false,
@@ -174,21 +174,12 @@ const usersSlice = createSlice({
       state.isError = false
       state.message = ""
     },
-    followUserFromTheirProfile(state) {
-      state.userById.isFollowed = !state.userById.isFollowed
-      state.nrOfFollowers++
-    },
-    unfollowUserFromTheirProfile(state) {
-      state.userById.isFollowed = !state.userById.isFollowed
-      state.nrOfFollowers--
-    },
     toggleFollow(state, action) {
       action.payload.userType === "followers"
-        ? (state.followers[action.payload.index].isFollowed = !state.followers[
-            action.payload.index
-          ].isFollowed)
-        : (state.followedUsers[action.payload.index].isFollowed = !state
-            .followedUsers[action.payload.index].isFollowed)
+        ? (state.followers[action.payload.index].isFollowed =
+            !state.followers[action.payload.index].isFollowed)
+        : (state.followedUsers[action.payload.index].isFollowed =
+            !state.followedUsers[action.payload.index].isFollowed)
     },
   },
   extraReducers: (builder) => {
@@ -227,13 +218,13 @@ const usersSlice = createSlice({
       .addCase(getUserById.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.userById = action.payload
+        state.userData = action.payload
       })
       .addCase(getUserById.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.userById = null
+        state.userData = null
       })
       .addCase(getUsersById.pending, (state) => {
         state.isLoading = true
@@ -263,6 +254,8 @@ const usersSlice = createSlice({
       })
       .addCase(followUser.pending, (state) => {
         state.isLoading = true
+        state.userData.isFollowed = !state.userData.isFollowed
+        state.nrOfFollowers++
       })
       .addCase(followUser.fulfilled, (state, action) => {
         state.isLoading = false
@@ -275,6 +268,8 @@ const usersSlice = createSlice({
       })
       .addCase(unfollowUser.pending, (state) => {
         state.isLoading = true
+        state.userData.isFollowed = !state.userData.isFollowed
+        state.nrOfFollowers--
       })
       .addCase(unfollowUser.fulfilled, (state, action) => {
         state.isLoading = false
@@ -316,9 +311,5 @@ const usersSlice = createSlice({
   },
 })
 
-export const {
-  followUserFromTheirProfile,
-  unfollowUserFromTheirProfile,
-  toggleFollow,
-} = usersSlice.actions
+export const { toggleFollow } = usersSlice.actions
 export default usersSlice.reducer

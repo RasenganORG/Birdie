@@ -14,7 +14,7 @@ function EditProfile() {
   const dispatch = useDispatch()
   const params = useParams()
   const userId = params.userId
-  const { userById } = useSelector((state) => state.users)
+  const { userData } = useSelector((state) => state.users)
   const { user } = useSelector((state) => state.auth)
   useEffect(() => {
     const data = {
@@ -35,15 +35,15 @@ function EditProfile() {
 
   return (
     <>
-      {userById && (
+      {userData && (
         <Form
           style={{ margin: "0 25%" }}
           name='editUser'
           initialValues={{
-            avatar: userById.avatar,
-            background: userById.background,
-            name: userById.name,
-            bio: userById.bio,
+            avatar: userData.avatar,
+            background: userData.background,
+            name: userData.name,
+            bio: userData.bio,
           }}
           onFinish={handleFinish}
           onFinishFailed={onFinishFailed}
