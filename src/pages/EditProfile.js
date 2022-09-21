@@ -29,9 +29,7 @@ function EditProfile() {
     navigate(`/profile/${userId}`)
   }
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo)
-  }
+  const onFinishFailed = (errorInfo) => {}
 
   return (
     <>

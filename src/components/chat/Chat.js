@@ -108,13 +108,9 @@ function Chat({ socket }) {
     }
   })
 
-  console.log({ usersList })
-
   useEffect(() => {
     dispatch(getUsers(user.id))
   }, [])
-
-  console.log({ users })
 
   return (
     <Layout>

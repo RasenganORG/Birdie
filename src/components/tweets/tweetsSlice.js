@@ -378,8 +378,14 @@ const tweetsSlice = createSlice({
       .addCase(addTweet.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        // if (action.payload.parentId === null)
-        state.tweets = [action.payload, ...state.tweets]
+        if (state.currentTweet === null && action.payload.parentId === null)
+          state.tweets = [action.payload, ...state.tweets]
+        else {
+          if (state.currentTweet !== null) {
+            if (state.currentTweet.id === action.payload.parentId)
+              state.tweets = [action.payload, ...state.tweets]
+          }
+        }
       })
       .addCase(addTweet.rejected, (state, action) => {
         state.isLoading = false

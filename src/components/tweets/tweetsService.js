@@ -29,14 +29,12 @@ const getTweetById = async (data) => {
 
 const getTweetsByUserId = async (userId) => {
   const response = await axios.get(`${API_TWEETS_BY_USER_ID_URL}${userId}`)
-  console.log("response.data", response.data)
 
   return response.data
 }
 
 const getTweetsForHome = async (userId) => {
   const response = await axios.get(`${API_TWEETS_HOME_URL}${userId}`)
-  console.log("response.data tweets for home", response.data)
 
   return response.data
 }
@@ -55,7 +53,6 @@ const addTweet = async (tweetData) => {
     },
   })
 
-  console.log("add tweet response.data", response.data)
   return response.data
 }
 
@@ -67,7 +64,6 @@ const addRetweet = async (data) => {
     },
   })
 
-  console.log("response.data", response.data)
   return response.data
 }
 
@@ -86,14 +82,12 @@ const deleteRetweet = async (data) => {
 const getRetweetsForHome = async (userId) => {
   const response = await axios.get(`${API_RETWEETS_URL}${userId}`)
 
-  console.log("response.data", response.data)
   return response.data
 }
 
 const getRetweetsByUserId = async (userId) => {
   const response = await axios.get(`${API_GET_RETWEETS_URL}${userId}`)
 
-  console.log("retweets", response.data)
   return response.data
 }
 

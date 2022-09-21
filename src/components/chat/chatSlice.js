@@ -131,7 +131,6 @@ const chatSlice = createSlice({
       state.isLoadingConversation = false
     },
     setMessages(state, action) {
-      console.log("action.payload", action.payload)
       state.messages = [...state.messages, action.payload]
     },
   },
@@ -144,6 +143,9 @@ const chatSlice = createSlice({
         state.isLoadingUsers = false
         state.isSuccess = true
         state.users = action.payload
+        state.currentUser = state.users.find(
+          (user) => user.id === state.currentChat.userId
+        )
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.isLoadingUsers = false
@@ -214,7 +216,6 @@ const chatSlice = createSlice({
         state.isLoading = true
       })
       .addCase(addMessage.fulfilled, (state, action) => {
-        console.log("action.payload.seconds", action.payload.createdAt)
         state.isLoading = false
         state.isSuccess = true
         state.messages = [...state.messages, action.payload]

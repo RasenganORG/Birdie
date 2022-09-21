@@ -56,7 +56,7 @@ export default function Profile() {
     }
     const userData = {
       userId: userId,
-      homeUserId: userId,
+      homeUserId: user.id,
     }
 
     const users = {

@@ -25,16 +25,13 @@ function Conversation({ socket }) {
 
   useEffect(() => {
     socket.emit("new-user-add", user.id)
-    socket.on("get-users", (users) => {
-      console.log(users)
-    })
+    socket.on("get-users", (users) => {})
   })
 
   // sends a message to the socket whenever we have a message to send
   useEffect(() => {
     if (sendMessage != null) {
       socket.emit("send-message", sendMessage)
-      console.log("sending message", sendMessage)
     }
   }, [sendMessage])
 
@@ -48,14 +45,14 @@ function Conversation({ socket }) {
   // sets the message in the state whenever we received a message
   useEffect(() => {
     // const date = new Date().toUTCString()
-    console.log({ receivedMessage })
+
     if (
       receivedMessage !== null &&
       receivedMessage.receiverId === user.id &&
       receivedMessage.senderId === currentUser.userId
     ) {
       const timeNow = moment().unix()
-      console.log({ timeNow })
+
       const data = {
         id: "now",
         chatId: currentChat.id,

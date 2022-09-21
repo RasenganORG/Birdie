@@ -105,7 +105,14 @@ function FollowersList({
                     }
                     onClick={() => handleOnClickFollow(user, index)}
                   >
-                    {user.isFollowed === false ? <>Follow</> : <>Following</>}
+                    {/* {user.isFollowed === false ? <>Follow</> : <>Following</>} */}
+                    {user.isFollowed === true ? (
+                      <>Following</>
+                    ) : user.followsHomeUser === true ? (
+                      <>Follow back</>
+                    ) : (
+                      <>Follow</>
+                    )}
                   </Button>
                 )}
                 {userType === "followers" && homeUserId != user.id && (
@@ -116,10 +123,12 @@ function FollowersList({
                     }
                     onClick={() => handleOnClickFollow(user, index)}
                   >
-                    {user.isFollowed === false ? (
+                    {user.isFollowed === true ? (
+                      <>Following</>
+                    ) : user.followsHomeUser === true ? (
                       <>Follow back</>
                     ) : (
-                      <>Following</>
+                      <>Follow</>
                     )}
                   </Button>
                 )}
