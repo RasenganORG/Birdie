@@ -159,7 +159,7 @@ function Chat({ socket }) {
             {!isLoadingUsers && (
               <Menu
                 mode='inline'
-                selectedKeys={currentChat.chatId}
+                selectedKeys={currentChat?.chatId}
                 style={{
                   height: "100%",
                   padding: "6px 0",

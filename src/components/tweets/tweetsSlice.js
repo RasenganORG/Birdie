@@ -370,7 +370,7 @@ const tweetsSlice = createSlice({
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.tweets = null
+        state.tweets = []
       })
       .addCase(addTweet.pending, (state) => {
         state.isLoading = true
@@ -548,7 +548,7 @@ const tweetsSlice = createSlice({
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.tweets = null
+        state.tweets = []
       })
       .addCase(getRetweetsForHome.pending, (state) => {
         state.isLoading = true
@@ -564,7 +564,7 @@ const tweetsSlice = createSlice({
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.retweets = null
+        state.retweets = []
       })
       .addCase(getRetweetsByUserId.pending, (state) => {
         state.isLoading = true

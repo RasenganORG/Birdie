@@ -134,7 +134,11 @@ function Conversation({ socket }) {
               }
             >
               <Avatar
-                size={40}
+                // size={{
+                //   xs: 20,
+                //   sm: 32,
+                //   md: 40,
+                // }}
                 src={
                   message.senderId === user.id
                     ? user.avatar

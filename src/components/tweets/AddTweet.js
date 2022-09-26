@@ -1,7 +1,8 @@
 import React, { useState } from "react"
-import { Avatar, Button, Comment, Row, Col, Input, Form } from "antd"
+import { Avatar, Button, Comment, Row, Col, Input, Form, Upload } from "antd"
 import { addTweet } from "./tweetsSlice"
 import { useDispatch, useSelector } from "react-redux"
+import { UploadOutlined } from "@ant-design/icons"
 
 const { TextArea } = Input
 
