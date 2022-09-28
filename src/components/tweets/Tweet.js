@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Avatar, List, Skeleton, Typography } from "antd"
+import { Avatar, List, Skeleton, Typography, Carousel } from "antd"
 import {
   CommentOutlined,
   HeartOutlined,
@@ -84,6 +84,22 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
         marginBottom: "7px",
         padding: "5px",
       }}
+      extra={
+        tweet.url && (
+          <div
+            style={{
+              width: "300px",
+              height: "300px",
+              margin: "0",
+            }}
+          >
+            <Carousel>
+              <img width={272} alt='logo' src={tweet.url} />
+              <img width={272} alt='logo' src={tweet.url} />
+            </Carousel>
+          </div>
+        )
+      }
       actions={[
         <a key='list-loadmore-edit'>
           {tweet.isLiked && (

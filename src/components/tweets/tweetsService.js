@@ -12,6 +12,7 @@ const API_RETWEETS_URL = "http://localhost:8080/api/retweets/"
 const API_GET_RETWEETS_URL = "http://localhost:8080/api/getRetweetsByUserId/"
 const API_RETWEET_TWEET_URL = "http://localhost:8080/api/retweetTweet/"
 const API_UNRETWEET_TWEET_URL = "http://localhost:8080/api/unretweetTweet/"
+const API_UPLOAD_URL = "http://localhost:8080/api/upload"
 
 const getTweets = async () => {
   const response = await axios.get(API_TWEETS_URL)
@@ -46,6 +47,7 @@ const getReplies = async (tweetId) => {
 }
 
 const addTweet = async (tweetData) => {
+  console.log({ tweetData })
   const response = await axios.post(API_TWEETS_URL, tweetData, {
     headers: {
       // Overwrite Axios's automatically set Content-Type
@@ -144,6 +146,19 @@ const unretweetTweet = async (tweetId) => {
   return response.data
 }
 
+const uploadMedia = async (data) => {
+  console.log({ data })
+  const d = JSON.stringify({ data: data })
+  const response = await axios.post(API_UPLOAD_URL, d, {
+    headers: {
+      // Overwrite Axios's automatically set Content-Type
+      "Content-Type": "application/json",
+    },
+  })
+
+  return response.data
+}
+
 const tweetsService = {
   getTweets,
   getTweetById,
@@ -162,6 +177,7 @@ const tweetsService = {
   deleteRetweet,
   retweetTweet,
   unretweetTweet,
+  uploadMedia,
 }
 
 export default tweetsService

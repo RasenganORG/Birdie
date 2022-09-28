@@ -10,6 +10,7 @@ const initialState = {
   isLoading: false,
   isLoadingLike: false,
   message: "",
+  mediaUrl: null,
 }
 
 export const getTweets = createAsyncThunk(
@@ -272,6 +273,23 @@ export const getRetweetsByUserId = createAsyncThunk(
   async (userId, thunkAPI) => {
     try {
       return await tweetsService.getRetweetsByUserId(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const uploadMedia = createAsyncThunk(
+  "tweets/uploadMedia",
+  async (data, thunkAPI) => {
+    try {
+      return await tweetsService.uploadMedia(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -581,6 +599,19 @@ const tweetsSlice = createSlice({
         state.isError = true
         state.message = action.payload
         state.retweets = []
+      })
+      .addCase(uploadMedia.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(uploadMedia.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.mediaUrl = action.payload
+      })
+      .addCase(uploadMedia.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
       })
   },
 })
