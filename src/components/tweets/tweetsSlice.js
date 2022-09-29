@@ -409,7 +409,7 @@ const tweetsSlice = createSlice({
         state.isLoading = false
         state.isError = true
         state.message = action.payload
-        state.tweets = null
+        state.tweets = []
       })
       .addCase(getTweetById.pending, (state) => {
         state.isLoading = true

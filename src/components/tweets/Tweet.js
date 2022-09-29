@@ -1,11 +1,21 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Avatar, List, Skeleton, Typography, Carousel } from "antd"
+import {
+  Avatar,
+  List,
+  Skeleton,
+  Typography,
+  Carousel,
+  Image,
+  Space,
+} from "antd"
 import {
   CommentOutlined,
   HeartOutlined,
   RetweetOutlined,
   HeartFilled,
+  LeftOutlined,
+  RightOutlined,
 } from "@ant-design/icons"
 import { useNavigate, Link } from "react-router-dom"
 import {
@@ -21,6 +31,7 @@ import {
   retweetTweet,
 } from "./tweetsSlice"
 import moment from "moment"
+import "./tweets.css"
 
 const { Text } = Typography
 
@@ -29,6 +40,19 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
   const handleGoToTweet = (tweet) => navigate(`/tweets/${tweet.id}`)
+  const [matches, setMatches] = useState(
+    window.matchMedia("(min-width: 1300px)").matches
+  )
+
+  const SlickButtonFix = ({ currentSlide, slideCount, children, ...props }) => (
+    <span {...props}>{children}</span>
+  )
+
+  useEffect(() => {
+    window
+      .matchMedia("(min-width: 1300px)")
+      .addEventListener("change", (e) => setMatches(e.matches))
+  }, [])
 
   const handleLikeTweet = (tweetId, value) => {
     const data = {
@@ -78,28 +102,10 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
   return (
     <List.Item
       style={{
-        // boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
         boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
-        // borderRadius: "15px",
         marginBottom: "7px",
         padding: "5px",
       }}
-      extra={
-        tweet.url && (
-          <div
-            style={{
-              width: "300px",
-              height: "300px",
-              margin: "0",
-            }}
-          >
-            <Carousel>
-              <img width={272} alt='logo' src={tweet.url} />
-              <img width={272} alt='logo' src={tweet.url} />
-            </Carousel>
-          </div>
-        )
-      }
       actions={[
         <a key='list-loadmore-edit'>
           {tweet.isLiked && (
@@ -173,6 +179,75 @@ function Tweet({ tweet, setIsModalVisible, setModalTweet, index }) {
         />
       </Skeleton>
       <div onClick={() => handleGoToTweet(tweet)}>{tweet.text}</div>
+      <div
+        style={{
+          display: "flex",
+          alignContent: "center",
+        }}
+      >
+        {tweet?.url?.length > 0 && matches && (
+          <div
+            style={{
+              width: "100%",
+            }}
+          >
+            <Image.PreviewGroup>
+              <Space size={[4, 4]} wrap align='center'>
+                {tweet?.url?.map((url) => (
+                  <Image width={300} src={url} />
+                ))}
+                {/* <Image width={300} src={tweet.url} />
+                <Image width={300} src={tweet.url} />
+                <Image width={300} src={tweet.url} />
+                <Image width={300} src={tweet.url} /> */}
+              </Space>
+            </Image.PreviewGroup>
+          </div>
+        )}
+      </div>
+
+      {tweet.url.length > 0 && !matches && (
+        <div
+          style={{
+            width: "100%",
+          }}
+        >
+          <Carousel
+            style={{
+              backgroundColor: "black",
+            }}
+            arrows
+            prevArrow={
+              <SlickButtonFix>
+                <LeftOutlined />
+              </SlickButtonFix>
+            }
+            nextArrow={
+              <SlickButtonFix>
+                <RightOutlined />
+              </SlickButtonFix>
+            }
+          >
+            {tweet?.url?.map((url) => (
+              <div className='container'>
+                <Image
+                  src={url}
+                  // fluid='true'
+                  style={{
+                    margin: "auto",
+                  }}
+                  width={"100%"}
+                  height={"auto"}
+                />
+              </div>
+            ))}
+            {/* <Image width={"100%"} src={tweet.url} />
+            <Image width={"100%"} src={tweet.url} />
+            <Image width={"100%"} src={tweet.url} />
+            <Image width={"100%"} src={tweet.url} /> */}
+          </Carousel>
+        </div>
+      )}
     </List.Item>
   )
 }
